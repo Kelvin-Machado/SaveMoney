@@ -53,12 +53,12 @@ class ContainerController: UIViewController {
         
         if shouldExpand {
             //show menu
+            let height = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+            
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
-                self.centerController.view.frame = CGRect(x: self.centerController.view.frame.width - 80, y: 0, width: self.centerController.view.frame.width, height: self.centerController.view.frame.height + UIApplication.shared.statusBarFrame.height)
+                self.centerController.view.frame = CGRect(x: self.centerController.view.frame.width - 80, y: 0, width: self.centerController.view.frame.width, height: self.centerController.view.frame.height + height)
                 }, completion: nil)
-//                self.centerController.view.frame.origin.x = self.centerController.view.frame.width - 80
-
-            UIApplication.shared.isStatusBarHidden = true
+            UIApplication.shared.setStatusBarHidden(true, with: .fade)
         }else{
             //hide menu
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
@@ -67,7 +67,7 @@ class ContainerController: UIViewController {
                 guard let menuOption = menuOption else {return}
                 self.didSelectMenuOption(menuOption: menuOption)
             }
-            UIApplication.shared.isStatusBarHidden = false
+            UIApplication.shared.setStatusBarHidden(false, with: .fade)
         }
         
     }
@@ -75,7 +75,8 @@ class ContainerController: UIViewController {
     func didSelectMenuOption(menuOption: MenuOption) {
         switch menuOption {
         case .cartao:
-            print("Show Credit Card")
+            let controller = CardController()
+            present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
         case .emitente:
             print("Show emitente")
         case .conta:
@@ -95,6 +96,8 @@ class ContainerController: UIViewController {
         }
     }
 }
+
+//      MARK: - Extension
 
 extension ContainerController: HomeControllerDelegate {
     
