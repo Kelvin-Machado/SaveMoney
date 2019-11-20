@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MenuController.swift
 //  SaveMoney
 //
 //  Created by Kelvin Batista Machado on 19/11/19.
@@ -8,13 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class MenuController: UIViewController {
+    
+//        MARK: - Properties
+    
+        
+//        MARK: - Init
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
-
+//        MARK: - Handlers
+    
+    
 }
-
