@@ -5,6 +5,7 @@
 //  Created by Kelvin Batista Machado on 19/11/19.
 //  Copyright © 2019 Kelvin Batista Machado. All rights reserved.
 //
+// Icons made by https://www.flaticon.com/authors/freepik - Freepik from https://www.flaticon.com/
 
 import UIKit
 
