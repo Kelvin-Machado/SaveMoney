@@ -23,7 +23,7 @@ class MenuController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.3960784314, green: 0.6, blue: 1, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0, green: 0.4490886927, blue: 0.9007502794, alpha: 1)
         configureTableView()
     }
 
@@ -34,7 +34,7 @@ class MenuController: UIViewController {
         tableView.dataSource = self
         
         tableView.register(MenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.backgroundColor = #colorLiteral(red: 0.3960784314, green: 0.6, blue: 1, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 0, green: 0.4490886927, blue: 0.9007502794, alpha: 1)
         tableView.separatorStyle = .none
         tableView.rowHeight = 50
         
