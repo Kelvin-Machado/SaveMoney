@@ -54,8 +54,10 @@ class ContainerController: UIViewController {
         if shouldExpand {
             //show menu
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
-                self.centerController.view.frame.origin.x = self.centerController.view.frame.width - 80
-            }, completion: nil)
+                self.centerController.view.frame = CGRect(x: self.centerController.view.frame.width - 80, y: 0, width: self.centerController.view.frame.width, height: self.centerController.view.frame.height + UIApplication.shared.statusBarFrame.height)
+                }, completion: nil)
+//                self.centerController.view.frame.origin.x = self.centerController.view.frame.width - 80
+
             UIApplication.shared.isStatusBarHidden = true
         }else{
             //hide menu

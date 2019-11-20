@@ -23,6 +23,7 @@ class MenuController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = #colorLiteral(red: 0.3960784314, green: 0.6, blue: 1, alpha: 1)
         configureTableView()
     }
 
@@ -42,7 +43,7 @@ class MenuController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
     }
     
 }

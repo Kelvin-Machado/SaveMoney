@@ -36,7 +36,7 @@ class MenuOptionCell: UITableViewCell {
         addSubview(iconImageView)
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.centerYAnchor.constraint(equalTo:centerYAnchor).isActive = true
-        iconImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+        iconImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         iconImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         iconImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
