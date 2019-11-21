@@ -76,7 +76,9 @@ class ContainerController: UIViewController {
         switch menuOption {
         case .cartao:
             let controller = CardController()
-            present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen //push the controller in fullscreen
+            present(navController, animated: true, completion: nil) //push CardController
         case .emitente:
             print("Show emitente")
         case .conta:

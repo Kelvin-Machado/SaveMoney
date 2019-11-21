@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "floppy-disk-interface-symbol-for-save-option-button.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "floppy-disk-interface-symbol-for-save-option-button.png",
       "scale" : "2x"
     },
     {

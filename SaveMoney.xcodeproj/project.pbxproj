@@ -18,6 +18,7 @@
 		B65D1B2F2384BB5800B30015 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B2E2384BB5800B30015 /* HomeController.swift */; };
 		B65D1B312384BB6400B30015 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B302384BB6400B30015 /* MenuController.swift */; };
 		B65D1B332384CC2800B30015 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B322384CC2800B30015 /* Protocols.swift */; };
+		B6678279238651480024CE85 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6678278238651480024CE85 /* TextFormatter.swift */; };
 		B668B6002385C0490044AF14 /* CardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B5FF2385C0490044AF14 /* CardController.swift */; };
 		B668B6032385D07D0044AF14 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B6022385D07D0044AF14 /* Lines.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 		B65D1B2E2384BB5800B30015 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		B65D1B302384BB6400B30015 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B65D1B322384CC2800B30015 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		B6678278238651480024CE85 /* TextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		B668B5FF2385C0490044AF14 /* CardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardController.swift; sourceTree = "<group>"; };
 		B668B6022385D07D0044AF14 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				B668B6022385D07D0044AF14 /* Lines.swift */,
+				B6678278238651480024CE85 /* TextFormatter.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				B65D1B1B2384B9FD00B30015 /* SaveMoney.xcdatamodeld in Sources */,
 				B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */,
 				B65D1B332384CC2800B30015 /* Protocols.swift in Sources */,
+				B6678279238651480024CE85 /* TextFormatter.swift in Sources */,
 				B65D1B132384B9FD00B30015 /* SceneDelegate.swift in Sources */,
 				B668B6002385C0490044AF14 /* CardController.swift in Sources */,
 				B65AD54B2385159D00A5F221 /* MenuOption.swift in Sources */,
