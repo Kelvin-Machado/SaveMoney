@@ -106,6 +106,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
         
+        novoCartaoLbl.removeFromSuperview()
         descricaoDebitoTxt.removeFromSuperview()
         numCartaoDebitoTxt.removeFromSuperview()
         configureCreditoInfo()
@@ -202,6 +203,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         creditoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
         
+        novoCartaoLbl.removeFromSuperview()
         descricaoTxt.removeFromSuperview()
         numCartaoTxt.removeFromSuperview()
         vencimento.removeFromSuperview()
@@ -264,6 +266,8 @@ class CardController: UIViewController, UITextFieldDelegate {
     @objc func didChangeText(textField:UITextField) {
         textField.text = self.modifyCreditCardString(creditCardString: textField.text!)
     }
+    
+//    MARK: - Configure bottom buttons
     
     func configureBottomBtn() {
         saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)

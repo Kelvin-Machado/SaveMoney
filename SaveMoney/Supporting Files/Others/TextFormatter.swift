@@ -64,7 +64,7 @@ extension CardController {
         let newLength = (textField.text ?? "").count + string.count - range.length
         
 //        Formats Credit Card Number Length
-        if(textField == numCartaoTxt) {
+        if(textField == numCartaoTxt || textField == numCartaoDebitoTxt) {
              return newLength <= 19
          }
         
