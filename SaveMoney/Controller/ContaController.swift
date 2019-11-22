@@ -1,14 +1,14 @@
 //
-//  CardController.swift
+//  ContaController.swift
 //  SaveMoney
 //
-//  Created by Kelvin Batista Machado on 20/11/19.
+//  Created by Kelvin Batista Machado on 21/11/19.
 //  Copyright © 2019 Kelvin Batista Machado. All rights reserved.
 //
 
 import UIKit
 
-class CardController: UIViewController, UITextFieldDelegate {
+class ContaController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
@@ -17,14 +17,15 @@ class CardController: UIViewController, UITextFieldDelegate {
     let creditoBtn = UIButton()
     let debitoBtn = UIButton()
     
-    var novoCartaoLbl = UILabel()
+    var novaContaLbl = UILabel()
     
     var descricaoTxt = UITextField()
-    var numCartaoTxt = UITextField()
-    var vencimento = UITextField()
+    var numContaTxt = UITextField()
+    var saldo = UITextField()
     
     var descricaoDebitoTxt = UITextField()
-    var numCartaoDebitoTxt = UITextField()
+    var numContaDebitoTxt = UITextField()
+    var saldoDebito = UITextField()
     
     let saveBtn = UIButton()
     let closeBtn = UIButton()
@@ -56,13 +57,13 @@ class CardController: UIViewController, UITextFieldDelegate {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         
         //put image on navigation bar
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "003-credit-card").withRenderingMode(.alwaysOriginal), style: .plain, target: nil, action: nil)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "005-cash-flow").withRenderingMode(.alwaysOriginal), style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0.4490886927, blue: 0.9007502794, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
         
-        navigationController?.navigationBar.topItem?.title = "Cartão"
+        navigationController?.navigationBar.topItem?.title = "Conta"
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor:UIColor.white,
             NSAttributedString.Key.strokeColor : #colorLiteral(red: 0, green: 0.4039215686, blue: 0.5254901961, alpha: 1),
@@ -110,17 +111,18 @@ class CardController: UIViewController, UITextFieldDelegate {
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
         
-        novoCartaoLbl.removeFromSuperview()
+        novaContaLbl.removeFromSuperview()
         descricaoDebitoTxt.removeFromSuperview()
-        numCartaoDebitoTxt.removeFromSuperview()
+        numContaDebitoTxt.removeFromSuperview()
+        saldoDebito.removeFromSuperview()
         configureCreditoInfo()
     }
     
     func configureCreditoInfo() {
-        novoCartaoLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novoCartaoLbl.backgroundColor = .white
-        novoCartaoLbl.text = "Cadastro do Cartão de Crédito"
-        novoCartaoLbl.textColor = .black
+        novaContaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        novaContaLbl.backgroundColor = .white
+        novaContaLbl.text = "Cadastrar nova conta em crédito"
+        novaContaLbl.textColor = .black
         
         descricaoTxt.delegate = self
         descricaoTxt.keyboardType = .default
@@ -132,55 +134,55 @@ class CardController: UIViewController, UITextFieldDelegate {
         
         descricaoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
-        numCartaoTxt.delegate = self
-        numCartaoTxt.keyboardType = .numberPad
-        numCartaoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numCartaoTxt.backgroundColor = .white
-        numCartaoTxt.textColor = .black
-        numCartaoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de crédito",
+        numContaTxt.delegate = self
+        numContaTxt.keyboardType = .numberPad
+        numContaTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        numContaTxt.backgroundColor = .white
+        numContaTxt.textColor = .black
+        numContaTxt.attributedPlaceholder = NSAttributedString(string: "Número da conta",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
-        numCartaoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        numContaTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
-        numCartaoTxt.addTarget(self, action: #selector(didChangeText(textField:)), for: .editingChanged)
-        
-        vencimento.delegate = self
-        vencimento.keyboardType = .numberPad
-        vencimento.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        vencimento.backgroundColor = .white
-        vencimento.textColor = .black
-        vencimento.textAlignment = .center
-        vencimento.attributedPlaceholder = NSAttributedString(string: "Vencimento",
+        saldo.delegate = self
+        saldo.keyboardType = .numberPad
+        saldo.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        saldo.backgroundColor = .white
+        saldo.textColor = .black
+        saldo.textAlignment = .center
+        saldo.attributedPlaceholder = NSAttributedString(string: "Saldo",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        saldo.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
 
-        vencimento.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1), width: 1.0)
+        saldo.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1), width: 1.0)
         
-        containerView.addSubview(novoCartaoLbl)
+        containerView.addSubview(novaContaLbl)
         containerView.addSubview(descricaoTxt)
-        containerView.addSubview(numCartaoTxt)
-        containerView.addSubview(vencimento)
+        containerView.addSubview(numContaTxt)
+        containerView.addSubview(saldo)
         
-        novoCartaoLbl.translatesAutoresizingMaskIntoConstraints = false
+        novaContaLbl.translatesAutoresizingMaskIntoConstraints = false
         descricaoTxt.translatesAutoresizingMaskIntoConstraints = false
-        numCartaoTxt.translatesAutoresizingMaskIntoConstraints = false
-        vencimento.translatesAutoresizingMaskIntoConstraints = false
+        numContaTxt.translatesAutoresizingMaskIntoConstraints = false
+        saldo.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            novoCartaoLbl.topAnchor.constraint(equalTo: creditoBtn.bottomAnchor, constant: 20),
-            novoCartaoLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            novaContaLbl.topAnchor.constraint(equalTo: creditoBtn.bottomAnchor, constant: 20),
+            novaContaLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             
-            descricaoTxt.topAnchor.constraint(equalTo: novoCartaoLbl.bottomAnchor, constant: 20),
+            descricaoTxt.topAnchor.constraint(equalTo: novaContaLbl.bottomAnchor, constant: 20),
             descricaoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             descricaoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
             descricaoTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60),
             
-            numCartaoTxt.topAnchor.constraint(equalTo: descricaoTxt.bottomAnchor, constant: 20),
-            numCartaoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
-            numCartaoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
-            numCartaoTxt.widthAnchor.constraint(equalToConstant: 50),
+            numContaTxt.topAnchor.constraint(equalTo: descricaoTxt.bottomAnchor, constant: 20),
+            numContaTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            numContaTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            numContaTxt.widthAnchor.constraint(equalToConstant: 50),
             
-            vencimento.topAnchor.constraint(equalTo: numCartaoTxt.bottomAnchor, constant: 20),
-            vencimento.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30)            
+            saldo.topAnchor.constraint(equalTo: numContaTxt.bottomAnchor, constant: 20),
+            saldo.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30)
         ])
     }
     
@@ -206,18 +208,18 @@ class CardController: UIViewController, UITextFieldDelegate {
         creditoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
         
-        novoCartaoLbl.removeFromSuperview()
+        novaContaLbl.removeFromSuperview()
         descricaoTxt.removeFromSuperview()
-        numCartaoTxt.removeFromSuperview()
-        vencimento.removeFromSuperview()
+        numContaTxt.removeFromSuperview()
+        saldo.removeFromSuperview()
         configureDebitoInfo()
     }
     
     func configureDebitoInfo() {
-        novoCartaoLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novoCartaoLbl.backgroundColor = .white
-        novoCartaoLbl.text = "Cadastro do Cartão de Débito"
-        novoCartaoLbl.textColor = .black
+        novaContaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        novaContaLbl.backgroundColor = .white
+        novaContaLbl.text = "Cadastrar nova conta em débito"
+        novaContaLbl.textColor = .black
         
         descricaoDebitoTxt.delegate = self
         descricaoDebitoTxt.keyboardType = .default
@@ -229,45 +231,57 @@ class CardController: UIViewController, UITextFieldDelegate {
         
         descricaoDebitoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
-        numCartaoDebitoTxt.delegate = self
-        numCartaoDebitoTxt.keyboardType = .numberPad
-        numCartaoDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numCartaoDebitoTxt.backgroundColor = .white
-        numCartaoDebitoTxt.textColor = .black
-        numCartaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de Débito",
+        numContaDebitoTxt.delegate = self
+        numContaDebitoTxt.keyboardType = .numberPad
+        numContaDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        numContaDebitoTxt.backgroundColor = .white
+        numContaDebitoTxt.textColor = .black
+        numContaDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Número da conta",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
-        numCartaoDebitoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        numContaDebitoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
-        numCartaoDebitoTxt.addTarget(self, action: #selector(didChangeText(textField:)), for: .editingChanged)
+        saldoDebito.delegate = self
+        saldoDebito.keyboardType = .numberPad
+        saldoDebito.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        saldoDebito.backgroundColor = .white
+        saldoDebito.textColor = .black
+        saldoDebito.textAlignment = .center
+        saldoDebito.attributedPlaceholder = NSAttributedString(string: "Saldo",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
-        containerView.addSubview(novoCartaoLbl)
+        saldoDebito.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+
+        saldoDebito.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(novaContaLbl)
         containerView.addSubview(descricaoDebitoTxt)
-        containerView.addSubview(numCartaoDebitoTxt)
+        containerView.addSubview(numContaDebitoTxt)
+        containerView.addSubview(saldoDebito)
         
         
-        novoCartaoLbl.translatesAutoresizingMaskIntoConstraints = false
+        novaContaLbl.translatesAutoresizingMaskIntoConstraints = false
         descricaoDebitoTxt.translatesAutoresizingMaskIntoConstraints = false
-        numCartaoDebitoTxt.translatesAutoresizingMaskIntoConstraints = false
+        numContaDebitoTxt.translatesAutoresizingMaskIntoConstraints = false
+        saldoDebito.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            novoCartaoLbl.topAnchor.constraint(equalTo: creditoBtn.bottomAnchor, constant: 20),
-            novoCartaoLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            novaContaLbl.topAnchor.constraint(equalTo: creditoBtn.bottomAnchor, constant: 20),
+            novaContaLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             
-            descricaoDebitoTxt.topAnchor.constraint(equalTo: novoCartaoLbl.bottomAnchor, constant: 20),
+            descricaoDebitoTxt.topAnchor.constraint(equalTo: novaContaLbl.bottomAnchor, constant: 20),
             descricaoDebitoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             descricaoDebitoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
             descricaoDebitoTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60),
             
-            numCartaoDebitoTxt.topAnchor.constraint(equalTo: descricaoDebitoTxt.bottomAnchor, constant: 20),
-            numCartaoDebitoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
-            numCartaoDebitoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
-            numCartaoDebitoTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+            numContaDebitoTxt.topAnchor.constraint(equalTo: descricaoDebitoTxt.bottomAnchor, constant: 20),
+            numContaDebitoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            numContaDebitoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            numContaDebitoTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60),
+            
+            saldoDebito.topAnchor.constraint(equalTo: numContaDebitoTxt.bottomAnchor, constant: 20),
+            saldoDebito.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30)
         ])
-    }
-    
-    @objc func didChangeText(textField:UITextField) {
-        textField.text = self.modifyCreditCardString(creditCardString: textField.text!)
     }
     
 //    MARK: - Configure bottom buttons
@@ -300,6 +314,13 @@ class CardController: UIViewController, UITextFieldDelegate {
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func myTextFieldDidChange(_ textField: UITextField) {
+
+       if let amountString = textField.text?.currencyInputFormatting() {
+           textField.text = amountString
+       }
     }
     
   //MARK: - Keyboard Events
@@ -353,3 +374,4 @@ class CardController: UIViewController, UITextFieldDelegate {
   }
     
 }
+

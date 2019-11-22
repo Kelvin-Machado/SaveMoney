@@ -80,9 +80,15 @@ class ContainerController: UIViewController {
             navController.modalPresentationStyle = .fullScreen //push the controller in fullscreen
             present(navController, animated: true, completion: nil) //push CardController
         case .emitente:
-            print("Show emitente")
+            let controller = EmitenteController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .conta:
-            print("Show conta")
+            let controller = ContaController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .categoria:
             print("Show Categoria")
         case .despesa:
