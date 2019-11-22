@@ -74,21 +74,18 @@ class CardController: UIViewController, UITextFieldDelegate {
     func makeBackButton() -> UIButton {
         let backButton = UIButton(type: .custom)
         backButton.setImage(#imageLiteral(resourceName: "back-arrow"), for: .normal)
-        backButton.tintColor = .blue
-        backButton.setTitle("", for: .normal)
-        backButton.setTitleColor(.red, for: .normal)
         backButton.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
         return backButton
     }
     
     func configureCredito() {
         creditoBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 30)
-        creditoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
+        creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
         creditoBtn.backgroundColor = .white
         creditoBtn.setTitle("Crédito", for: .normal)
         
         creditoBtn.addTarget(self, action: #selector(creditoBtnTapped), for: .touchUpInside)
-        
+
         containerView.addSubview(creditoBtn)
         view.addSubview(containerView)
         
@@ -104,6 +101,8 @@ class CardController: UIViewController, UITextFieldDelegate {
             creditoBtn.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             creditoBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20)
         ])
+        
+        configureCreditoInfo()
     }
     
     @objc func creditoBtnTapped() {
