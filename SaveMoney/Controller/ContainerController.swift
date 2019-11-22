@@ -90,17 +90,35 @@ class ContainerController: UIViewController {
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true, completion: nil)
         case .categoria:
-            print("Show Categoria")
+            let controller = CategoriaController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .despesa:
-            print("Show despesa")
+            let controller = DespesaController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .receita:
-            print("Show receita")
+            let controller = ReceitaController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .orcamento:
-            print("Show orcamento")
+            let controller = OrcamentoController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .grafico:
-            print("Show grafico")
+            let controller = GraficoController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         case .movimentacao:
-            print("Show movimentacao")
+            let controller = MovimentacaoController()
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         }
     }
 }

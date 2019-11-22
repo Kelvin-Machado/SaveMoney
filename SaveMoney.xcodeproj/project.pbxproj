@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B652459D23874C50001A5E7F /* ContaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B652459C23874C50001A5E7F /* ContaController.swift */; };
+		B652459F23874C5D001A5E7F /* ReceitaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B652459E23874C5D001A5E7F /* ReceitaController.swift */; };
+		B65245A123874C6C001A5E7F /* DespesaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A023874C6C001A5E7F /* DespesaController.swift */; };
+		B65245A323874C81001A5E7F /* CategoriaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A223874C81001A5E7F /* CategoriaController.swift */; };
+		B65245A523874C9B001A5E7F /* OrcamentoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A423874C9B001A5E7F /* OrcamentoController.swift */; };
+		B65245A723874D04001A5E7F /* GraficoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A623874D04001A5E7F /* GraficoController.swift */; };
+		B65245A923874D10001A5E7F /* MovimentacaoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A823874D10001A5E7F /* MovimentacaoController.swift */; };
 		B65AD5492384FBB000A5F221 /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AD5482384FBB000A5F221 /* MenuOptionCell.swift */; };
 		B65AD54B2385159D00A5F221 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AD54A2385159D00A5F221 /* MenuOption.swift */; };
 		B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B102384B9FD00B30015 /* AppDelegate.swift */; };
@@ -19,11 +26,19 @@
 		B65D1B312384BB6400B30015 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B302384BB6400B30015 /* MenuController.swift */; };
 		B65D1B332384CC2800B30015 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B322384CC2800B30015 /* Protocols.swift */; };
 		B6678279238651480024CE85 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6678278238651480024CE85 /* TextFormatter.swift */; };
+		B667827B238664620024CE85 /* EmitenteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667827A238664620024CE85 /* EmitenteController.swift */; };
 		B668B6002385C0490044AF14 /* CardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B5FF2385C0490044AF14 /* CardController.swift */; };
 		B668B6032385D07D0044AF14 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B6022385D07D0044AF14 /* Lines.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B652459C23874C50001A5E7F /* ContaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContaController.swift; sourceTree = "<group>"; };
+		B652459E23874C5D001A5E7F /* ReceitaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceitaController.swift; sourceTree = "<group>"; };
+		B65245A023874C6C001A5E7F /* DespesaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DespesaController.swift; sourceTree = "<group>"; };
+		B65245A223874C81001A5E7F /* CategoriaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriaController.swift; sourceTree = "<group>"; };
+		B65245A423874C9B001A5E7F /* OrcamentoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrcamentoController.swift; sourceTree = "<group>"; };
+		B65245A623874D04001A5E7F /* GraficoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficoController.swift; sourceTree = "<group>"; };
+		B65245A823874D10001A5E7F /* MovimentacaoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovimentacaoController.swift; sourceTree = "<group>"; };
 		B65AD5482384FBB000A5F221 /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
 		B65AD54A2385159D00A5F221 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		B65D1B0D2384B9FD00B30015 /* SaveMoney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaveMoney.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -38,6 +53,7 @@
 		B65D1B302384BB6400B30015 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B65D1B322384CC2800B30015 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B6678278238651480024CE85 /* TextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
+		B667827A238664620024CE85 /* EmitenteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitenteController.swift; sourceTree = "<group>"; };
 		B668B5FF2385C0490044AF14 /* CardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardController.swift; sourceTree = "<group>"; };
 		B668B6022385D07D0044AF14 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +104,14 @@
 				B65D1B2E2384BB5800B30015 /* HomeController.swift */,
 				B65D1B302384BB6400B30015 /* MenuController.swift */,
 				B668B5FF2385C0490044AF14 /* CardController.swift */,
+				B667827A238664620024CE85 /* EmitenteController.swift */,
+				B652459C23874C50001A5E7F /* ContaController.swift */,
+				B65245A223874C81001A5E7F /* CategoriaController.swift */,
+				B65245A023874C6C001A5E7F /* DespesaController.swift */,
+				B652459E23874C5D001A5E7F /* ReceitaController.swift */,
+				B65245A423874C9B001A5E7F /* OrcamentoController.swift */,
+				B65245A623874D04001A5E7F /* GraficoController.swift */,
+				B65245A823874D10001A5E7F /* MovimentacaoController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -209,16 +233,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B65245A723874D04001A5E7F /* GraficoController.swift in Sources */,
+				B65245A523874C9B001A5E7F /* OrcamentoController.swift in Sources */,
 				B65D1B1B2384B9FD00B30015 /* SaveMoney.xcdatamodeld in Sources */,
 				B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */,
 				B65D1B332384CC2800B30015 /* Protocols.swift in Sources */,
+				B652459D23874C50001A5E7F /* ContaController.swift in Sources */,
 				B6678279238651480024CE85 /* TextFormatter.swift in Sources */,
 				B65D1B132384B9FD00B30015 /* SceneDelegate.swift in Sources */,
 				B668B6002385C0490044AF14 /* CardController.swift in Sources */,
 				B65AD54B2385159D00A5F221 /* MenuOption.swift in Sources */,
+				B652459F23874C5D001A5E7F /* ReceitaController.swift in Sources */,
 				B65D1B2D2384BB4600B30015 /* ContainerController.swift in Sources */,
+				B667827B238664620024CE85 /* EmitenteController.swift in Sources */,
+				B65245A123874C6C001A5E7F /* DespesaController.swift in Sources */,
+				B65245A923874D10001A5E7F /* MovimentacaoController.swift in Sources */,
 				B65AD5492384FBB000A5F221 /* MenuOptionCell.swift in Sources */,
 				B668B6032385D07D0044AF14 /* Lines.swift in Sources */,
+				B65245A323874C81001A5E7F /* CategoriaController.swift in Sources */,
 				B65D1B312384BB6400B30015 /* MenuController.swift in Sources */,
 				B65D1B2F2384BB5800B30015 /* HomeController.swift in Sources */,
 			);
