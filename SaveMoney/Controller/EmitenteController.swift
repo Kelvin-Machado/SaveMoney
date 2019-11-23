@@ -14,6 +14,14 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
+    
+    let novoEmitenteLbl = UILabel()
+    
+    let nomeEmitenteTxt = UITextField()
+    let cpfCNPJTxt = UITextField()
+    let emailTxt = UITextField()
+    let telefoneTxt = UITextField()
+    
     let saveBtn = UIButton()
     let closeBtn = UIButton()
 
@@ -31,9 +39,15 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         setupKeyboard()
         configureNavigation()
         configureContainer()
+        configureNovoEmitente()
+        configureCPF()
+        configureEmail()
+        ConfigureTelefone()
         configureBottomBtn()
         
     }
+
+    //    MARK: - Helper Functions
     
     func configureContainer() {
         
@@ -49,8 +63,109 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         ])
     }
 
-//    MARK: - Helper Functions
+    func configureNovoEmitente() {
+        
+        novoEmitenteLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        novoEmitenteLbl.backgroundColor = .white
+        novoEmitenteLbl.text = "Novo Emitente"
+        novoEmitenteLbl.textColor = .black
+        
+        nomeEmitenteTxt.delegate = self
+        nomeEmitenteTxt.keyboardType = .default
+        nomeEmitenteTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        nomeEmitenteTxt.backgroundColor = .white
+        nomeEmitenteTxt.textColor = .black
+        nomeEmitenteTxt.attributedPlaceholder = NSAttributedString(string: "Nome/Razão Social",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        nomeEmitenteTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(novoEmitenteLbl)
+        containerView.addSubview(nomeEmitenteTxt)
+        
+        novoEmitenteLbl.translatesAutoresizingMaskIntoConstraints = false
+        nomeEmitenteTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            novoEmitenteLbl.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            novoEmitenteLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            
+            nomeEmitenteTxt.topAnchor.constraint(equalTo: novoEmitenteLbl.bottomAnchor, constant: 20),
+            nomeEmitenteTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            nomeEmitenteTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            nomeEmitenteTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
     
+    func configureCPF() {
+        
+        cpfCNPJTxt.delegate = self
+        cpfCNPJTxt.keyboardType = .numberPad
+        cpfCNPJTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        cpfCNPJTxt.backgroundColor = .white
+        cpfCNPJTxt.textColor = .black
+        cpfCNPJTxt.attributedPlaceholder = NSAttributedString(string: "CPF/CNPJ",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        cpfCNPJTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(cpfCNPJTxt)
+        
+        cpfCNPJTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cpfCNPJTxt.topAnchor.constraint(equalTo: nomeEmitenteTxt.bottomAnchor, constant: 20),
+            cpfCNPJTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            cpfCNPJTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            cpfCNPJTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
+    
+    func configureEmail() {
+        emailTxt.delegate = self
+        emailTxt.keyboardType = .emailAddress
+        emailTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        emailTxt.backgroundColor = .white
+        emailTxt.textColor = .black
+        emailTxt.attributedPlaceholder = NSAttributedString(string: "Email",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        emailTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(emailTxt)
+        
+        emailTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            emailTxt.topAnchor.constraint(equalTo: cpfCNPJTxt.bottomAnchor, constant: 20),
+            emailTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            emailTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            emailTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
+    
+    func ConfigureTelefone() {
+        telefoneTxt.delegate = self
+        telefoneTxt.keyboardType = .numberPad
+        telefoneTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        telefoneTxt.backgroundColor = .white
+        telefoneTxt.textColor = .black
+        telefoneTxt.attributedPlaceholder = NSAttributedString(string: "Telefone",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        telefoneTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(telefoneTxt)
+        
+        telefoneTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            telefoneTxt.topAnchor.constraint(equalTo: emailTxt.bottomAnchor, constant: 20),
+            telefoneTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            telefoneTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            telefoneTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
     func configureNavigation() {
         view.backgroundColor = .white
         containerView.backgroundColor = .white
