@@ -115,8 +115,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         cnpjBtn.frame = CGRect(x: 64, y: 64, width: 50, height: 50)
         cnpjBtn.setTitle("CNPJ", for: .normal)
         cnpjBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        cnpjBtn.titleLabel?.textColor = #colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1)
-        cnpjBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
+        cnpjBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
         cnpjBtn.addTarget(self, action: #selector(checkmarkCNPJ), for: .touchUpInside)
         
@@ -138,6 +137,8 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     @objc func checkmarkCPF() {
         cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
         cpfBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal);
+        cpfBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
+        cnpjBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         containerView.willRemoveSubview(cnpjTxt)
         configureCPF()
         
@@ -145,6 +146,8 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     @objc func checkmarkCNPJ() {
         cpfBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
         cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal);
+        cpfBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        cnpjBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
         containerView.willRemoveSubview(cpfTxt)
         configureCNPJ()
     }
