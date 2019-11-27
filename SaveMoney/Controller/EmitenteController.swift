@@ -14,14 +14,18 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
+    var checkmarkCPFSelected = false
+    var checkmarkCNPJSelected = false
     
     let novoEmitenteLbl = UILabel()
-    
     let nomeEmitenteTxt = UITextField()
-    let cpfCNPJTxt = UITextField()
+    let cpfTxt = UITextField()
+    let cnpjTxt = UITextField()
     let emailTxt = UITextField()
     let telefoneTxt = UITextField()
     
+    let cpfBtn = UIButton()
+    let cnpjBtn = UIButton()
     let saveBtn = UIButton()
     let closeBtn = UIButton()
 
@@ -40,6 +44,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         configureNavigation()
         configureContainer()
         configureNovoEmitente()
+        configureCheckbox()
         configureCPF()
         configureEmail()
         ConfigureTelefone()
@@ -65,7 +70,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
 
     func configureNovoEmitente() {
         
-        novoEmitenteLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        novoEmitenteLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 20)
         novoEmitenteLbl.backgroundColor = .white
         novoEmitenteLbl.text = "Novo Emitente"
         novoEmitenteLbl.textColor = .black
@@ -97,27 +102,98 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         ])
     }
     
-    func configureCPF() {
+    func configureCheckbox() {
         
-        cpfCNPJTxt.delegate = self
-        cpfCNPJTxt.keyboardType = .numberPad
-        cpfCNPJTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        cpfCNPJTxt.backgroundColor = .white
-        cpfCNPJTxt.textColor = .black
-        cpfCNPJTxt.attributedPlaceholder = NSAttributedString(string: "CPF/CNPJ",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        cpfBtn.frame = CGRect(x: 64, y: 64, width: 50, height: 50)
+        cpfBtn.titleLabel?.text = "CPF"
+        cpfBtn.setTitle("CPF", for: .normal)
+        cpfBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        cpfBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
+        cpfBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal);
+        cpfBtn.addTarget(self, action: #selector(checkmarkCPF), for: .touchUpInside)
         
-        cpfCNPJTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        cnpjBtn.frame = CGRect(x: 64, y: 64, width: 50, height: 50)
+        cnpjBtn.setTitle("CNPJ", for: .normal)
+        cnpjBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        cnpjBtn.titleLabel?.textColor = #colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1)
+        cnpjBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
+        cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
+        cnpjBtn.addTarget(self, action: #selector(checkmarkCNPJ), for: .touchUpInside)
         
-        containerView.addSubview(cpfCNPJTxt)
+        containerView.addSubview(cpfBtn)
+        containerView.addSubview(cnpjBtn)
         
-        cpfCNPJTxt.translatesAutoresizingMaskIntoConstraints = false
+        cpfBtn.translatesAutoresizingMaskIntoConstraints = false
+        cnpjBtn.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            cpfCNPJTxt.topAnchor.constraint(equalTo: nomeEmitenteTxt.bottomAnchor, constant: 20),
-            cpfCNPJTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
-            cpfCNPJTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
-            cpfCNPJTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        cpfBtn.topAnchor.constraint(equalTo: nomeEmitenteTxt.bottomAnchor, constant: 20),
+        cpfBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+        cnpjBtn.topAnchor.constraint(equalTo: nomeEmitenteTxt.bottomAnchor, constant: 20),
+        cnpjBtn.leftAnchor.constraint(equalTo: cpfBtn.titleLabel?.leftAnchor ?? cpfBtn.leftAnchor, constant: 50),
+        
+        ])
+    }
+    
+    @objc func checkmarkCPF() {
+        cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
+        cpfBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal);
+        containerView.willRemoveSubview(cnpjTxt)
+        configureCPF()
+        
+    }
+    @objc func checkmarkCNPJ() {
+        cpfBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal);
+        cnpjBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal);
+        containerView.willRemoveSubview(cpfTxt)
+        configureCNPJ()
+    }
+    
+    func configureCPF() {
+        
+        cpfTxt.delegate = self
+        cpfTxt.keyboardType = .numberPad
+        cpfTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        cpfTxt.backgroundColor = .white
+        cpfTxt.textColor = .black
+        cpfTxt.attributedPlaceholder = NSAttributedString(string: "CPF",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        cpfTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(cpfTxt)
+        
+        cpfTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cpfTxt.topAnchor.constraint(equalTo: cpfBtn.bottomAnchor, constant: 20),
+            cpfTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            cpfTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            cpfTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
+    
+    func configureCNPJ() {
+        
+        cnpjTxt.delegate = self
+        cnpjTxt.keyboardType = .numberPad
+        cnpjTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        cnpjTxt.backgroundColor = .white
+        cnpjTxt.textColor = .black
+        cnpjTxt.attributedPlaceholder = NSAttributedString(string: "CNPJ",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        cnpjTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(cnpjTxt)
+        
+        cnpjTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cnpjTxt.topAnchor.constraint(equalTo: cpfBtn.bottomAnchor, constant: 20),
+            cnpjTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            cnpjTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            cnpjTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
         ])
     }
     
@@ -137,7 +213,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         emailTxt.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            emailTxt.topAnchor.constraint(equalTo: cpfCNPJTxt.bottomAnchor, constant: 20),
+            emailTxt.topAnchor.constraint(equalTo: cpfTxt.bottomAnchor, constant: 20),
             emailTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             emailTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
             emailTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
@@ -176,7 +252,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "004-bill").withRenderingMode(.alwaysOriginal), style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0.4490886927, blue: 0.9007502794, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0.4509803922, blue: 0.9019607843, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
         
         navigationController?.navigationBar.topItem?.title = "Emitente"
@@ -203,6 +279,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         
         func configureBottomBtn() {
             saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
+            saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
             
             closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
             closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
@@ -225,7 +302,24 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
                 closeBtn.widthAnchor.constraint(equalToConstant: 40)
             ])
         }
+        @objc func saveButtonPressed() {
+            
+            if cpfTxt.text!.isValidCPF {
+                print("CPF Válido")
+            }else{
+                print("CPF Inválido")
+            }
+            
+            
+            if cnpjTxt.text!.isValidCNPJ {
+                print("CNPJ Válido")
+            }else{
+                print("CNPJ Inválido")
+            }
         
+            dismiss(animated: true, completion: nil)
+            navigationController?.popViewController(animated: true)
+        }
         @objc func backButtonPressed() {
             dismiss(animated: true, completion: nil)
             navigationController?.popViewController(animated: true)
