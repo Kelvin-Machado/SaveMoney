@@ -14,6 +14,9 @@ class CardController: UIViewController, UITextFieldDelegate {
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
+    
+    var typeCredito = true
+    
     let creditoBtn = UIButton()
     let debitoBtn = UIButton()
     
@@ -106,6 +109,7 @@ class CardController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func creditoBtnTapped() {
+        typeCredito = true
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
         
@@ -202,6 +206,7 @@ class CardController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func debitoBtnTapped() {
+        typeCredito = false
         creditoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
         
@@ -274,6 +279,8 @@ class CardController: UIViewController, UITextFieldDelegate {
     func configureBottomBtn() {
         saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
         
+        saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
+        
         closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
         closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
 
@@ -299,6 +306,38 @@ class CardController: UIViewController, UITextFieldDelegate {
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func saveButtonPressed() {
+        
+        if typeCredito { //Salva apenas informações de crédito
+            print(vencimento.text as Any)
+            if (vencimento.text != "") {
+                Cartao.descricao = descricaoTxt.text
+                Cartao.numeroCartao = numCartaoTxt.text
+                Cartao.vencimento = passDate()
+                Cartao.tipo = "Crédito"
+                print(Cartao.vencimento as Any)
+                print("salvar como crédito")
+            }
+        
+        } else { //Salva apenas informações de débito
+            Cartao.descricao = descricaoTxt.text
+            Cartao.numeroCartao = numCartaoTxt.text
+            Cartao.tipo = "Débito"
+            print(Cartao.vencimento as Any)
+            print("salvar como débito")
+        }
+        
+        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func passDate() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM'/'yy"
+        
+        return dateFormatter.date(from: vencimento.text!)!
     }
     
   //MARK: - Keyboard Events
