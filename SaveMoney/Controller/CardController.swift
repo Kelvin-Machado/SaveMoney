@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class CardController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
+    
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
-    
+
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var typeCredito = true
     
@@ -41,7 +44,6 @@ class CardController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupKeyboard()
         configureNavigation()
         configureCredito()
@@ -309,9 +311,9 @@ class CardController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveButtonPressed() {
+        let context = appDelegate.persistentContainer.viewContext
         
         if typeCredito { //Salva apenas informações de crédito
-            print(vencimento.text as Any)
             if (vencimento.text != "") {
                 Cartao.descricao = descricaoTxt.text
                 Cartao.numeroCartao = numCartaoTxt.text
@@ -319,6 +321,7 @@ class CardController: UIViewController, UITextFieldDelegate {
                 Cartao.tipo = "Crédito"
                 print(Cartao.vencimento as Any)
                 print("salvar como crédito")
+                
             }
         
         } else { //Salva apenas informações de débito
@@ -327,6 +330,51 @@ class CardController: UIViewController, UITextFieldDelegate {
             Cartao.tipo = "Débito"
             print(Cartao.vencimento as Any)
             print("salvar como débito")
+        }
+        
+        /*Criar uma requisição*/
+        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
+
+        do {
+            let cartaoInfo = try context.fetch(requisicao)
+
+            if cartaoInfo.count > 0 {
+
+                for cartao in cartaoInfo as! [NSManagedObject] {
+                    if let descricao = cartao.value(forKey: "descricao"){
+                        print(descricao)
+                    }
+                }
+            }else{
+                saveCardInfo()
+            }
+        } catch {
+            print("Erro ao recuperar os usuários!")
+        }
+        
+        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        
+    }
+    
+    func saveCardInfo() {
+        let context = appDelegate.persistentContainer.viewContext
+        /*Cria entidade*/
+        let cartaoInfo = NSEntityDescription.insertNewObject(forEntityName: "CartaoInfo", into: context)
+
+        /*Configura objeto*/
+
+        cartaoInfo.setValue(Cartao.descricao, forKey: "descricao")
+        cartaoInfo.setValue(Cartao.numeroCartao, forKey: "numCartao")
+        cartaoInfo.setValue(Cartao.tipo, forKey: "tipo")
+        cartaoInfo.setValue(Cartao.vencimento, forKey: "vencimento")
+
+        /*Salvar(persistir) dados*/
+        do {
+            try context.save()
+             print ("Dados salvos!")
+        } catch {
+            print ("Erro ao salvar os dados")
         }
         
         dismiss(animated: true, completion: nil)
