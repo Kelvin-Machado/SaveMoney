@@ -52,8 +52,8 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
 //    MARK: - Helper Functions
     
     func configureNavigation() {
-        view.backgroundColor = .white
-        containerView.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         

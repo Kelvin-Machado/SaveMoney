@@ -51,8 +51,8 @@ class ContaController: UIViewController, UITextFieldDelegate {
 
 //    MARK: - Helper Functions
     func configureNavigation() {
-        view.backgroundColor = .white
-        containerView.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         
@@ -82,7 +82,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
     func configureCredito() {
         creditoBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 30)
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
-        creditoBtn.backgroundColor = .white
+        creditoBtn.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         creditoBtn.setTitle("Crédito", for: .normal)
         
         creditoBtn.addTarget(self, action: #selector(creditoBtnTapped), for: .touchUpInside)
@@ -118,14 +118,14 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     func configureCreditoInfo() {
         novaContaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novaContaLbl.backgroundColor = .white
+        novaContaLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         novaContaLbl.text = "Cadastrar nova conta em crédito"
         novaContaLbl.textColor = .black
         
         descricaoTxt.delegate = self
         descricaoTxt.keyboardType = .default
         descricaoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        descricaoTxt.backgroundColor = .white
+        descricaoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoTxt.textColor = .black
         descricaoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -135,7 +135,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
         numContaTxt.delegate = self
         numContaTxt.keyboardType = .numberPad
         numContaTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numContaTxt.backgroundColor = .white
+        numContaTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numContaTxt.textColor = .black
         numContaTxt.attributedPlaceholder = NSAttributedString(string: "Número da conta",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -145,7 +145,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
         saldo.delegate = self
         saldo.keyboardType = .numberPad
         saldo.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        saldo.backgroundColor = .white
+        saldo.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         saldo.textColor = .black
         saldo.textAlignment = .center
         saldo.attributedPlaceholder = NSAttributedString(string: "Saldo",
@@ -187,7 +187,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
     func configureDebito() {
         debitoBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 30)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
-        debitoBtn.backgroundColor = .white
+        debitoBtn.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         debitoBtn.setTitle("Débito", for: .normal)
         
         debitoBtn.addTarget(self, action: #selector(debitoBtnTapped), for: .touchUpInside)
@@ -215,14 +215,14 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     func configureDebitoInfo() {
         novaContaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novaContaLbl.backgroundColor = .white
+        novaContaLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         novaContaLbl.text = "Cadastrar nova conta em débito"
         novaContaLbl.textColor = .black
         
         descricaoDebitoTxt.delegate = self
         descricaoDebitoTxt.keyboardType = .default
         descricaoDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        descricaoDebitoTxt.backgroundColor = .white
+        descricaoDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoDebitoTxt.textColor = .black
         descricaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -232,7 +232,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
         numContaDebitoTxt.delegate = self
         numContaDebitoTxt.keyboardType = .numberPad
         numContaDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numContaDebitoTxt.backgroundColor = .white
+        numContaDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numContaDebitoTxt.textColor = .black
         numContaDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Número da conta",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -242,7 +242,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
         saldoDebito.delegate = self
         saldoDebito.keyboardType = .numberPad
         saldoDebito.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        saldoDebito.backgroundColor = .white
+        saldoDebito.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         saldoDebito.textColor = .black
         saldoDebito.textAlignment = .center
         saldoDebito.attributedPlaceholder = NSAttributedString(string: "Saldo",

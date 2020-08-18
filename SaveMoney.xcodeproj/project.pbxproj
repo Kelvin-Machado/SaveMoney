@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,9 +18,10 @@
 		B652464F238F2AB400E3A848 /* Cartao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B652464E238F2AB400E3A848 /* Cartao.swift */; };
 		B65AD5492384FBB000A5F221 /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AD5482384FBB000A5F221 /* MenuOptionCell.swift */; };
 		B65AD54B2385159D00A5F221 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AD54A2385159D00A5F221 /* MenuOption.swift */; };
+		B65C02C324EC74C9009BE7E3 /* Emitente.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C02C224EC74C9009BE7E3 /* Emitente.swift */; };
+		B65C02C524EC74DB009BE7E3 /* Orcamento.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C02C424EC74DB009BE7E3 /* Orcamento.swift */; };
 		B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B102384B9FD00B30015 /* AppDelegate.swift */; };
 		B65D1B132384B9FD00B30015 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B122384B9FD00B30015 /* SceneDelegate.swift */; };
-		B65D1B1B2384B9FD00B30015 /* SaveMoney.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B192384B9FD00B30015 /* SaveMoney.xcdatamodeld */; };
 		B65D1B1D2384BA0000B30015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65D1B1C2384BA0000B30015 /* Assets.xcassets */; };
 		B65D1B202384BA0000B30015 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B65D1B1E2384BA0000B30015 /* LaunchScreen.storyboard */; };
 		B65D1B2D2384BB4600B30015 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B2C2384BB4600B30015 /* ContainerController.swift */; };
@@ -31,6 +32,12 @@
 		B667827B238664620024CE85 /* EmitenteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667827A238664620024CE85 /* EmitenteController.swift */; };
 		B668B6002385C0490044AF14 /* CardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B5FF2385C0490044AF14 /* CardController.swift */; };
 		B668B6032385D07D0044AF14 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B6022385D07D0044AF14 /* Lines.swift */; };
+		B686148D24EB8E6C0076D68F /* Conta.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148C24EB8E6C0076D68F /* Conta.swift */; };
+		B686148F24EBB7720076D68F /* Movimentacao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148E24EBB7720076D68F /* Movimentacao.swift */; };
+		B686149124EBB7900076D68F /* Receita.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149024EBB7900076D68F /* Receita.swift */; };
+		B686149324EBB79C0076D68F /* Despesa.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149224EBB79C0076D68F /* Despesa.swift */; };
+		B686149524EBBB330076D68F /* Categoria.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149424EBBB330076D68F /* Categoria.swift */; };
+		B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6F02CFF24EB395C00D2D2B9 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,10 +52,11 @@
 		B652464E238F2AB400E3A848 /* Cartao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cartao.swift; sourceTree = "<group>"; };
 		B65AD5482384FBB000A5F221 /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
 		B65AD54A2385159D00A5F221 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		B65C02C224EC74C9009BE7E3 /* Emitente.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emitente.swift; sourceTree = "<group>"; };
+		B65C02C424EC74DB009BE7E3 /* Orcamento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orcamento.swift; sourceTree = "<group>"; };
 		B65D1B0D2384B9FD00B30015 /* SaveMoney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaveMoney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65D1B102384B9FD00B30015 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B65D1B122384B9FD00B30015 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B65D1B1A2384B9FD00B30015 /* SaveMoney.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SaveMoney.xcdatamodel; sourceTree = "<group>"; };
 		B65D1B1C2384BA0000B30015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B65D1B1F2384BA0000B30015 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B65D1B212384BA0000B30015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,6 +68,11 @@
 		B667827A238664620024CE85 /* EmitenteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitenteController.swift; sourceTree = "<group>"; };
 		B668B5FF2385C0490044AF14 /* CardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardController.swift; sourceTree = "<group>"; };
 		B668B6022385D07D0044AF14 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
+		B686148C24EB8E6C0076D68F /* Conta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conta.swift; sourceTree = "<group>"; };
+		B686148E24EBB7720076D68F /* Movimentacao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movimentacao.swift; sourceTree = "<group>"; };
+		B686149024EBB7900076D68F /* Receita.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receita.swift; sourceTree = "<group>"; };
+		B686149224EBB79C0076D68F /* Despesa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Despesa.swift; sourceTree = "<group>"; };
+		B686149424EBBB330076D68F /* Categoria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categoria.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,9 +145,15 @@
 		B65D1B292384BA1800B30015 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B65AD54A2385159D00A5F221 /* MenuOption.swift */,
-				B6524644238ECBE900E3A848 /* Months.swift */,
+				B686148B24EB8CAB0076D68F /* Menu */,
 				B652464E238F2AB400E3A848 /* Cartao.swift */,
+				B686148C24EB8E6C0076D68F /* Conta.swift */,
+				B686148E24EBB7720076D68F /* Movimentacao.swift */,
+				B686149024EBB7900076D68F /* Receita.swift */,
+				B686149224EBB79C0076D68F /* Despesa.swift */,
+				B686149424EBBB330076D68F /* Categoria.swift */,
+				B65C02C224EC74C9009BE7E3 /* Emitente.swift */,
+				B65C02C424EC74DB009BE7E3 /* Orcamento.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -155,7 +175,6 @@
 				B65D1B1C2384BA0000B30015 /* Assets.xcassets */,
 				B65D1B1E2384BA0000B30015 /* LaunchScreen.storyboard */,
 				B65D1B212384BA0000B30015 /* Info.plist */,
-				B65D1B192384B9FD00B30015 /* SaveMoney.xcdatamodeld */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -167,6 +186,15 @@
 				B6678278238651480024CE85 /* TextFormatter.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		B686148B24EB8CAB0076D68F /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				B65AD54A2385159D00A5F221 /* MenuOption.swift */,
+				B6524644238ECBE900E3A848 /* Months.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +213,9 @@
 			dependencies = (
 			);
 			name = SaveMoney;
+			packageProductDependencies = (
+				B6F02CFF24EB395C00D2D2B9 /* RealmSwift */,
+			);
 			productName = SaveMoney;
 			productReference = B65D1B0D2384B9FD00B30015 /* SaveMoney.app */;
 			productType = "com.apple.product-type.application";
@@ -213,6 +244,9 @@
 				Base,
 			);
 			mainGroup = B65D1B042384B9FD00B30015;
+			packageReferences = (
+				B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+			);
 			productRefGroup = B65D1B0E2384B9FD00B30015 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -241,7 +275,7 @@
 			files = (
 				B65245A723874D04001A5E7F /* GraficoController.swift in Sources */,
 				B65245A523874C9B001A5E7F /* OrcamentoController.swift in Sources */,
-				B65D1B1B2384B9FD00B30015 /* SaveMoney.xcdatamodeld in Sources */,
+				B686148F24EBB7720076D68F /* Movimentacao.swift in Sources */,
 				B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */,
 				B65D1B332384CC2800B30015 /* Protocols.swift in Sources */,
 				B652459D23874C50001A5E7F /* ContaController.swift in Sources */,
@@ -249,10 +283,15 @@
 				B65D1B132384B9FD00B30015 /* SceneDelegate.swift in Sources */,
 				B668B6002385C0490044AF14 /* CardController.swift in Sources */,
 				B65AD54B2385159D00A5F221 /* MenuOption.swift in Sources */,
+				B686149324EBB79C0076D68F /* Despesa.swift in Sources */,
+				B65C02C324EC74C9009BE7E3 /* Emitente.swift in Sources */,
 				B652459F23874C5D001A5E7F /* ReceitaController.swift in Sources */,
 				B65D1B2D2384BB4600B30015 /* ContainerController.swift in Sources */,
 				B667827B238664620024CE85 /* EmitenteController.swift in Sources */,
+				B686149124EBB7900076D68F /* Receita.swift in Sources */,
 				B65245A123874C6C001A5E7F /* DespesaController.swift in Sources */,
+				B686148D24EB8E6C0076D68F /* Conta.swift in Sources */,
+				B686149524EBBB330076D68F /* Categoria.swift in Sources */,
 				B65245A923874D10001A5E7F /* MovimentacaoController.swift in Sources */,
 				B65AD5492384FBB000A5F221 /* MenuOptionCell.swift in Sources */,
 				B668B6032385D07D0044AF14 /* Lines.swift in Sources */,
@@ -260,6 +299,7 @@
 				B65D1B312384BB6400B30015 /* MenuController.swift in Sources */,
 				B652464F238F2AB400E3A848 /* Cartao.swift in Sources */,
 				B6524645238ECBE900E3A848 /* Months.swift in Sources */,
+				B65C02C524EC74DB009BE7E3 /* Orcamento.swift in Sources */,
 				B65D1B2F2384BB5800B30015 /* HomeController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,18 +491,24 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCVersionGroup section */
-		B65D1B192384B9FD00B30015 /* SaveMoney.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				B65D1B1A2384B9FD00B30015 /* SaveMoney.xcdatamodel */,
-			);
-			currentVersion = B65D1B1A2384B9FD00B30015 /* SaveMoney.xcdatamodel */;
-			path = SaveMoney.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+/* Begin XCRemoteSwiftPackageReference section */
+		B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.3;
+			};
 		};
-/* End XCVersionGroup section */
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B6F02CFF24EB395C00D2D2B9 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B65D1B052384B9FD00B30015 /* Project object */;
 }

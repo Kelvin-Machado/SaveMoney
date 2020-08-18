@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ContainerController: UIViewController {
     
 //        MARK: - Properties
+
+    let realm = try! Realm()
     
     var menuController: MenuController!
     var centerController: UIViewController!
@@ -21,6 +24,7 @@ class ContainerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHomeController()
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
 
 //        MARK: - Handlers
@@ -58,7 +62,7 @@ class ContainerController: UIViewController {
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
                 self.centerController.view.frame = CGRect(x: self.centerController.view.frame.width - 80, y: 0, width: self.centerController.view.frame.width, height: self.centerController.view.frame.height + height)
                 }, completion: nil)
-            UIApplication.shared.setStatusBarHidden(true, with: .fade)
+            UIApplication.shared.setStatusBarHidden(true, with: .slide)
         }else{
             //hide menu
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
@@ -67,7 +71,7 @@ class ContainerController: UIViewController {
                 guard let menuOption = menuOption else {return}
                 self.didSelectMenuOption(menuOption: menuOption)
             }
-            UIApplication.shared.setStatusBarHidden(false, with: .fade)
+            UIApplication.shared.setStatusBarHidden(false, with: .slide)
         }
         
     }

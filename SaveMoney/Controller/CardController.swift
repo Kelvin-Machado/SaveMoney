@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class CardController: UIViewController, UITextFieldDelegate {
     
@@ -44,8 +43,10 @@ class CardController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupKeyboard()
         configureNavigation()
+        requestCardInfo()
         configureCredito()
         configureDebito()
         configureBottomBtn()
@@ -55,8 +56,8 @@ class CardController: UIViewController, UITextFieldDelegate {
 
 //    MARK: - Helper Functions
     func configureNavigation() {
-        view.backgroundColor = .white
-        containerView.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         
@@ -86,7 +87,7 @@ class CardController: UIViewController, UITextFieldDelegate {
     func configureCredito() {
         creditoBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 30)
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
-        creditoBtn.backgroundColor = .white
+        creditoBtn.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         creditoBtn.setTitle("Crédito", for: .normal)
         
         creditoBtn.addTarget(self, action: #selector(creditoBtnTapped), for: .touchUpInside)
@@ -123,14 +124,14 @@ class CardController: UIViewController, UITextFieldDelegate {
     
     func configureCreditoInfo() {
         novoCartaoLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novoCartaoLbl.backgroundColor = .white
+        novoCartaoLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         novoCartaoLbl.text = "Cadastro do Cartão de Crédito"
         novoCartaoLbl.textColor = .black
         
         descricaoTxt.delegate = self
         descricaoTxt.keyboardType = .default
         descricaoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        descricaoTxt.backgroundColor = .white
+        descricaoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoTxt.textColor = .black
         descricaoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -140,7 +141,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         numCartaoTxt.delegate = self
         numCartaoTxt.keyboardType = .numberPad
         numCartaoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numCartaoTxt.backgroundColor = .white
+        numCartaoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numCartaoTxt.textColor = .black
         numCartaoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de crédito",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -152,7 +153,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         vencimento.delegate = self
         vencimento.keyboardType = .numberPad
         vencimento.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        vencimento.backgroundColor = .white
+        vencimento.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         vencimento.textColor = .black
         vencimento.textAlignment = .center
         vencimento.attributedPlaceholder = NSAttributedString(string: "Vencimento",
@@ -192,7 +193,7 @@ class CardController: UIViewController, UITextFieldDelegate {
     func configureDebito() {
         debitoBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 30)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
-        debitoBtn.backgroundColor = .white
+        debitoBtn.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         debitoBtn.setTitle("Débito", for: .normal)
         
         debitoBtn.addTarget(self, action: #selector(debitoBtnTapped), for: .touchUpInside)
@@ -221,14 +222,14 @@ class CardController: UIViewController, UITextFieldDelegate {
     
     func configureDebitoInfo() {
         novoCartaoLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        novoCartaoLbl.backgroundColor = .white
+        novoCartaoLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         novoCartaoLbl.text = "Cadastro do Cartão de Débito"
         novoCartaoLbl.textColor = .black
         
         descricaoDebitoTxt.delegate = self
         descricaoDebitoTxt.keyboardType = .default
         descricaoDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        descricaoDebitoTxt.backgroundColor = .white
+        descricaoDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoDebitoTxt.textColor = .black
         descricaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -238,7 +239,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         numCartaoDebitoTxt.delegate = self
         numCartaoDebitoTxt.keyboardType = .numberPad
         numCartaoDebitoTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        numCartaoDebitoTxt.backgroundColor = .white
+        numCartaoDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numCartaoDebitoTxt.textColor = .black
         numCartaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de Débito",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -311,71 +312,98 @@ class CardController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveButtonPressed() {
-        let context = appDelegate.persistentContainer.viewContext
+//        let context = appDelegate.persistentContainer.viewContext
         
-        if typeCredito { //Salva apenas informações de crédito
-            if (vencimento.text != "") {
-                Cartao.descricao = descricaoTxt.text
-                Cartao.numeroCartao = numCartaoTxt.text
-                Cartao.vencimento = passDate()
-                Cartao.tipo = "Crédito"
-                print(Cartao.vencimento as Any)
-                print("salvar como crédito")
-                
-            }
-        
-        } else { //Salva apenas informações de débito
-            Cartao.descricao = descricaoTxt.text
-            Cartao.numeroCartao = numCartaoTxt.text
-            Cartao.tipo = "Débito"
-            print(Cartao.vencimento as Any)
-            print("salvar como débito")
-        }
+//        if typeCredito { //Salva apenas informações de crédito
+//            if (vencimento.text != "") {
+//                Cartao.descricao = descricaoTxt.text
+//                Cartao.numeroCartao = numCartaoTxt.text
+//                Cartao.vencimento = passDate()
+//                Cartao.tipo = "Crédito"
+//                print(Cartao.vencimento as Any)
+//                print("salvar como crédito")
+//            }
+//        } else { //Salva apenas informações de débito
+//            Cartao.descricao = descricaoTxt.text
+//            Cartao.numeroCartao = numCartaoTxt.text
+//            Cartao.tipo = "Débito"
+//            print(Cartao.vencimento as Any)
+//            print("salvar como débito")
+//        }
         
         /*Criar uma requisição*/
-        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
-
-        do {
-            let cartaoInfo = try context.fetch(requisicao)
-
-            if cartaoInfo.count > 0 {
-
-                for cartao in cartaoInfo as! [NSManagedObject] {
-                    if let descricao = cartao.value(forKey: "descricao"){
-                        print(descricao)
-                    }
-                }
-            }else{
-                saveCardInfo()
-            }
-        } catch {
-            print("Erro ao recuperar os usuários!")
-        }
+//        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
+//
+//        do {
+//            let cartaoInfo = try context.fetch(requisicao)
+//
+//            if cartaoInfo.count > 0 {
+//
+//                for cartao in cartaoInfo as! [NSManagedObject] {
+//                    if let descricao = cartao.value(forKey: "descricao"){
+//                        print(descricao)
+//                    }
+//                }
+//            }else{
+//                saveCardInfo()
+//            }
+//        } catch {
+//            print("Erro ao recuperar os usuários!")
+//        }
         
         dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
         
     }
     
+    func requestCardInfo() {
+//        let context = appDelegate.persistentContainer.viewContext
+//        /*Criar uma requisição*/
+//        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
+//
+//        do {
+//            let cartaoInfo = try context.fetch(requisicao)
+//
+//            if cartaoInfo.count > 0 {
+//
+//                for cartao in cartaoInfo as! [NSManagedObject] {
+//                    if let descricao = cartao.value(forKey: "descricao"){
+//                        descricaoTxt.text = descricao as? String
+//                    }
+//                    if let numCC = cartao.value(forKey: "numCartao"){
+//                        numCartaoTxt.text = numCC as? String
+//                    }
+//                    if let expiryDate = cartao.value(forKey: "vencimentoRaw"){
+//                        vencimento.text = expiryDate as? String //Corrigir
+//                    }
+//                }
+//            }else{
+//                print("Nenhum usuário encontrado")
+//            }
+//        } catch {
+//            print("Erro ao recuperar os usuários!")
+//        }
+    }
+    
     func saveCardInfo() {
-        let context = appDelegate.persistentContainer.viewContext
-        /*Cria entidade*/
-        let cartaoInfo = NSEntityDescription.insertNewObject(forEntityName: "CartaoInfo", into: context)
-
-        /*Configura objeto*/
-
-        cartaoInfo.setValue(Cartao.descricao, forKey: "descricao")
-        cartaoInfo.setValue(Cartao.numeroCartao, forKey: "numCartao")
-        cartaoInfo.setValue(Cartao.tipo, forKey: "tipo")
-        cartaoInfo.setValue(Cartao.vencimento, forKey: "vencimento")
-
-        /*Salvar(persistir) dados*/
-        do {
-            try context.save()
-             print ("Dados salvos!")
-        } catch {
-            print ("Erro ao salvar os dados")
-        }
+//        let context = appDelegate.persistentContainer.viewContext
+//        /*Cria entidade*/
+//        let cartaoInfo = NSEntityDescription.insertNewObject(forEntityName: "CartaoInfo", into: context)
+//
+//        /*Configura objeto*/
+//
+//        cartaoInfo.setValue(Cartao.descricao, forKey: "descricao")
+//        cartaoInfo.setValue(Cartao.numeroCartao, forKey: "numCartao")
+//        cartaoInfo.setValue(Cartao.tipo, forKey: "tipo")
+//        cartaoInfo.setValue(Cartao.vencimento, forKey: "vencimento")
+//
+//        /*Salvar(persistir) dados*/
+//        do {
+//            try context.save()
+//             print ("Dados salvos!")
+//        } catch {
+//            print ("Erro ao salvar os dados")
+//        }
         
         dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)

@@ -71,14 +71,14 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     func configureNovoEmitente() {
         
         novoEmitenteLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 20)
-        novoEmitenteLbl.backgroundColor = .white
+        novoEmitenteLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         novoEmitenteLbl.text = "Novo Emitente"
         novoEmitenteLbl.textColor = .black
         
         nomeEmitenteTxt.delegate = self
         nomeEmitenteTxt.keyboardType = .default
         nomeEmitenteTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        nomeEmitenteTxt.backgroundColor = .white
+        nomeEmitenteTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         nomeEmitenteTxt.textColor = .black
         nomeEmitenteTxt.attributedPlaceholder = NSAttributedString(string: "Nome/Razão Social",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -157,7 +157,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         cpfTxt.delegate = self
         cpfTxt.keyboardType = .numberPad
         cpfTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        cpfTxt.backgroundColor = .white
+        cpfTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         cpfTxt.textColor = .black
         cpfTxt.attributedPlaceholder = NSAttributedString(string: "CPF",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -181,7 +181,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         cnpjTxt.delegate = self
         cnpjTxt.keyboardType = .numberPad
         cnpjTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        cnpjTxt.backgroundColor = .white
+        cnpjTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         cnpjTxt.textColor = .black
         cnpjTxt.attributedPlaceholder = NSAttributedString(string: "CNPJ",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -204,7 +204,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         emailTxt.delegate = self
         emailTxt.keyboardType = .emailAddress
         emailTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        emailTxt.backgroundColor = .white
+        emailTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         emailTxt.textColor = .black
         emailTxt.attributedPlaceholder = NSAttributedString(string: "Email",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -227,7 +227,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         telefoneTxt.delegate = self
         telefoneTxt.keyboardType = .numberPad
         telefoneTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        telefoneTxt.backgroundColor = .white
+        telefoneTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         telefoneTxt.textColor = .black
         telefoneTxt.attributedPlaceholder = NSAttributedString(string: "Telefone",
         attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
@@ -246,8 +246,8 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
         ])
     }
     func configureNavigation() {
-        view.backgroundColor = .white
-        containerView.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         

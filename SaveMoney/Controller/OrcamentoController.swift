@@ -60,8 +60,8 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
     }
     
     func configureNavigation() {
-        view.backgroundColor = .white
-        containerView.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: makeBackButton())
         
@@ -96,7 +96,7 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
         monthLbl.text = getDate()
         monthLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 26)
         monthLbl.textColor = #colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1)
-        monthLbl.backgroundColor = .white
+        monthLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         containerView.addSubview(monthLbl)
         
@@ -111,19 +111,19 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
         let date = Date()
         let calendar = Calendar.current
         let month = calendar.component(.month, from: date)
-        return ("\(Months.init(rawValue: month)!)")
+        return ("\(Months.init(rawValue: month-1)!)")
     }
     
     func  configureGoal() {
         metaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
-        metaLbl.backgroundColor = .white
+        metaLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         metaLbl.text = "Meta"
         metaLbl.textColor = .black
         
         valueTxt.delegate = self
         valueTxt.keyboardType = .numberPad
         valueTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        valueTxt.backgroundColor = .white
+        valueTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         valueTxt.textColor = .black
         valueTxt.textAlignment = .center
         valueTxt.attributedPlaceholder = NSAttributedString(string: "Valor",

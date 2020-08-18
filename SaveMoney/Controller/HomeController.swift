@@ -23,6 +23,7 @@ class HomeController: UIViewController {
         
         view.backgroundColor = .white
         configureNavigationBar()
+        view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
     }
 
 //        MARK: - Handlers
