@@ -7,15 +7,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ContaController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
+
+    let realm = try! Realm()
+    var conta: Results<Conta>?
+
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
     let creditoBtn = UIButton()
     let debitoBtn = UIButton()
+    var credito: Bool = true
     
     var novaContaLbl = UILabel()
     
@@ -39,7 +45,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        conta = realm.objects(Conta.self)
         setupKeyboard()
         configureNavigation()
         configureCredito()
@@ -108,7 +114,9 @@ class ContaController: UIViewController, UITextFieldDelegate {
     @objc func creditoBtnTapped() {
         creditoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1), for: UIControl.State.normal)
-        
+
+        credito = true
+
         novaContaLbl.removeFromSuperview()
         descricaoDebitoTxt.removeFromSuperview()
         numContaDebitoTxt.removeFromSuperview()
@@ -205,7 +213,9 @@ class ContaController: UIViewController, UITextFieldDelegate {
     @objc func debitoBtnTapped() {
         creditoBtn.setTitleColor( #colorLiteral(red: 0, green: 0.4033691883, blue: 0.5260575414, alpha: 1) , for: UIControl.State.normal)
         debitoBtn.setTitleColor( #colorLiteral(red: 0.0252066534, green: 0.3248851895, blue: 0.6532549858, alpha: 1), for: UIControl.State.normal)
-        
+
+        credito = false
+
         novaContaLbl.removeFromSuperview()
         descricaoTxt.removeFromSuperview()
         numContaTxt.removeFromSuperview()
@@ -286,6 +296,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     func configureBottomBtn() {
         saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
+        saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
         
         closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
         closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
@@ -308,6 +319,23 @@ class ContaController: UIViewController, UITextFieldDelegate {
             closeBtn.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
+    @objc func saveButtonPressed() {
+        let novaConta = Conta()
+        if credito {
+            novaConta.contaId = 0
+            novaConta.nomeBanco = descricaoTxt.text!
+            novaConta.numero = numContaTxt.text!
+            novaConta.saldo = saldo.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
+            novaConta.tipoEnum = .cartao
+        } else {
+            novaConta.contaId = 1
+            novaConta.nomeBanco = descricaoDebitoTxt.text!
+            novaConta.numero = numContaDebitoTxt.text!
+            novaConta.saldo = saldoDebito.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
+            novaConta.tipoEnum = .contaCorrente
+        }
+        save(conta: novaConta)
+    }
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
@@ -316,12 +344,52 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {
 
-       if let amountString = textField.text?.currencyInputFormatting() {
-           textField.text = amountString
+       if let amountString = saldo.text?.currencyInputFormatting() {
+           saldo.text = amountString
        }
     }
     
-  //MARK: - Keyboard Events
+    //Mark: - Data Manipulation Methods
+    func save(conta: Conta) {
+        let sucesso = true
+        do {
+            try realm.write {
+                if realm.isEmpty {
+                    realm.add(conta)
+                 } else {
+                    realm.add(conta, update: .modified)
+                }
+                showAlert(sucesso: sucesso)
+            }
+        } catch {
+            print("Error saving category \(error)")
+            showAlert(sucesso: !sucesso)
+        }
+    }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Os dados da conta foram salvos") : (msg = "Os dados da conta foram salvos")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+              switch action.style {
+              case .default:
+                    print("default")
+
+              case .cancel:
+                    print("cancel")
+
+              case .destructive:
+                    print("destructive")
+
+              @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    //MARK: - Keyboard Events
   
   func setupKeyboard() {
       self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
@@ -367,9 +435,8 @@ class ContaController: UIViewController, UITextFieldDelegate {
       UIView.animate(withDuration: animDuration, delay: 0.0, options: [.beginFromCurrentState, animationCurve], animations: {
           self.view.layoutIfNeeded()
       }, completion: { success in
-          //
+        
       })
   }
     
 }
-

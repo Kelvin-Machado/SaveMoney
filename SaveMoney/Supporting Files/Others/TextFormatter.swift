@@ -18,7 +18,8 @@ extension String {
         var number: NSNumber!
         let formatter = NumberFormatter()
         formatter.numberStyle = .currencyAccounting
-        formatter.currencySymbol = " R$ "
+        formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "pt_BR")
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
 
@@ -220,5 +221,31 @@ extension StringProtocol {
         let dv1 = digitCalculator(numbers.prefix(12))
         let dv2 = digitCalculator(numbers.prefix(13))
         return dv1 == numbers[12] && dv2 == numbers[13]
+    }
+}
+
+extension String {
+func toDecimalWithAutoLocale() -> Decimal? {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.locale = Locale(identifier: "pt_BR")
+
+    if let number = formatter.number(from: self) {
+       return number.decimalValue
+    }
+    return nil
+    
+    }
+    func toDoubleWithAutoLocale() -> Double? {
+        guard let decimal = self.toDecimalWithAutoLocale() else {
+            return nil
+        }
+        return NSDecimalNumber(decimal: decimal).doubleValue
+    }
+}
+extension Double {
+    func roundToDecimal(_ fractionDigits: Int) -> Double {
+        let multiplier = pow(10, Double(fractionDigits))
+        return Darwin.round(self * multiplier) / multiplier
     }
 }

@@ -19,7 +19,7 @@ enum tipoConta: String {
 
 class Conta: Object {
     @objc dynamic var contaId: Int64 = 0
-    @objc dynamic var numero: Int = 0
+    @objc dynamic var numero: String = ""
     @objc dynamic var nomeBanco: String = ""
     @objc dynamic var saldo: Double = 0.0
     private var tipo: tipoConta?
@@ -43,4 +43,8 @@ class Conta: Object {
     let movimentacoes = List<Movimentacao>()
     let receita = List<Receita>()
     let despesa = List<Despesa>()
+    
+    override class func primaryKey() -> String? {
+        return "contaId"
+    }
 }
