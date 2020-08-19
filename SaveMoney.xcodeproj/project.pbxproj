@@ -146,8 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				B686148B24EB8CAB0076D68F /* Menu */,
-				B652464E238F2AB400E3A848 /* Cartao.swift */,
 				B686148C24EB8E6C0076D68F /* Conta.swift */,
+				B652464E238F2AB400E3A848 /* Cartao.swift */,
 				B686148E24EBB7720076D68F /* Movimentacao.swift */,
 				B686149024EBB7900076D68F /* Receita.swift */,
 				B686149224EBB79C0076D68F /* Despesa.swift */,

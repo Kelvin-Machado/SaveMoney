@@ -42,7 +42,7 @@ class ContaController: UIViewController, UITextFieldDelegate {
     }()
     
 //    MARK: - Init
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         conta = realm.objects(Conta.self)
@@ -51,9 +51,8 @@ class ContaController: UIViewController, UITextFieldDelegate {
         configureCredito()
         configureDebito()
         configureBottomBtn()
-        
+        loadSavedConta()
     }
-    
 
 //    MARK: - Helper Functions
     func configureNavigation() {
@@ -344,12 +343,15 @@ class ContaController: UIViewController, UITextFieldDelegate {
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {
 
-       if let amountString = saldo.text?.currencyInputFormatting() {
+        if let amountString = saldo.text?.currencyInputFormatting() {
            saldo.text = amountString
-       }
+        }
+        if let amountString = saldoDebito.text?.currencyInputFormatting() {
+            saldoDebito.text = amountString
+        }
     }
-    
-    //Mark: - Data Manipulation Methods
+
+    // MARK: - Data Manipulation Methods
     func save(conta: Conta) {
         let sucesso = true
         do {
@@ -367,10 +369,29 @@ class ContaController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func loadSavedConta() {
+            do {
+                try realm.write {
+                    if !realm.isEmpty {
+                        conta = realm.objects(Conta.self)
+                        descricaoTxt.text = conta?[0].nomeBanco
+                        numContaTxt.text = conta?[0].numero
+                        saldo.text = conta![0].saldo.description
+                        descricaoDebitoTxt.text = conta?[1].nomeBanco
+                        numContaDebitoTxt.text = conta?[1].numero
+                        saldoDebito.text = conta![1].saldo.description
+                    }
+                }
+            } catch {
+                print("Erro ao carregar cartão de crédito \(error)")
+            }
+        }
+
+    
     func showAlert(sucesso: Bool) {
         var msg = ""
         var titulo = ""
-        sucesso ? (msg = "Os dados da conta foram salvos") : (msg = "Os dados da conta foram salvos")
+        sucesso ? (msg = "Os dados da conta foram salvos") : (msg = "Dados não foram salvos")
         sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
         let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
