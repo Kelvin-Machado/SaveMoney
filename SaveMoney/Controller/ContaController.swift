@@ -374,12 +374,21 @@ class ContaController: UIViewController, UITextFieldDelegate {
                 try realm.write {
                     if !realm.isEmpty {
                         conta = realm.objects(Conta.self)
-                        descricaoTxt.text = conta?[0].nomeBanco
-                        numContaTxt.text = conta?[0].numero
-                        saldo.text = conta![0].saldo.description
-                        descricaoDebitoTxt.text = conta?[1].nomeBanco
-                        numContaDebitoTxt.text = conta?[1].numero
-                        saldoDebito.text = conta![1].saldo.description
+                        var index = 0
+                        while index < conta!.count {
+                            if index == 0 {
+                                descricaoTxt.text = conta?[0].nomeBanco
+                                numContaTxt.text = conta?[0].numero
+                                saldo.text = conta![0].saldo.description
+                            }
+                            if index == 1 {
+                                descricaoDebitoTxt.text = conta?[1].nomeBanco
+                                numContaDebitoTxt.text = conta?[1].numero
+                                saldoDebito.text = conta![1].saldo.description
+                            }
+                           index = index + 1
+                        }
+                        
                     }
                 }
             } catch {
