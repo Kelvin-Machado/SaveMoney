@@ -7,15 +7,27 @@
 //
 
 import UIKit
+import RealmSwift
 
 class DespesaController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
+    let realm = try! Realm()
+    var despesa: Results<Despesa>?
+
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
     let saveBtn = UIButton()
     let closeBtn = UIButton()
+    
+    let novaDespesaLbl = UILabel()
+    let descricaoDespesaTxt = UITextField()
+    let rsLbl = UILabel()
+    let valor = UITextField()
+    let pagBtn = UIButton()
+    
+    var check = false
 
     var containerView:UIView = {
         let view = UIView()
@@ -23,14 +35,15 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     }()
     
 //    MARK: - Init
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        despesa = realm.objects(Despesa.self)
         setupKeyboard()
         configureNavigation()
         configureContainer()
+        configureNovaDespesa()
+        configureValor()
         configureBottomBtn()
         
     }
@@ -46,6 +59,84 @@ class DespesaController: UIViewController, UITextFieldDelegate {
             containerView.widthAnchor.constraint(equalTo: view.widthAnchor),
             containerView.heightAnchor.constraint(equalTo: view.heightAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func configureNovaDespesa() {
+        
+        novaDespesaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 20)
+        novaDespesaLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        novaDespesaLbl.text = "Nova Despesa"
+        novaDespesaLbl.textColor = .black
+        
+        descricaoDespesaTxt.delegate = self
+        descricaoDespesaTxt.keyboardType = .default
+        descricaoDespesaTxt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        descricaoDespesaTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        descricaoDespesaTxt.textColor = .black
+        descricaoDespesaTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        descricaoDespesaTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
+        
+        containerView.addSubview(novaDespesaLbl)
+        containerView.addSubview(descricaoDespesaTxt)
+        
+        novaDespesaLbl.translatesAutoresizingMaskIntoConstraints = false
+        descricaoDespesaTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            novaDespesaLbl.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            novaDespesaLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            
+            descricaoDespesaTxt.topAnchor.constraint(equalTo: novaDespesaLbl.bottomAnchor, constant: 20),
+            descricaoDespesaTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            descricaoDespesaTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
+            descricaoDespesaTxt.widthAnchor.constraint(equalToConstant: containerView.frame.width - 60)
+        ])
+    }
+    
+    func configureValor() {
+        rsLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        rsLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        rsLbl.text = "R$"
+        rsLbl.textColor = .black
+        
+        valor.delegate = self
+        valor.keyboardType = .numberPad
+        valor.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        valor.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        valor.textColor = .black
+        valor.textAlignment = .center
+        valor.attributedPlaceholder = NSAttributedString(string: "valor",
+        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+        
+        valor.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+
+        valor.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1), width: 1.0)
+        
+        pagBtn.frame = CGRect(x: 64, y: 64, width: 50, height: 50)
+        pagBtn.setTitle("Pago", for: .normal)
+        pagBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
+        pagBtn.addTarget(self, action: #selector(checkmarkPagBtn), for: .touchUpInside)
+        
+        containerView.addSubview(rsLbl)
+        containerView.addSubview(valor)
+        containerView.addSubview(pagBtn)
+               
+        rsLbl.translatesAutoresizingMaskIntoConstraints = false
+        valor.translatesAutoresizingMaskIntoConstraints = false
+        pagBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            rsLbl.topAnchor.constraint(equalTo: descricaoDespesaTxt.bottomAnchor, constant: 20),
+            rsLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            valor.topAnchor.constraint(equalTo: descricaoDespesaTxt.bottomAnchor, constant: 20),
+            valor.leftAnchor.constraint(equalTo: rsLbl.rightAnchor, constant: 1),
+            pagBtn.topAnchor.constraint(equalTo: descricaoDespesaTxt.bottomAnchor, constant: 20),
+            pagBtn.leftAnchor.constraint(equalTo: containerView.rightAnchor, constant: -80)
         ])
     }
 
@@ -72,6 +163,24 @@ class DespesaController: UIViewController, UITextFieldDelegate {
             NSAttributedString.Key.strokeWidth : -2.0
         ]
     }
+    @objc func myTextFieldDidChange(_ textField: UITextField) {
+
+        if let amountString = valor.text?.currencyInputFormatting() {
+           valor.text = amountString
+        }
+    }
+    
+    @objc func checkmarkPagBtn() {
+        if !check {
+            pagBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
+            pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
+            check = true
+        } else {
+            pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
+            pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+            check = false
+        }
+    }
     
     func makeBackButton() -> UIButton {
         let backButton = UIButton(type: .custom)
@@ -88,6 +197,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         
         func configureBottomBtn() {
             saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
+            saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
             
             closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
             closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
@@ -110,11 +220,55 @@ class DespesaController: UIViewController, UITextFieldDelegate {
                 closeBtn.widthAnchor.constraint(equalToConstant: 40)
             ])
         }
+        @objc func saveButtonPressed() {
+            let novaDespesa = Despesa()
+            novaDespesa.descricao = descricaoDespesaTxt.text!
+            novaDespesa.valorDespesa = valor.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
+            novaDespesa.aPagar = check
+            save(despesa: novaDespesa)
+        }
         
         @objc func backButtonPressed() {
             dismiss(animated: true, completion: nil)
             navigationController?.popViewController(animated: true)
         }
+    
+    // MARK: - Data Manipulation Methods
+    func save(despesa: Despesa) {
+        let sucesso = true
+        do {
+            try realm.write {
+                    realm.add(despesa)
+                showAlert(sucesso: sucesso)
+            }
+        } catch {
+            print("Error saving category \(error)")
+            showAlert(sucesso: !sucesso)
+        }
+    }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Despesa salva") : (msg = "Falha ao salvar despesa")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+              switch action.style {
+              case .default:
+                    print("default")
+
+              case .cancel:
+                    print("cancel")
+
+              case .destructive:
+                    print("destructive")
+
+              @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
         
       //MARK: - Keyboard Events
       

@@ -73,16 +73,6 @@ extension CardController {
         if textField == vencimento {
             
             if vencimento.text?.count == 2 {
-                
-//                salvar valor raw do vencimento
-                
-//                if (Cartao.vencimentoRaw != nil) {
-//                    Cartao.vencimentoRaw.append(string)
-//                }else{
-//                    Cartao.vencimentoRaw = string
-//                }
-                
-//              Formata data de vencimento
                 if !(string == "") {
                     vencimento.text = vencimento.text! + "/"
                 }

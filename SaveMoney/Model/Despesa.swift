@@ -13,6 +13,7 @@ class Despesa: Object {
     @objc dynamic var dataLancamento: Date = Date()
     @objc dynamic var descricao: String = ""
     @objc dynamic var dataVencimento: Date = Date()
+    @objc dynamic var valorDespesa: Double = 0.0
     @objc dynamic var aPagar: Bool = true
     
     let categoria = List<Categoria>()
