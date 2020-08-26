@@ -41,8 +41,8 @@ class Conta: Object {
 
     let cartoes = List<Cartao>()
     let movimentacoes = List<Movimentacao>()
-    let receita = List<Receita>()
-    let despesa = List<Despesa>()
+    let receitas = List<Receita>()
+    let despesas = List<Despesa>()
     
     override class func primaryKey() -> String? {
         return "contaId"

@@ -17,6 +17,6 @@ class Receita: Object {
     
     let categoria = List<Categoria>()
     
-    var parentConta = LinkingObjects(fromType: Conta.self, property: "receita")
-    var parentEmitente = LinkingObjects(fromType: Emitente.self, property: "receita")
+    var parentConta = LinkingObjects(fromType: Conta.self, property: "receitas")
+    var parentEmitente = LinkingObjects(fromType: Emitente.self, property: "receitas")
 }

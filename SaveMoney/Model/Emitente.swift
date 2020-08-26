@@ -15,7 +15,7 @@ class Emitente: Object {
     @objc dynamic var email: String = ""
     @objc dynamic var telefone: String = ""
     
-    let receita = List<Receita>()
-    let despesa = List<Despesa>()
+    let receitas = List<Receita>()
+    let despesas = List<Despesa>()
 }
 
