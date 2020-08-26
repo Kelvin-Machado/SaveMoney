@@ -15,7 +15,7 @@ class Receita: Object {
     @objc dynamic var valorReceita: Double = 0.0
     @objc dynamic var aReceber: Bool = true
     
-    let categoria = List<Categoria>()
+    let categorias = List<Categoria>()
     
     var parentConta = LinkingObjects(fromType: Conta.self, property: "receitas")
     var parentEmitente = LinkingObjects(fromType: Emitente.self, property: "receitas")

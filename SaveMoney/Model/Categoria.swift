@@ -33,6 +33,6 @@ class Categoria: Object {
     }
     dynamic var tipoEnumRaw: String? = nil
 
-    var parentReceita = LinkingObjects(fromType: Receita.self, property: "categoria")
-    var parentDespesa = LinkingObjects(fromType: Despesa.self, property: "categoria")
+    var parentReceita = LinkingObjects(fromType: Receita.self, property: "categorias")
+    var parentDespesa = LinkingObjects(fromType: Despesa.self, property: "categorias")
 }

@@ -25,6 +25,9 @@ class ContainerController: UIViewController {
         super.viewDidLoad()
         configureHomeController()
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+//        try! realm.write {
+//            realm.deleteAll()
+//        }
     }
 
 //        MARK: - Handlers
