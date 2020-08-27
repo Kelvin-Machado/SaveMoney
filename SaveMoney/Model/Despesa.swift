@@ -16,9 +16,10 @@ class Despesa: Object {
     @objc dynamic var valorDespesa: Double = 0.0
     @objc dynamic var aPagar: Bool = true
     
-    let categorias = List<Categoria>()
+//    let categorias = List<Categoria>()
     let orcamentos = List<Orcamento>()
     
     var parentConta = LinkingObjects(fromType: Conta.self, property: "despesas")
     var parentEmitente = LinkingObjects(fromType: Emitente.self, property: "despesas")
+    var parentCategoria = LinkingObjects(fromType: Categoria.self, property: "despesas")
 }

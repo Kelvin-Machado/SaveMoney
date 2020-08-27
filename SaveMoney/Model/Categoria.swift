@@ -16,7 +16,6 @@ enum tipoDocumento: String {
 
 class Categoria: Object {
     @objc dynamic var descricao: String = ""
-    //    private dynamic var tipo: tipoDocumento?
     @objc dynamic var tipoRaw = tipoDocumento.despesa.rawValue
     var tipo: tipoDocumento {
         get {
@@ -27,6 +26,10 @@ class Categoria: Object {
         }
     }
     
-    var parentReceita = LinkingObjects(fromType: Receita.self, property: "categorias")
-    var parentDespesa = LinkingObjects(fromType: Despesa.self, property: "categorias")
+    override class func primaryKey() -> String? {
+        return "descricao"
+    }
+    
+    let receitas = List<Receita>()
+    let despesas = List<Despesa>()
 }

@@ -30,6 +30,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     var check = false
     
+    var categoriaSelecionada = ""
+    
     var containerView:UIView = {
         let view = UIView()
         return view
@@ -42,7 +44,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupKeyboard()
         configureNavigation()
         configureContainer()
@@ -205,7 +207,10 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         DropDown.startListeningToKeyboard()
         
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-          print("Selected item: \(item) at index: \(index)")
+            print("Selected item: \(item) at index: \(index)")
+            
+            self.categoriaSelecionada = item
+            
             self.dropDown.hide()
             self.dropDownBtn.setTitle("  \(item)", for: .normal)
             self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
@@ -229,7 +234,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
             dropDownBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
             dropDownBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
         ])
-
+        
     }
     @objc func selecionaCategoria() {
         dropDown.show()
@@ -285,7 +290,6 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         novaDespesa.descricao = descricaoDespesaTxt.text!
         novaDespesa.valorDespesa = valor.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
         novaDespesa.aPagar = check
-        
         save(despesa: novaDespesa)
     }
     
@@ -297,18 +301,21 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     // MARK: - Data Manipulation Methods
     func save(despesa: Despesa) {
         let sucesso = true
-//adicionar seleção de conta para ID 0 ou 1
+        //adicionar seleção de conta para ID 0 ou 1
         if let conta = realm.objects(Conta.self).filter("contaId = 0").first {
-            do {
-                try realm.write {
-                    realm.add(despesa)
-                    conta.despesas.append(despesa)
-                    limparCampos()
-                    showAlert(sucesso: sucesso)
+            if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
+                do {
+                    try realm.write {
+                        realm.add(despesa)
+                        conta.despesas.append(despesa)
+                        categoria.despesas.append(despesa)
+                        limparCampos()
+                        showAlert(sucesso: sucesso)
+                    }
+                } catch {
+                    print("Error saving category \(error)")
+                    showAlert(sucesso: !sucesso)
                 }
-            } catch {
-                print("Error saving category \(error)")
-                showAlert(sucesso: !sucesso)
             }
         } else {
             showAlert(sucesso: !sucesso)
