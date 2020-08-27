@@ -17,22 +17,17 @@ enum tipoMovimentacao: String {
 class Movimentacao: Object {
     @objc dynamic var dataMovimentacao: Date = Date()
     @objc dynamic var valorMovimento: Double = 0.0
-    private var tipo: tipoMovimentacao?
-
-    var tipoEnum: tipoMovimentacao? {
+    
+    @objc dynamic var tipoRaw = tipoMovimentacao.debito.rawValue
+    var tipo: tipoMovimentacao {
         get {
-            if let resolTypeRaw = tipoEnumRaw  {
-                tipo = tipoMovimentacao(rawValue: resolTypeRaw)
-                return tipo
-            }
-            return .credito
+            return tipoMovimentacao(rawValue: tipoRaw)!
         }
         set {
-            tipoEnumRaw = newValue?.rawValue
-            tipo = newValue
+            tipoRaw = newValue.rawValue
         }
     }
-    dynamic var tipoEnumRaw: String? = nil
+    
     var parentConta = LinkingObjects(fromType: Conta.self, property: "movimentacoes")
 }
 

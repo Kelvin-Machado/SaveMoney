@@ -22,22 +22,16 @@ class Conta: Object {
     @objc dynamic var numero: String = ""
     @objc dynamic var nomeBanco: String = ""
     @objc dynamic var saldo: Double = 0.0
-    private var tipo: tipoConta?
-
-    var tipoEnum: tipoConta? {
+    
+    @objc dynamic var tipoRaw = tipoConta.contaCorrente.rawValue
+    var tipo: tipoConta {
         get {
-            if let resolTypeRaw = tipoEnumRaw  {
-                tipo = tipoConta(rawValue: resolTypeRaw)
-                return tipo
-            }
-            return .contaCorrente
+            return tipoConta(rawValue: tipoRaw)!
         }
         set {
-            tipoEnumRaw = newValue?.rawValue
-            tipo = newValue
+            tipoRaw = newValue.rawValue
         }
     }
-    dynamic var tipoEnumRaw: String? = nil
 
     let cartoes = List<Cartao>()
     let movimentacoes = List<Movimentacao>()

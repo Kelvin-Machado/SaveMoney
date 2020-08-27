@@ -205,8 +205,7 @@ class CategoriaController: UIViewController, UITextFieldDelegate {
     @objc func saveButtonPressed() {
         let categoria = Categoria()
         categoria.descricao = descricaoTxt.text!
-        tipoDespesa ? (categoria.tipoEnum = .despesa) : (categoria.tipoEnum = .receita)
-        
+        tipoDespesa ? (categoria.tipo = .despesa) : (categoria.tipo = .receita)
         save(novaCategoria: categoria)
     }
     
@@ -219,7 +218,6 @@ class CategoriaController: UIViewController, UITextFieldDelegate {
     // MARK: - Data Manipulation Methods
     func save(novaCategoria: Categoria) {
         let sucesso = true
-        
         
         do {
             try realm.write {

@@ -16,23 +16,17 @@ enum tipoDocumento: String {
 
 class Categoria: Object {
     @objc dynamic var descricao: String = ""
-    private var tipo: tipoDocumento?
-    
-    var tipoEnum: tipoDocumento? {
+    //    private dynamic var tipo: tipoDocumento?
+    @objc dynamic var tipoRaw = tipoDocumento.despesa.rawValue
+    var tipo: tipoDocumento {
         get {
-            if let resolTypeRaw = tipoEnumRaw  {
-                tipo = tipoDocumento(rawValue: resolTypeRaw)
-                return tipo
-            }
-            return .receita
+            return tipoDocumento(rawValue: tipoRaw)!
         }
         set {
-            tipoEnumRaw = newValue?.rawValue
-            tipo = newValue
+            tipoRaw = newValue.rawValue
         }
     }
-    dynamic var tipoEnumRaw: String? = nil
-
+    
     var parentReceita = LinkingObjects(fromType: Receita.self, property: "categorias")
     var parentDespesa = LinkingObjects(fromType: Despesa.self, property: "categorias")
 }

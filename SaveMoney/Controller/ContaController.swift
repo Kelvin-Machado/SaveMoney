@@ -325,13 +325,13 @@ class ContaController: UIViewController, UITextFieldDelegate {
             novaConta.nomeBanco = descricaoTxt.text!
             novaConta.numero = numContaTxt.text!
             novaConta.saldo = saldo.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
-            novaConta.tipoEnum = .cartao
+            novaConta.tipo = .cartao
         } else {
             novaConta.contaId = 1
             novaConta.nomeBanco = descricaoDebitoTxt.text!
             novaConta.numero = numContaDebitoTxt.text!
             novaConta.saldo = saldoDebito.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
-            novaConta.tipoEnum = .contaCorrente
+            novaConta.tipo = .contaCorrente
         }
         save(conta: novaConta)
     }

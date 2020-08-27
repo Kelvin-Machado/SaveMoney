@@ -8,11 +8,13 @@
 
 import UIKit
 import RealmSwift
+import DropDown
 
 class DespesaController: UIViewController, UITextFieldDelegate {
     
     //    MARK: - Properties
     let realm = try! Realm()
+    var categorias = [Categoria]()
     
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
@@ -33,16 +35,20 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         return view
     }()
     
+    let dropDown = DropDown()
+    var dropDownBtn = UIButton()
+    
     //    MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        despesa = realm.objects(Despesa.self)
+
         setupKeyboard()
         configureNavigation()
         configureContainer()
         configureNovaDespesa()
         configureValor()
+        configureDropDown()
         configureBottomBtn()
         
     }
@@ -181,6 +187,54 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func configureDropDown() {
+        categorias = Array(realm.objects(Categoria.self))
+        DropDown.appearance().setupCornerRadius(10)
+        DropDown.appearance().textColor = UIColor.black
+        DropDown.appearance().selectedTextColor = UIColor.white
+        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
+        DropDown.appearance().backgroundColor = UIColor.white
+        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+        
+        dropDown.direction = .bottom
+        dropDownBtn.setTitle("Categoria", for: .normal)
+        dropDownBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        dropDownBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        dropDownBtn.addTarget(self, action: #selector(selecionaCategoria), for: .touchUpInside)
+        dropDownBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        DropDown.startListeningToKeyboard()
+        
+        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+          print("Selected item: \(item) at index: \(index)")
+            self.dropDown.hide()
+            self.dropDownBtn.setTitle("  \(item)", for: .normal)
+            self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+            self.dropDownBtn.layer.cornerRadius = 5
+            self.dropDownBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        }
+        
+        for categoria in categorias{
+            if categoria.tipo == .despesa {
+                dropDown.dataSource.append(contentsOf: [categoria.descricao])
+            }
+        }
+        
+        containerView.addSubview(dropDownBtn)
+        dropDown.anchorView = dropDownBtn
+        dropDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDown.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dropDownBtn.topAnchor.constraint(equalTo: valor.bottomAnchor, constant: 20),
+            dropDownBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            dropDownBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
+        ])
+
+    }
+    @objc func selecionaCategoria() {
+        dropDown.show()
+    }
+    
     func makeBackButton() -> UIButton {
         let backButton = UIButton(type: .custom)
         backButton.setImage(#imageLiteral(resourceName: "back-arrow"), for: .normal)
@@ -288,6 +342,10 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     //MARK: - Keyboard Events
     
     func setupKeyboard() {
+        //fecha o keyboard quando não está editando
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+        
         self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
         
         self.keyboardTopAnchorConstraint = self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: 0)

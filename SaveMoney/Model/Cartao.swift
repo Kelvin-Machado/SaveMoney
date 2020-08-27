@@ -19,21 +19,16 @@ class Cartao: Object {
     @objc dynamic var nomeCartao: String = ""
     @objc dynamic var numeroCartao: String = ""
     @objc dynamic var dataVencimento: Date = Date()
-    private var tipo: tipoCartao?
 
-    var tipoEnum: tipoCartao? {
+    @objc dynamic var tipoRaw = tipoCartao.credito.rawValue
+    var tipo: tipoCartao {
         get {
-            if let resolTypeRaw = tipoEnumRaw  {
-                tipo = tipoCartao(rawValue: resolTypeRaw)
-                return tipo
-            }
-            return .credito
+            return tipoCartao(rawValue: tipoRaw)!
         }
         set {
-            tipoEnumRaw = newValue?.rawValue
-            tipo = newValue
+            tipoRaw = newValue.rawValue
         }
     }
-    dynamic var tipoEnumRaw: String? = nil
+    
     var parentConta = LinkingObjects(fromType: Conta.self, property: "cartoes")
 }

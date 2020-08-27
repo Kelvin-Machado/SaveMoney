@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		80201D517C0BD6645B39C16C /* Pods_SaveMoney.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F028A8C219FB029DD28318 /* Pods_SaveMoney.framework */; };
 		B652459D23874C50001A5E7F /* ContaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B652459C23874C50001A5E7F /* ContaController.swift */; };
 		B652459F23874C5D001A5E7F /* ReceitaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B652459E23874C5D001A5E7F /* ReceitaController.swift */; };
 		B65245A123874C6C001A5E7F /* DespesaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65245A023874C6C001A5E7F /* DespesaController.swift */; };
@@ -37,10 +38,12 @@
 		B686149124EBB7900076D68F /* Receita.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149024EBB7900076D68F /* Receita.swift */; };
 		B686149324EBB79C0076D68F /* Despesa.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149224EBB79C0076D68F /* Despesa.swift */; };
 		B686149524EBBB330076D68F /* Categoria.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149424EBBB330076D68F /* Categoria.swift */; };
-		B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6F02CFF24EB395C00D2D2B9 /* RealmSwift */; };
+		B6F02D0024EB395C00D2D2B9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1FDD0B5F9F209A7A7C7D3A /* Pods-SaveMoney.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveMoney.release.xcconfig"; path = "Target Support Files/Pods-SaveMoney/Pods-SaveMoney.release.xcconfig"; sourceTree = "<group>"; };
+		84F028A8C219FB029DD28318 /* Pods_SaveMoney.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SaveMoney.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B652459C23874C50001A5E7F /* ContaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContaController.swift; sourceTree = "<group>"; };
 		B652459E23874C5D001A5E7F /* ReceitaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceitaController.swift; sourceTree = "<group>"; };
 		B65245A023874C6C001A5E7F /* DespesaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DespesaController.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		B686149024EBB7900076D68F /* Receita.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receita.swift; sourceTree = "<group>"; };
 		B686149224EBB79C0076D68F /* Despesa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Despesa.swift; sourceTree = "<group>"; };
 		B686149424EBBB330076D68F /* Categoria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categoria.swift; sourceTree = "<group>"; };
+		D56BC7EFB17A32DB6EF5DCC9 /* Pods-SaveMoney.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveMoney.debug.xcconfig"; path = "Target Support Files/Pods-SaveMoney/Pods-SaveMoney.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,18 +84,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */,
+				B6F02D0024EB395C00D2D2B9 /* BuildFile in Frameworks */,
+				80201D517C0BD6645B39C16C /* Pods_SaveMoney.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49FDEFFB62AE880A1EDB5B01 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				84F028A8C219FB029DD28318 /* Pods_SaveMoney.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B65D1B042384B9FD00B30015 = {
 			isa = PBXGroup;
 			children = (
 				B65D1B0F2384B9FD00B30015 /* SaveMoney */,
 				B65D1B0E2384B9FD00B30015 /* Products */,
+				BB0045C63F28A7E59B7471D5 /* Pods */,
+				49FDEFFB62AE880A1EDB5B01 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -197,6 +212,16 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		BB0045C63F28A7E59B7471D5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D56BC7EFB17A32DB6EF5DCC9 /* Pods-SaveMoney.debug.xcconfig */,
+				4F1FDD0B5F9F209A7A7C7D3A /* Pods-SaveMoney.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -204,9 +229,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B65D1B242384BA0000B30015 /* Build configuration list for PBXNativeTarget "SaveMoney" */;
 			buildPhases = (
+				F81E507390AD6FC536F979E5 /* [CP] Check Pods Manifest.lock */,
 				B65D1B092384B9FD00B30015 /* Sources */,
 				B65D1B0A2384B9FD00B30015 /* Frameworks */,
 				B65D1B0B2384B9FD00B30015 /* Resources */,
+				F0F7E9723B91758901BF08BA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -214,7 +241,7 @@
 			);
 			name = SaveMoney;
 			packageProductDependencies = (
-				B6F02CFF24EB395C00D2D2B9 /* RealmSwift */,
+				B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */,
 			);
 			productName = SaveMoney;
 			productReference = B65D1B0D2384B9FD00B30015 /* SaveMoney.app */;
@@ -245,7 +272,7 @@
 			);
 			mainGroup = B65D1B042384B9FD00B30015;
 			packageReferences = (
-				B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = B65D1B0E2384B9FD00B30015 /* Products */;
 			projectDirPath = "";
@@ -267,6 +294,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F0F7E9723B91758901BF08BA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SaveMoney/Pods-SaveMoney-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SaveMoney/Pods-SaveMoney-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SaveMoney/Pods-SaveMoney-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F81E507390AD6FC536F979E5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SaveMoney-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B65D1B092384B9FD00B30015 /* Sources */ = {
@@ -434,6 +503,7 @@
 		};
 		B65D1B252384BA0000B30015 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D56BC7EFB17A32DB6EF5DCC9 /* Pods-SaveMoney.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -452,6 +522,7 @@
 		};
 		B65D1B262384BA0000B30015 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F1FDD0B5F9F209A7A7C7D3A /* Pods-SaveMoney.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -492,7 +563,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+		B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa.git";
 			requirement = {
@@ -503,9 +574,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B6F02CFF24EB395C00D2D2B9 /* RealmSwift */ = {
+		B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			package = B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
