@@ -34,7 +34,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
     let valor = UITextField()
     let pagBtn = UIButton()
     
-    var check = false
+    var check = true
 
     var containerView:UIView = {
         let view = UIView()
@@ -126,7 +126,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         valor.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         valor.textColor = .black
         valor.textAlignment = .center
-        valor.attributedPlaceholder = NSAttributedString(string: "valor",
+        valor.attributedPlaceholder = NSAttributedString(string: " valor",
                                                          attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         valor.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
@@ -154,7 +154,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
             valor.topAnchor.constraint(equalTo: descricaoReceitaTxt.bottomAnchor, constant: 20),
             valor.leftAnchor.constraint(equalTo: rsLbl.rightAnchor, constant: 1),
             pagBtn.topAnchor.constraint(equalTo: descricaoReceitaTxt.bottomAnchor, constant: 20),
-            pagBtn.leftAnchor.constraint(equalTo: containerView.rightAnchor, constant: -140)
+            pagBtn.leftAnchor.constraint(equalTo: containerView.rightAnchor, constant: -160)
         ])
     }
     
@@ -189,7 +189,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         ]
     }
     @objc func checkmarkPagBtn() {
-        if !check {
+        if check {
             pagBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
             pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
             check = false //já foi recebido
@@ -214,7 +214,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         valor.text! = ""
         pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
         pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        check = false
+        check = true
     }
     
         
@@ -260,7 +260,6 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         // MARK: - Data Manipulation Methods
         func save(receita: Receita) {
             let sucesso = true
-            //adicionar seleção de conta para ID 0 ou 1
             if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
                 if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
                      if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {

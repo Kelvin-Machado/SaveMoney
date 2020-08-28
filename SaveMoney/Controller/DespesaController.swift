@@ -34,7 +34,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     let valor = UITextField()
     let pagBtn = UIButton()
     
-    var check = false
+    var check = true
     
 
     
@@ -127,7 +127,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         valor.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         valor.textColor = .black
         valor.textAlignment = .center
-        valor.attributedPlaceholder = NSAttributedString(string: "valor",
+        valor.attributedPlaceholder = NSAttributedString(string: " valor",
                                                          attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         valor.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
@@ -155,7 +155,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
             valor.topAnchor.constraint(equalTo: descricaoDespesaTxt.bottomAnchor, constant: 20),
             valor.leftAnchor.constraint(equalTo: rsLbl.rightAnchor, constant: 1),
             pagBtn.topAnchor.constraint(equalTo: descricaoDespesaTxt.bottomAnchor, constant: 20),
-            pagBtn.leftAnchor.constraint(equalTo: containerView.rightAnchor, constant: -80)
+            pagBtn.leftAnchor.constraint(equalTo: containerView.rightAnchor, constant: -100)
         ])
     }
     
@@ -190,7 +190,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func checkmarkPagBtn() {
-        if !check {
+        if check {
             pagBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
             pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
             check = false //já foi pago
@@ -216,7 +216,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         valor.text! = ""
         pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
         pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        check = false
+        check = true
     }
     
     //    MARK: - Configure bottom buttons
