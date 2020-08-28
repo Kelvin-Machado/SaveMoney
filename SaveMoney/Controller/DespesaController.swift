@@ -17,8 +17,10 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     var categorias = [Categoria]()
     var contas = [Conta]()
+    var emitentes = [Emitente]()
     var categoriaSelecionada = ""
-    var contaSelecionada = ""
+    var contaSelecionada = 0
+    var emitenteSelecionado = ""
     
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
@@ -45,6 +47,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     var dropDownBtn = UIButton()
     let dropDownConta = DropDown()
     var dropDownContaBtn = UIButton()
+    let dropDownEmitente = DropDown()
+    var dropDownEmitenteBtn = UIButton()
     
     //    MARK: - Init
     
@@ -58,6 +62,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         configureValor()
         configureDropDownCategoria()
         configureDropDownConta()
+        configureDropDownEmitente()
         configureBottomBtn()
         
     }
@@ -188,11 +193,11 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         if !check {
             pagBtn.setImage(#imageLiteral(resourceName: "checkmark"), for: .normal)
             pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1), for: .normal)
-            check = true
+            check = false //já foi pago
         } else {
             pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
             pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-            check = false
+            check = true // ainda não foi pago
         }
     }
     
@@ -258,13 +263,16 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     func save(despesa: Despesa) {
         let sucesso = true
         //adicionar seleção de conta para ID 0 ou 1
-        if let conta = realm.objects(Conta.self).filter("contaId = 0").first {
+        if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
             if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
+                 if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {
                 do {
                     try realm.write {
                         realm.add(despesa)
                         conta.despesas.append(despesa)
                         categoria.despesas.append(despesa)
+                        emitente.despesas.append(despesa)
+                        
                         limparCampos()
                         showAlert(sucesso: sucesso)
                     }
@@ -273,6 +281,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
                     showAlert(sucesso: !sucesso)
                 }
             }
+        }
         } else {
             showAlert(sucesso: !sucesso)
         }
@@ -388,7 +397,7 @@ extension DespesaController {
             
             self.dropDown.hide()
             self.dropDownBtn.setTitle("  \(item)", for: .normal)
-            self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+            self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.7036868579)
             self.dropDownBtn.layer.cornerRadius = 5
             self.dropDownBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
             
@@ -429,7 +438,7 @@ extension DespesaController {
         DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
         
         dropDownConta.direction = .bottom
-        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.8622226119, green: 0, blue: 0.1826650202, alpha: 0.6520226884)
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 0.6460027825)
         dropDownContaBtn.layer.cornerRadius = 5
         dropDownContaBtn.setTitle("  Conta", for: .normal)
         dropDownContaBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
@@ -443,11 +452,11 @@ extension DespesaController {
             
             self.dropDownConta.hide()
             self.dropDownContaBtn.setTitle("  \(item)", for: .normal)
-            self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.7451840753)
+            self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.8545323202)
             self.dropDownContaBtn.layer.cornerRadius = 5
             self.dropDownContaBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
     
-            self.contaSelecionada = item
+            self.contaSelecionada = index
         }
         
         for conta in contas{
@@ -468,6 +477,57 @@ extension DespesaController {
     }
     @objc func selecionaConta() {
         dropDownConta.show()
+    }
+    
+    func configureDropDownEmitente() {
+        emitentes = Array(realm.objects(Emitente.self))
+        DropDown.appearance().setupCornerRadius(10)
+        DropDown.appearance().textColor = UIColor.black
+        DropDown.appearance().selectedTextColor = UIColor.white
+        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
+        DropDown.appearance().backgroundColor = UIColor.white
+        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+        
+        dropDownEmitente.direction = .bottom
+        dropDownEmitenteBtn.layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 0.6481699486)
+        dropDownEmitenteBtn.layer.cornerRadius = 5
+        dropDownEmitenteBtn.setTitle("  Emitente", for: .normal)
+        dropDownEmitenteBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        dropDownEmitenteBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        dropDownEmitenteBtn.addTarget(self, action: #selector(selecionaEmitente), for: .touchUpInside)
+        dropDownEmitenteBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        DropDown.startListeningToKeyboard()
+        
+        dropDownEmitente.selectionAction = { [unowned self] (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            
+            self.dropDownEmitente.hide()
+            self.dropDownEmitenteBtn.setTitle("  \(item)", for: .normal)
+            self.dropDownEmitenteBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+            self.dropDownEmitenteBtn.layer.cornerRadius = 5
+            self.dropDownEmitenteBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+            
+            self.emitenteSelecionado = item
+        }
+        
+        for emitente in emitentes{
+            dropDownEmitente.dataSource.append(contentsOf: ["\(emitente.razaoSocial)"])
+        }
+        
+        containerView.addSubview(dropDownEmitenteBtn)
+        dropDownEmitente.anchorView = dropDownEmitenteBtn
+        dropDownEmitenteBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDownEmitente.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dropDownEmitenteBtn.topAnchor.constraint(equalTo: dropDownContaBtn.bottomAnchor, constant: 20),
+            dropDownEmitenteBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            dropDownEmitenteBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
+        ])
+        
+    }
+    @objc func selecionaEmitente() {
+        dropDownEmitente.show()
     }
 }
 

@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class EmitenteController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
+    let realm = try! Realm()
+    var emitente: Results<Emitente>?
+    
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
@@ -40,6 +44,7 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        emitente = realm.objects(Emitente.self)
         setupKeyboard()
         configureNavigation()
         configureContainer()
@@ -306,27 +311,82 @@ class EmitenteController: UIViewController, UITextFieldDelegate {
             ])
         }
         @objc func saveButtonPressed() {
+            var aString: String
+            let novoEmitente = Emitente()
+            novoEmitente.razaoSocial = nomeEmitenteTxt.text!
             
             if cpfTxt.text!.isValidCPF {
                 print("CPF Válido")
+                aString = cpfTxt.text!
+                aString = aString.filter { $0 != "." }
+                aString = aString.filter { $0 != "-" }
+                novoEmitente.cnpjCPF = Int(aString)!
             }else{
                 print("CPF Inválido")
             }
-            
-            
+
             if cnpjTxt.text!.isValidCNPJ {
+                aString = cnpjTxt.text!
+                aString = aString.filter { $0 != "/" }
+                aString = aString.filter { $0 != "." }
+                aString = aString.filter { $0 != "-" }
+                print(aString)
+                novoEmitente.cnpjCPF = Int(aString)!
                 print("CNPJ Válido")
             }else{
                 print("CNPJ Inválido")
             }
-        
-            dismiss(animated: true, completion: nil)
-            navigationController?.popViewController(animated: true)
+            
+            novoEmitente.email = emailTxt.text ?? ""
+            novoEmitente.telefone = telefoneTxt.text ?? ""
+            if cnpjTxt.text!.isValidCNPJ || cpfTxt.text!.isValidCPF {
+                save(novoEmitente: novoEmitente)
+            } else {
+                let sucesso = true
+                showAlert(sucesso: !sucesso)
+            }
         }
         @objc func backButtonPressed() {
             dismiss(animated: true, completion: nil)
             navigationController?.popViewController(animated: true)
         }
+    
+    // MARK: - Data Manipulation Methods
+    func save(novoEmitente: Emitente) {
+        let sucesso = true
+        do {
+            try realm.write {
+                realm.add(novoEmitente)
+                showAlert(sucesso: sucesso)
+            }
+        } catch {
+            print("Error saving category \(error)")
+            showAlert(sucesso: !sucesso)
+        }
+    }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Emitente salvo") : (msg = "Dados não foram salvos")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+              switch action.style {
+              case .default:
+                    print("default")
+
+              case .cancel:
+                    print("cancel")
+
+              case .destructive:
+                    print("destructive")
+
+              @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
         
       //MARK: - Keyboard Events
       
