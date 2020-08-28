@@ -273,8 +273,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
                         categoria.despesas.append(despesa)
                         emitente.despesas.append(despesa)
                         
-                        limparCampos()
                         showAlert(sucesso: sucesso)
+                        limparCampos()
                     }
                 } catch {
                     print("Error saving category \(error)")
