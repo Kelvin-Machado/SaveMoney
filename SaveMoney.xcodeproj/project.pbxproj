@@ -38,7 +38,7 @@
 		B686149124EBB7900076D68F /* Receita.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149024EBB7900076D68F /* Receita.swift */; };
 		B686149324EBB79C0076D68F /* Despesa.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149224EBB79C0076D68F /* Despesa.swift */; };
 		B686149524EBBB330076D68F /* Categoria.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149424EBBB330076D68F /* Categoria.swift */; };
-		B6F02D0024EB395C00D2D2B9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */; };
+		B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6F02CFF24EB395C00D2D2B9 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6F02D0024EB395C00D2D2B9 /* BuildFile in Frameworks */,
+				B6F02D0024EB395C00D2D2B9 /* RealmSwift in Frameworks */,
 				80201D517C0BD6645B39C16C /* Pods_SaveMoney.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,7 +218,6 @@
 				D56BC7EFB17A32DB6EF5DCC9 /* Pods-SaveMoney.debug.xcconfig */,
 				4F1FDD0B5F9F209A7A7C7D3A /* Pods-SaveMoney.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -241,7 +240,7 @@
 			);
 			name = SaveMoney;
 			packageProductDependencies = (
-				B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */,
+				B6F02CFF24EB395C00D2D2B9 /* RealmSwift */,
 			);
 			productName = SaveMoney;
 			productReference = B65D1B0D2384B9FD00B30015 /* SaveMoney.app */;
@@ -272,7 +271,7 @@
 			);
 			mainGroup = B65D1B042384B9FD00B30015;
 			packageReferences = (
-				B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */,
+				B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = B65D1B0E2384B9FD00B30015 /* Products */;
 			projectDirPath = "";
@@ -563,7 +562,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */ = {
+		B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa.git";
 			requirement = {
@@ -574,9 +573,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B6F02CFF24EB395C00D2D2B9 /* SwiftPackageProductDependency */ = {
+		B6F02CFF24EB395C00D2D2B9 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6F02CFE24EB395C00D2D2B9 /* RemoteSwiftPackageReference */;
+			package = B6F02CFE24EB395C00D2D2B9 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -14,7 +14,11 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     //    MARK: - Properties
     let realm = try! Realm()
+    
     var categorias = [Categoria]()
+    var contas = [Conta]()
+    var categoriaSelecionada = ""
+    var contaSelecionada = ""
     
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
@@ -30,7 +34,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     var check = false
     
-    var categoriaSelecionada = ""
+
     
     var containerView:UIView = {
         let view = UIView()
@@ -39,6 +43,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
     let dropDown = DropDown()
     var dropDownBtn = UIButton()
+    let dropDownConta = DropDown()
+    var dropDownContaBtn = UIButton()
     
     //    MARK: - Init
     
@@ -50,7 +56,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         configureContainer()
         configureNovaDespesa()
         configureValor()
-        configureDropDown()
+        configureDropDownCategoria()
+        configureDropDownConta()
         configureBottomBtn()
         
     }
@@ -187,57 +194,6 @@ class DespesaController: UIViewController, UITextFieldDelegate {
             pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
             check = false
         }
-    }
-    
-    func configureDropDown() {
-        categorias = Array(realm.objects(Categoria.self))
-        DropDown.appearance().setupCornerRadius(10)
-        DropDown.appearance().textColor = UIColor.black
-        DropDown.appearance().selectedTextColor = UIColor.white
-        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
-        DropDown.appearance().backgroundColor = UIColor.white
-        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
-        
-        dropDown.direction = .bottom
-        dropDownBtn.setTitle("Categoria", for: .normal)
-        dropDownBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        dropDownBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        dropDownBtn.addTarget(self, action: #selector(selecionaCategoria), for: .touchUpInside)
-        dropDownBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        DropDown.startListeningToKeyboard()
-        
-        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            print("Selected item: \(item) at index: \(index)")
-            
-            self.categoriaSelecionada = item
-            
-            self.dropDown.hide()
-            self.dropDownBtn.setTitle("  \(item)", for: .normal)
-            self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
-            self.dropDownBtn.layer.cornerRadius = 5
-            self.dropDownBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-        }
-        
-        for categoria in categorias{
-            if categoria.tipo == .despesa {
-                dropDown.dataSource.append(contentsOf: [categoria.descricao])
-            }
-        }
-        
-        containerView.addSubview(dropDownBtn)
-        dropDown.anchorView = dropDownBtn
-        dropDownBtn.translatesAutoresizingMaskIntoConstraints = false
-        dropDown.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dropDownBtn.topAnchor.constraint(equalTo: valor.bottomAnchor, constant: 20),
-            dropDownBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
-            dropDownBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
-        ])
-        
-    }
-    @objc func selecionaCategoria() {
-        dropDown.show()
     }
     
     func makeBackButton() -> UIButton {
@@ -402,4 +358,116 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     
 }
 
+//MARK: - DropDown Menu
+
+extension DespesaController {
+
+    func configureDropDownCategoria() {
+        categorias = Array(realm.objects(Categoria.self))
+        DropDown.appearance().setupCornerRadius(10)
+        DropDown.appearance().textColor = UIColor.black
+        DropDown.appearance().selectedTextColor = UIColor.white
+        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
+        DropDown.appearance().backgroundColor = UIColor.white
+        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+        
+        dropDown.direction = .bottom
+        dropDownBtn.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.6372538527)
+        dropDownBtn.layer.cornerRadius = 5
+        dropDownBtn.setTitle("  Categoria", for: .normal)
+        dropDownBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        dropDownBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        dropDownBtn.addTarget(self, action: #selector(selecionaCategoria), for: .touchUpInside)
+        dropDownBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        DropDown.startListeningToKeyboard()
+        
+        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            
+
+            
+            self.dropDown.hide()
+            self.dropDownBtn.setTitle("  \(item)", for: .normal)
+            self.dropDownBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+            self.dropDownBtn.layer.cornerRadius = 5
+            self.dropDownBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+            
+            self.categoriaSelecionada = item
+            
+
+        }
+        
+        for categoria in categorias{
+            if categoria.tipo == .despesa {
+                dropDown.dataSource.append(contentsOf: [categoria.descricao])
+            }
+        }
+        
+        containerView.addSubview(dropDownBtn)
+        dropDown.anchorView = dropDownBtn
+        dropDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDown.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dropDownBtn.topAnchor.constraint(equalTo: valor.bottomAnchor, constant: 20),
+            dropDownBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            dropDownBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
+        ])
+        
+    }
+    @objc func selecionaCategoria() {
+        dropDown.show()
+    }
+
+    func configureDropDownConta() {
+        contas = Array(realm.objects(Conta.self))
+        DropDown.appearance().setupCornerRadius(10)
+        DropDown.appearance().textColor = UIColor.black
+        DropDown.appearance().selectedTextColor = UIColor.white
+        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
+        DropDown.appearance().backgroundColor = UIColor.white
+        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+        
+        dropDownConta.direction = .bottom
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.8622226119, green: 0, blue: 0.1826650202, alpha: 0.6520226884)
+        dropDownContaBtn.layer.cornerRadius = 5
+        dropDownContaBtn.setTitle("  Conta", for: .normal)
+        dropDownContaBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        dropDownContaBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        dropDownContaBtn.addTarget(self, action: #selector(selecionaConta), for: .touchUpInside)
+        dropDownContaBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        DropDown.startListeningToKeyboard()
+        
+        dropDownConta.selectionAction = { [unowned self] (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            
+            self.dropDownConta.hide()
+            self.dropDownContaBtn.setTitle("  \(item)", for: .normal)
+            self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.7451840753)
+            self.dropDownContaBtn.layer.cornerRadius = 5
+            self.dropDownContaBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+    
+            self.contaSelecionada = item
+        }
+        
+        for conta in contas{
+            dropDownConta.dataSource.append(contentsOf: ["\(conta.nomeBanco): \(conta.tipo.description)"])
+        }
+        
+        containerView.addSubview(dropDownContaBtn)
+        dropDownConta.anchorView = dropDownContaBtn
+        dropDownContaBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDownConta.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dropDownContaBtn.topAnchor.constraint(equalTo: dropDownBtn.bottomAnchor, constant: 20),
+            dropDownContaBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            dropDownContaBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
+        ])
+        
+    }
+    @objc func selecionaConta() {
+        dropDownConta.show()
+    }
+}
 

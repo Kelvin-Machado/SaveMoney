@@ -9,12 +9,22 @@
 import Foundation
 import RealmSwift
 
-enum tipoConta: String {
+enum tipoConta: String, CustomStringConvertible {
     case contaCorrente
     case cartao
     case dinheiro
     case cheque
     case contaPoupanca
+    
+    var description: String {
+        switch self {
+            case .contaCorrente: return "Conta Corrente"
+            case .cartao: return "Cartão"
+            case .dinheiro: return "Dinheiro"
+            case .cheque: return "Cheque"
+            case .contaPoupanca: return "Conta Poupança"
+        }
+    }
 }
 
 class Conta: Object {
