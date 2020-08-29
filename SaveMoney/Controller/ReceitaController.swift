@@ -59,6 +59,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         configureContainer()
         configureNovaReceita()
         configureValor()
+        configureDropDown()
         configureDropDownCategoria()
         configureDropDownConta()
         configureDropDownEmitente()
@@ -215,6 +216,15 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
         pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         check = true
+        dropDownBtn.isSelected = false
+        dropDownBtn.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.6372538527)
+        dropDownBtn.setTitle("  Categoria", for: .normal)
+        dropDownContaBtn.isSelected = false
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 0.6460027825)
+        dropDownContaBtn.setTitle("  Conta", for: .normal)
+        dropDownEmitenteBtn.isSelected = false
+        dropDownEmitenteBtn.layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 0.6481699486)
+        dropDownEmitenteBtn.setTitle("  Emitente", for: .normal)
     }
     
         
@@ -366,14 +376,17 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
 
 extension ReceitaController {
 
-    func configureDropDownCategoria() {
-        categorias = Array(realm.objects(Categoria.self))
+    func configureDropDown() {
         DropDown.appearance().setupCornerRadius(10)
         DropDown.appearance().textColor = UIColor.black
         DropDown.appearance().selectedTextColor = UIColor.white
         DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
         DropDown.appearance().backgroundColor = UIColor.white
         DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
+    }
+
+    func configureDropDownCategoria() {
+        categorias = Array(realm.objects(Categoria.self))
         
         dropDown.direction = .bottom
         dropDownBtn.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.6372538527)
@@ -402,7 +415,7 @@ extension ReceitaController {
         }
         
         for categoria in categorias{
-            if categoria.tipo == .despesa {
+            if categoria.tipo == .receita {
                 dropDown.dataSource.append(contentsOf: [categoria.descricao])
             }
         }
@@ -425,12 +438,6 @@ extension ReceitaController {
 
     func configureDropDownConta() {
         contas = Array(realm.objects(Conta.self))
-        DropDown.appearance().setupCornerRadius(10)
-        DropDown.appearance().textColor = UIColor.black
-        DropDown.appearance().selectedTextColor = UIColor.white
-        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
-        DropDown.appearance().backgroundColor = UIColor.white
-        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
         
         dropDownConta.direction = .bottom
         dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 0.6460027825)
@@ -476,12 +483,6 @@ extension ReceitaController {
     
     func configureDropDownEmitente() {
         emitentes = Array(realm.objects(Emitente.self))
-        DropDown.appearance().setupCornerRadius(10)
-        DropDown.appearance().textColor = UIColor.black
-        DropDown.appearance().selectedTextColor = UIColor.white
-        DropDown.appearance().textFont = UIFont(name:"HelveticaNeue-Bold", size: 15)!
-        DropDown.appearance().backgroundColor = UIColor.white
-        DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
         
         dropDownEmitente.direction = .bottom
         dropDownEmitenteBtn.layer.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 0.6481699486)
