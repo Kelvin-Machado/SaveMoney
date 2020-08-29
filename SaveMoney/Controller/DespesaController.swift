@@ -22,6 +22,8 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     var contaSelecionada = 0
     var emitenteSelecionado = ""
     
+    var dataVencimento = Date()
+    
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
@@ -34,9 +36,33 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     let valor = UITextField()
     let pagBtn = UIButton()
     
+    lazy var vencimentoTxt: UITextField = {
+        let txt = UITextField()
+        txt.placeholder = "Vencimento"
+        txt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        txt.layer.borderWidth = 1
+        txt.layer.cornerRadius = 5
+        txt.borderStyle = .roundedRect
+        
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        txt.inputView = datePicker
+        
+        datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)
+        return txt
+    }()
+    
+    @objc func selecionaData(sender: UIDatePicker){
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "dd/MM/yyyy"
+        self.dataVencimento = sender.date
+        self.vencimentoTxt.text = dateFormat.string(from: sender.date)
+    }
+    
     var check = true
     
-
+    
     
     var containerView:UIView = {
         let view = UIView()
@@ -64,6 +90,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         configureDropDownCategoria()
         configureDropDownConta()
         configureDropDownEmitente()
+        configureVencimento()
         configureBottomBtn()
         
     }
@@ -160,6 +187,20 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         ])
     }
     
+    func configureVencimento() {
+        
+        vencimentoTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(vencimentoTxt)
+        
+        NSLayoutConstraint.activate([
+            vencimentoTxt.topAnchor.constraint(equalTo: dropDownEmitenteBtn.bottomAnchor, constant: 20),
+            vencimentoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            vencimentoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20),
+            vencimentoTxt.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
     //    MARK: - Helper Functions
     
     func configureNavigation() {
@@ -218,6 +259,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
         pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         check = true
+        vencimentoTxt.text = ""
         dropDownBtn.isSelected = false
         dropDownBtn.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.6372538527)
         dropDownBtn.setTitle("  Categoria", for: .normal)
@@ -261,6 +303,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         novaDespesa.descricao = descricaoDespesaTxt.text!
         novaDespesa.valorDespesa = valor.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
         novaDespesa.aPagar = check
+        novaDespesa.dataVencimento = dataVencimento
         save(despesa: novaDespesa)
     }
     
@@ -275,23 +318,23 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         //adicionar seleção de conta para ID 0 ou 1
         if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
             if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
-                 if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {
-                do {
-                    try realm.write {
-                        realm.add(despesa)
-                        conta.despesas.append(despesa)
-                        categoria.despesas.append(despesa)
-                        emitente.despesas.append(despesa)
-                        
-                        showAlert(sucesso: sucesso)
-                        limparCampos()
+                if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {
+                    do {
+                        try realm.write {
+                            realm.add(despesa)
+                            conta.despesas.append(despesa)
+                            categoria.despesas.append(despesa)
+                            emitente.despesas.append(despesa)
+                            
+                            showAlert(sucesso: sucesso)
+                            limparCampos()
+                        }
+                    } catch {
+                        print("Error saving category \(error)")
+                        showAlert(sucesso: !sucesso)
                     }
-                } catch {
-                    print("Error saving category \(error)")
-                    showAlert(sucesso: !sucesso)
                 }
             }
-        }
         } else {
             showAlert(sucesso: !sucesso)
         }
@@ -380,7 +423,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
 //MARK: - DropDown Menu
 
 extension DespesaController {
-
+    
     func configureDropDown() {
         DropDown.appearance().setupCornerRadius(10)
         DropDown.appearance().textColor = UIColor.black
@@ -405,7 +448,7 @@ extension DespesaController {
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
             
-
+            
             
             self.dropDown.hide()
             self.dropDownBtn.setTitle("  \(item)", for: .normal)
@@ -415,7 +458,7 @@ extension DespesaController {
             
             self.categoriaSelecionada = item
             
-
+            
         }
         
         for categoria in categorias{
@@ -439,7 +482,7 @@ extension DespesaController {
     @objc func selecionaCategoria() {
         dropDown.show()
     }
-
+    
     func configureDropDownConta() {
         contas = Array(realm.objects(Conta.self))
         
@@ -461,7 +504,7 @@ extension DespesaController {
             self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.8545323202)
             self.dropDownContaBtn.layer.cornerRadius = 5
             self.dropDownContaBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    
+            
             self.contaSelecionada = index
         }
         

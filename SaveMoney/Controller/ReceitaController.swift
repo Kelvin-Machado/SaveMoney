@@ -12,7 +12,7 @@ import DropDown
 
 class ReceitaController: UIViewController, UITextFieldDelegate {
     
-//    MARK: - Properties
+    //    MARK: - Properties
     let realm = try! Realm()
     
     var categorias = [Categoria]()
@@ -21,6 +21,8 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
     var categoriaSelecionada = ""
     var contaSelecionada = 0
     var emitenteSelecionado = ""
+    
+    var dataRecebimento = Date()
     
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
@@ -34,8 +36,32 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
     let valor = UITextField()
     let pagBtn = UIButton()
     
+    lazy var vencimentoTxt: UITextField = {
+        let txt = UITextField()
+        txt.placeholder = "Data do recebimento"
+        txt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        txt.layer.borderWidth = 1
+        txt.layer.cornerRadius = 5
+        txt.borderStyle = .roundedRect
+        
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        txt.inputView = datePicker
+        
+        datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)
+        return txt
+    }()
+    
+    @objc func selecionaData(sender: UIDatePicker){
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "dd/MM/yyyy"
+        self.dataRecebimento = sender.date
+        self.vencimentoTxt.text = dateFormat.string(from: sender.date)
+    }
+    
     var check = true
-
+    
     var containerView:UIView = {
         let view = UIView()
         return view
@@ -48,12 +74,12 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
     let dropDownEmitente = DropDown()
     var dropDownEmitenteBtn = UIButton()
     
-//    MARK: - Init
+    //    MARK: - Init
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupKeyboard()
         configureNavigation()
         configureContainer()
@@ -63,6 +89,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         configureDropDownCategoria()
         configureDropDownConta()
         configureDropDownEmitente()
+        configureVencimento()
         configureBottomBtn()
         
     }
@@ -165,8 +192,22 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
             valor.text = amountString
         }
     }
-
-//    MARK: - Helper Functions
+    
+    func configureVencimento() {
+        
+        vencimentoTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(vencimentoTxt)
+        
+        NSLayoutConstraint.activate([
+            vencimentoTxt.topAnchor.constraint(equalTo: dropDownEmitenteBtn.bottomAnchor, constant: 20),
+            vencimentoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            vencimentoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20),
+            vencimentoTxt.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    //    MARK: - Helper Functions
     
     func configureNavigation() {
         view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
@@ -216,6 +257,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         pagBtn.setImage(#imageLiteral(resourceName: "checkmark_empty"), for: .normal)
         pagBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         check = true
+        vencimentoTxt.text = ""
         dropDownBtn.isSelected = false
         dropDownBtn.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.6372538527)
         dropDownBtn.setTitle("  Categoria", for: .normal)
@@ -227,52 +269,53 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         dropDownEmitenteBtn.setTitle("  Emitente", for: .normal)
     }
     
-        
+    
     //    MARK: - Configure bottom buttons
+    
+    func configureBottomBtn() {
+        saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
+        saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
         
-        func configureBottomBtn() {
-            saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
-            saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
-            
-            closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
-            closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
-
-            containerView.addSubview(saveBtn)
-            containerView.addSubview(closeBtn)
-            
-            saveBtn.translatesAutoresizingMaskIntoConstraints = false
-            closeBtn.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                saveBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -30),
-                saveBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
-                saveBtn.heightAnchor.constraint(equalToConstant: 40),
-                saveBtn.widthAnchor.constraint(equalToConstant: 40),
-                
-                closeBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 30),
-                closeBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
-                closeBtn.heightAnchor.constraint(equalToConstant: 40),
-                closeBtn.widthAnchor.constraint(equalToConstant: 40)
-            ])
-        }
-        @objc func saveButtonPressed() {
-            let novaReceita = Receita()
-            novaReceita.descricao = descricaoReceitaTxt.text!
-            novaReceita.valorReceita = valor.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
-            novaReceita.aReceber = check
-            save(receita: novaReceita)
-        }
-        @objc func backButtonPressed() {
-            dismiss(animated: true, completion: nil)
-            navigationController?.popViewController(animated: true)
-        }
+        closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
+        closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
         
-        // MARK: - Data Manipulation Methods
-        func save(receita: Receita) {
-            let sucesso = true
-            if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
-                if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
-                     if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {
+        containerView.addSubview(saveBtn)
+        containerView.addSubview(closeBtn)
+        
+        saveBtn.translatesAutoresizingMaskIntoConstraints = false
+        closeBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            saveBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -30),
+            saveBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
+            saveBtn.heightAnchor.constraint(equalToConstant: 40),
+            saveBtn.widthAnchor.constraint(equalToConstant: 40),
+            
+            closeBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 30),
+            closeBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
+            closeBtn.heightAnchor.constraint(equalToConstant: 40),
+            closeBtn.widthAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    @objc func saveButtonPressed() {
+        let novaReceita = Receita()
+        novaReceita.descricao = descricaoReceitaTxt.text!
+        novaReceita.valorReceita = valor.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
+        novaReceita.aReceber = check
+        novaReceita.dataLancamento = dataRecebimento
+        save(receita: novaReceita)
+    }
+    @objc func backButtonPressed() {
+        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Data Manipulation Methods
+    func save(receita: Receita) {
+        let sucesso = true
+        if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
+            if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
+                if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {
                     do {
                         try realm.write {
                             realm.add(receita)
@@ -289,93 +332,97 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-            } else {
-                showAlert(sucesso: !sucesso)
-            }
-            
+        } else {
+            showAlert(sucesso: !sucesso)
         }
-        
-        func showAlert(sucesso: Bool) {
-            var msg = ""
-            var titulo = ""
-            sucesso ? (msg = "Receita salva") : (msg = "Falha ao salvar receita")
-            sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
-            let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                switch action.style {
-                case .default:
-                    print("default")
-                    
-                case .cancel:
-                    print("cancel")
-                    
-                case .destructive:
-                    print("destructive")
-                    
-                @unknown default:
-                    fatalError()
-                }}))
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-      //MARK: - Keyboard Events
-      
-      func setupKeyboard() {
-          self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
-          
-          self.keyboardTopAnchorConstraint = self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: 0)
-          self.keyboardTopAnchorConstraint.isActive = true
-          self.keyboardAwareBottomLayoutGuide.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
-
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        }
-        @objc func keyboardWillShow(notification: NSNotification) {
-            updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: false)
-        }
-
-        @objc func keyboardWillHide(notification: NSNotification) {
-             updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: true)
-        }
-      
-      fileprivate func updateKeyboardAwareBottomLayoutGuide(with notification: NSNotification, hiding: Bool) {
-          let userInfo = notification.userInfo
-
-          let animationDuration = (userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-          let keyboardEndFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-
-          let rawAnimationCurve = (userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uint32Value
-
-          guard let animDuration = animationDuration,
-              let keybrdEndFrame = keyboardEndFrame,
-              let rawAnimCurve = rawAnimationCurve else {
-                  return
-          }
-
-          let convertedKeyboardEndFrame = view.convert(keybrdEndFrame, from: view.window)
-
-          let rawAnimCurveAdjusted = UInt(rawAnimCurve << 16)
-          let animationCurve = UIView.AnimationOptions(rawValue: rawAnimCurveAdjusted)
-
-          self.keyboardTopAnchorConstraint.constant = hiding ? 0 : convertedKeyboardEndFrame.size.height
-
-          self.view.setNeedsLayout()
-
-          UIView.animate(withDuration: animDuration, delay: 0.0, options: [.beginFromCurrentState, animationCurve], animations: {
-              self.view.layoutIfNeeded()
-          }, completion: { success in
-              //
-          })
-      }
         
     }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Receita salva") : (msg = "Falha ao salvar receita")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style {
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - Keyboard Events
+    
+    func setupKeyboard() {
+        //fecha o keyboard quando não está editando
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+        
+        self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
+        
+        self.keyboardTopAnchorConstraint = self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: 0)
+        self.keyboardTopAnchorConstraint.isActive = true
+        self.keyboardAwareBottomLayoutGuide.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: false)
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: true)
+    }
+    
+    fileprivate func updateKeyboardAwareBottomLayoutGuide(with notification: NSNotification, hiding: Bool) {
+        let userInfo = notification.userInfo
+        
+        let animationDuration = (userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        let keyboardEndFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        
+        let rawAnimationCurve = (userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uint32Value
+        
+        guard let animDuration = animationDuration,
+            let keybrdEndFrame = keyboardEndFrame,
+            let rawAnimCurve = rawAnimationCurve else {
+                return
+        }
+        
+        let convertedKeyboardEndFrame = view.convert(keybrdEndFrame, from: view.window)
+        
+        let rawAnimCurveAdjusted = UInt(rawAnimCurve << 16)
+        let animationCurve = UIView.AnimationOptions(rawValue: rawAnimCurveAdjusted)
+        
+        self.keyboardTopAnchorConstraint.constant = hiding ? 0 : convertedKeyboardEndFrame.size.height
+        
+        self.view.setNeedsLayout()
+        
+        UIView.animate(withDuration: animDuration, delay: 0.0, options: [.beginFromCurrentState, animationCurve], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { success in
+            //
+        })
+    }
+    
+}
 
 
 
 //MARK: - DropDown Menu
 
 extension ReceitaController {
-
+    
     func configureDropDown() {
         DropDown.appearance().setupCornerRadius(10)
         DropDown.appearance().textColor = UIColor.black
@@ -384,7 +431,7 @@ extension ReceitaController {
         DropDown.appearance().backgroundColor = UIColor.white
         DropDown.appearance().selectionBackgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 1)
     }
-
+    
     func configureDropDownCategoria() {
         categorias = Array(realm.objects(Categoria.self))
         
@@ -401,7 +448,7 @@ extension ReceitaController {
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
             
-
+            
             
             self.dropDown.hide()
             self.dropDownBtn.setTitle("  \(item)", for: .normal)
@@ -411,7 +458,7 @@ extension ReceitaController {
             
             self.categoriaSelecionada = item
             
-
+            
         }
         
         for categoria in categorias{
@@ -435,7 +482,7 @@ extension ReceitaController {
     @objc func selecionaCategoria() {
         dropDown.show()
     }
-
+    
     func configureDropDownConta() {
         contas = Array(realm.objects(Conta.self))
         
@@ -457,7 +504,7 @@ extension ReceitaController {
             self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.8545323202)
             self.dropDownContaBtn.layer.cornerRadius = 5
             self.dropDownContaBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-    
+            
             self.contaSelecionada = index
         }
         
