@@ -18,7 +18,7 @@ class Cartao: Object {
     @objc dynamic var cartaoId: Int64 = 0
     @objc dynamic var nomeCartao: String = ""
     @objc dynamic var numeroCartao: String = ""
-    @objc dynamic var dataVencimento: Date = Date()
+    @objc dynamic var dataVencimento: Date? = Date()
 
     @objc dynamic var tipoRaw = tipoCartao.credito.rawValue
     var tipo: tipoCartao {

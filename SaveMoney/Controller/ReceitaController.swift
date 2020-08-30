@@ -47,6 +47,7 @@ class ReceitaController: UIViewController, UITextFieldDelegate {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        datePicker.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
         txt.inputView = datePicker
         
         datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)

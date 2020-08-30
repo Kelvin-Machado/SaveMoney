@@ -47,6 +47,7 @@ class DespesaController: UIViewController, UITextFieldDelegate {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        datePicker.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
         txt.inputView = datePicker
         
         datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)
@@ -315,7 +316,6 @@ class DespesaController: UIViewController, UITextFieldDelegate {
     // MARK: - Data Manipulation Methods
     func save(despesa: Despesa) {
         let sucesso = true
-        //adicionar seleção de conta para ID 0 ou 1
         if let conta = realm.objects(Conta.self).filter("contaId = \(contaSelecionada)").first {
             if let categoria = realm.objects(Categoria.self).filter("descricao = '\(categoriaSelecionada)'").first {
                 if let emitente = realm.objects(Emitente.self).filter("razaoSocial = '\(emitenteSelecionado)'").first {

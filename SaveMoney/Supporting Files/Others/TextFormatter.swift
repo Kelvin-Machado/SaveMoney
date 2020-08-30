@@ -70,20 +70,21 @@ extension CardController {
          }
         
 //        Formats Expiry Date
-        if textField == vencimento {
-            
-            if vencimento.text?.count == 2 {
-                if !(string == "") {
-                    vencimento.text = vencimento.text! + "/"
-                }
-                
-            }
-            return !(textField.text!.count >= 5 && (string.count ) > range.length)
-        }
-        else {
-            
-            return true
-        }
+//        if textField == vencimento {
+//
+//            if vencimento.text?.count == 2 {
+//                if !(string == "") {
+//                    vencimento.text = vencimento.text! + "/"
+//                }
+//
+//            }
+//            return !(textField.text!.count >= 5 && (string.count ) > range.length)
+//        }
+//        else {
+//
+//            return true
+//        }
+        return true
     }
 }
 

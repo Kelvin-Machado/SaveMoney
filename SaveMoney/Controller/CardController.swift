@@ -7,26 +7,36 @@
 //
 
 import UIKit
+import RealmSwift
+import DropDown
 
 class CardController: UIViewController, UITextFieldDelegate {
     
-//    MARK: - Properties
+    //    MARK: - Properties
+    let realm = try! Realm()
+    
+    var contas = [Conta]()
+    var contasDropDown = [String]()
+    var contaSelecionada = ""
+    
+    var creditoVencimento = Date()
     
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
-
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var typeCredito = true
     
     let creditoBtn = UIButton()
     let debitoBtn = UIButton()
+    var constraintBtnCredito: NSLayoutConstraint!
+    var constraintBtnDebito: NSLayoutConstraint!
     
     var novoCartaoLbl = UILabel()
     
     var descricaoTxt = UITextField()
     var numCartaoTxt = UITextField()
-    var vencimento = UITextField()
     
     var descricaoDebitoTxt = UITextField()
     var numCartaoDebitoTxt = UITextField()
@@ -39,22 +49,131 @@ class CardController: UIViewController, UITextFieldDelegate {
         return view
     }()
     
-//    MARK: - Init
+    lazy var vencimentoTxt: UITextField = {
+        let txt = UITextField()
+        txt.placeholder = "Vencimento"
+        txt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        txt.layer.borderWidth = 1
+        txt.layer.cornerRadius = 5
+        txt.borderStyle = .roundedRect
+        
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        datePicker.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
+        txt.inputView = datePicker
+        
+        datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)
+        return txt
+    }()
+    
+    @objc func selecionaData(sender: UIDatePicker){
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "dd/MM/yyyy"
+        self.creditoVencimento = sender.date
+        self.vencimentoTxt.text = dateFormat.string(from: sender.date)
+    }
+    
+    let dropDownConta = DropDown()
+    var dropDownContaBtn = UIButton()
+    
+    //    MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupKeyboard()
         configureNavigation()
-        requestCardInfo()
         configureCredito()
         configureDebito()
+        configureDropDownConta()
+        configureVencimento()
         configureBottomBtn()
         
     }
     
+    
+    //    MARK: - Helper Functions
+    fileprivate func loadDropDownCartao() {
+        dropDownConta.dataSource.removeAll()
+        contasDropDown.removeAll()
 
-//    MARK: - Helper Functions
+        for conta in contas{
+            if typeCredito {
+                if conta.tipo == .cartao {
+                    dropDownConta.dataSource.append(contentsOf: ["\(conta.nomeBanco): \(conta.tipo.description)"])
+                    self.contasDropDown.append(contentsOf: [conta.numero])
+                }
+            } else {
+                if conta.tipo == .contaCorrente {
+                    dropDownConta.dataSource.append(contentsOf: ["\(conta.nomeBanco): \(conta.tipo.description)"])
+                    self.contasDropDown.append(contentsOf: [conta.numero])
+                }
+            }
+        }
+        
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5094178082)
+        dropDownContaBtn.setTitle("  Conta", for: .normal)
+    }
+    
+    func configureDropDownConta() {
+        contas = Array(realm.objects(Conta.self))
+
+        dropDownConta.direction = .bottom
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5094178082)
+        dropDownContaBtn.layer.cornerRadius = 5
+        dropDownContaBtn.setTitle("  Conta", for: .normal)
+        dropDownContaBtn.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        dropDownContaBtn.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        dropDownContaBtn.addTarget(self, action: #selector(selecionaConta), for: .touchUpInside)
+        dropDownContaBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        DropDown.startListeningToKeyboard()
+
+        dropDownConta.selectionAction = { [unowned self] (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+
+            self.dropDownConta.hide()
+            self.dropDownContaBtn.setTitle("  \(item)", for: .normal)
+            self.dropDownContaBtn.backgroundColor = #colorLiteral(red: 0.00238864636, green: 0.4450881481, blue: 0.900737524, alpha: 0.8545323202)
+            self.dropDownContaBtn.layer.cornerRadius = 5
+            self.dropDownContaBtn.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+
+            self.contaSelecionada = self.contasDropDown[index]
+        }
+        containerView.addSubview(dropDownContaBtn)
+        dropDownConta.anchorView = dropDownContaBtn
+        dropDownContaBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDownConta.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dropDownContaBtn.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            dropDownContaBtn.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20)
+        ])
+        constraintBtnCredito = dropDownContaBtn.topAnchor.constraint(equalTo: numCartaoTxt.bottomAnchor, constant: 20)
+        constraintBtnCredito.isActive = true
+        constraintBtnDebito = dropDownContaBtn.topAnchor.constraint(equalTo: numCartaoDebitoTxt.bottomAnchor, constant: 20)
+        constraintBtnDebito.isActive = false
+        
+        loadDropDownCartao()
+    }
+    @objc func selecionaConta() {
+        dropDownConta.show()
+    }
+    
+    func configureVencimento() {
+        
+        vencimentoTxt.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(vencimentoTxt)
+        
+        NSLayoutConstraint.activate([
+            vencimentoTxt.topAnchor.constraint(equalTo: dropDownContaBtn.bottomAnchor, constant: 20),
+            vencimentoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
+            vencimentoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20),
+            vencimentoTxt.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
     func configureNavigation() {
         view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         containerView.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
@@ -91,7 +210,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         creditoBtn.setTitle("Crédito", for: .normal)
         
         creditoBtn.addTarget(self, action: #selector(creditoBtnTapped), for: .touchUpInside)
-
+        
         containerView.addSubview(creditoBtn)
         view.addSubview(containerView)
         
@@ -119,7 +238,12 @@ class CardController: UIViewController, UITextFieldDelegate {
         novoCartaoLbl.removeFromSuperview()
         descricaoDebitoTxt.removeFromSuperview()
         numCartaoDebitoTxt.removeFromSuperview()
+        constraintBtnDebito.isActive = false
         configureCreditoInfo()
+        constraintBtnCredito.isActive = true
+        loadDropDownCartao()
+        configureVencimento()
+        containerView.addSubview(vencimentoTxt)
     }
     
     func configureCreditoInfo() {
@@ -134,7 +258,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         descricaoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoTxt.textColor = .black
         descricaoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+                                                                attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         descricaoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
@@ -144,32 +268,19 @@ class CardController: UIViewController, UITextFieldDelegate {
         numCartaoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numCartaoTxt.textColor = .black
         numCartaoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de crédito",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+                                                                attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         numCartaoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
         numCartaoTxt.addTarget(self, action: #selector(didChangeText(textField:)), for: .editingChanged)
         
-        vencimento.delegate = self
-        vencimento.keyboardType = .numberPad
-        vencimento.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
-        vencimento.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
-        vencimento.textColor = .black
-        vencimento.textAlignment = .center
-        vencimento.attributedPlaceholder = NSAttributedString(string: "Vencimento",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
-
-        vencimento.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1), width: 1.0)
-        
         containerView.addSubview(novoCartaoLbl)
         containerView.addSubview(descricaoTxt)
         containerView.addSubview(numCartaoTxt)
-        containerView.addSubview(vencimento)
         
         novoCartaoLbl.translatesAutoresizingMaskIntoConstraints = false
         descricaoTxt.translatesAutoresizingMaskIntoConstraints = false
         numCartaoTxt.translatesAutoresizingMaskIntoConstraints = false
-        vencimento.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             novoCartaoLbl.topAnchor.constraint(equalTo: creditoBtn.bottomAnchor, constant: 20),
@@ -184,9 +295,6 @@ class CardController: UIViewController, UITextFieldDelegate {
             numCartaoTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             numCartaoTxt.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -30),
             numCartaoTxt.widthAnchor.constraint(equalToConstant: 50),
-            
-            vencimento.topAnchor.constraint(equalTo: numCartaoTxt.bottomAnchor, constant: 20),
-            vencimento.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30)            
         ])
     }
     
@@ -199,7 +307,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         debitoBtn.addTarget(self, action: #selector(debitoBtnTapped), for: .touchUpInside)
         
         containerView.addSubview(debitoBtn)
-    
+        
         debitoBtn.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -216,8 +324,11 @@ class CardController: UIViewController, UITextFieldDelegate {
         novoCartaoLbl.removeFromSuperview()
         descricaoTxt.removeFromSuperview()
         numCartaoTxt.removeFromSuperview()
-        vencimento.removeFromSuperview()
+        vencimentoTxt.removeFromSuperview()
+        constraintBtnCredito.isActive = false
         configureDebitoInfo()
+        constraintBtnDebito.isActive = true
+        loadDropDownCartao()
     }
     
     func configureDebitoInfo() {
@@ -232,7 +343,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         descricaoDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         descricaoDebitoTxt.textColor = .black
         descricaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Descrição",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+                                                                      attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         descricaoDebitoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
@@ -242,7 +353,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         numCartaoDebitoTxt.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         numCartaoDebitoTxt.textColor = .black
         numCartaoDebitoTxt.attributedPlaceholder = NSAttributedString(string: "Número do cartão de Débito",
-        attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
+                                                                      attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5575397611, green: 0.5729063153, blue: 0.6198518276, alpha: 1)])
         
         numCartaoDebitoTxt.addLine(position: .LINE_POSITION_BOTTOM, color: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), width: 1.0)
         
@@ -277,7 +388,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         textField.text = self.modifyCreditCardString(creditCardString: textField.text!)
     }
     
-//    MARK: - Configure bottom buttons
+    //    MARK: - Configure bottom buttons
     
     func configureBottomBtn() {
         saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
@@ -286,7 +397,7 @@ class CardController: UIViewController, UITextFieldDelegate {
         
         closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
         closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
-
+        
         containerView.addSubview(saveBtn)
         containerView.addSubview(closeBtn)
         
@@ -312,158 +423,129 @@ class CardController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveButtonPressed() {
-//        let context = appDelegate.persistentContainer.viewContext
+        let novoCartao = Cartao()
+        novoCartao.cartaoId = Int64(UUID().hashValue)
         
-//        if typeCredito { //Salva apenas informações de crédito
-//            if (vencimento.text != "") {
-//                Cartao.descricao = descricaoTxt.text
-//                Cartao.numeroCartao = numCartaoTxt.text
-//                Cartao.vencimento = passDate()
-//                Cartao.tipo = "Crédito"
-//                print(Cartao.vencimento as Any)
-//                print("salvar como crédito")
-//            }
-//        } else { //Salva apenas informações de débito
-//            Cartao.descricao = descricaoTxt.text
-//            Cartao.numeroCartao = numCartaoTxt.text
-//            Cartao.tipo = "Débito"
-//            print(Cartao.vencimento as Any)
-//            print("salvar como débito")
-//        }
-        
-        /*Criar uma requisição*/
-//        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
-//
-//        do {
-//            let cartaoInfo = try context.fetch(requisicao)
-//
-//            if cartaoInfo.count > 0 {
-//
-//                for cartao in cartaoInfo as! [NSManagedObject] {
-//                    if let descricao = cartao.value(forKey: "descricao"){
-//                        print(descricao)
-//                    }
-//                }
-//            }else{
-//                saveCardInfo()
-//            }
-//        } catch {
-//            print("Erro ao recuperar os usuários!")
-//        }
-        
-        dismiss(animated: true, completion: nil)
-        navigationController?.popViewController(animated: true)
+        if typeCredito {
+            novoCartao.nomeCartao = descricaoTxt.text!
+            novoCartao.numeroCartao = numCartaoTxt.text!
+            novoCartao.tipo = .credito
+            novoCartao.dataVencimento = creditoVencimento
+        } else {
+            novoCartao.nomeCartao = descricaoDebitoTxt.text!
+            novoCartao.numeroCartao = numCartaoDebitoTxt.text!
+            novoCartao.dataVencimento = nil
+            novoCartao.tipo = .debito
+        }
+        saveCardInfo(cartao: novoCartao)
         
     }
     
-    func requestCardInfo() {
-//        let context = appDelegate.persistentContainer.viewContext
-//        /*Criar uma requisição*/
-//        let requisicao = NSFetchRequest<NSFetchRequestResult>(entityName: "CartaoInfo")
-//
-//        do {
-//            let cartaoInfo = try context.fetch(requisicao)
-//
-//            if cartaoInfo.count > 0 {
-//
-//                for cartao in cartaoInfo as! [NSManagedObject] {
-//                    if let descricao = cartao.value(forKey: "descricao"){
-//                        descricaoTxt.text = descricao as? String
-//                    }
-//                    if let numCC = cartao.value(forKey: "numCartao"){
-//                        numCartaoTxt.text = numCC as? String
-//                    }
-//                    if let expiryDate = cartao.value(forKey: "vencimentoRaw"){
-//                        vencimento.text = expiryDate as? String //Corrigir
-//                    }
-//                }
-//            }else{
-//                print("Nenhum usuário encontrado")
-//            }
-//        } catch {
-//            print("Erro ao recuperar os usuários!")
-//        }
+    func saveCardInfo(cartao: Cartao) {
+        let sucesso = true
+        if let conta = realm.objects(Conta.self).filter("numero = '\(contaSelecionada)'").first {
+            do {
+                try realm.write {
+                    realm.add(cartao)
+                    conta.cartoes.append(cartao)
+                    
+                    showAlert(sucesso: sucesso)
+                    limparCampos()
+                }
+            } catch {
+                print("Error saving category \(error)")
+                showAlert(sucesso: !sucesso)
+            }
+        } else {
+            showAlert(sucesso: !sucesso)
+        }
     }
     
-    func saveCardInfo() {
-//        let context = appDelegate.persistentContainer.viewContext
-//        /*Cria entidade*/
-//        let cartaoInfo = NSEntityDescription.insertNewObject(forEntityName: "CartaoInfo", into: context)
-//
-//        /*Configura objeto*/
-//
-//        cartaoInfo.setValue(Cartao.descricao, forKey: "descricao")
-//        cartaoInfo.setValue(Cartao.numeroCartao, forKey: "numCartao")
-//        cartaoInfo.setValue(Cartao.tipo, forKey: "tipo")
-//        cartaoInfo.setValue(Cartao.vencimento, forKey: "vencimento")
-//
-//        /*Salvar(persistir) dados*/
-//        do {
-//            try context.save()
-//             print ("Dados salvos!")
-//        } catch {
-//            print ("Erro ao salvar os dados")
-//        }
+    func limparCampos() {
+        descricaoTxt.text = ""
+        vencimentoTxt.text = ""
+        numCartaoTxt.text = ""
+        numCartaoDebitoTxt.text = ""
+        dropDownContaBtn.isSelected = false
+        dropDownContaBtn.layer.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5094178082)
+        dropDownContaBtn.setTitle("  Conta", for: .normal)
+    }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Cartão salvo") : (msg = "Falha ao salvar cartão")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style {
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - Keyboard Events
+    
+    func setupKeyboard() {
+        //fecha o keyboard quando não está editando
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
         
-        dismiss(animated: true, completion: nil)
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func passDate() -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM'/'yy"
+        self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
         
-        return dateFormatter.date(from: vencimento.text!)!
-    }
-    
-  //MARK: - Keyboard Events
-  
-  func setupKeyboard() {
-      self.view.addLayoutGuide(self.keyboardAwareBottomLayoutGuide)
-      
-      self.keyboardTopAnchorConstraint = self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: 0)
-      self.keyboardTopAnchorConstraint.isActive = true
-      self.keyboardAwareBottomLayoutGuide.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
-
+        self.keyboardTopAnchorConstraint = self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: 0)
+        self.keyboardTopAnchorConstraint.isActive = true
+        self.keyboardAwareBottomLayoutGuide.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     @objc func keyboardWillShow(notification: NSNotification) {
         updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: false)
     }
-
+    
     @objc func keyboardWillHide(notification: NSNotification) {
-         updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: true)
+        updateKeyboardAwareBottomLayoutGuide(with: notification, hiding: true)
     }
-  
-  fileprivate func updateKeyboardAwareBottomLayoutGuide(with notification: NSNotification, hiding: Bool) {
-      let userInfo = notification.userInfo
-
-      let animationDuration = (userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-      let keyboardEndFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-
-      let rawAnimationCurve = (userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uint32Value
-
-      guard let animDuration = animationDuration,
-          let keybrdEndFrame = keyboardEndFrame,
-          let rawAnimCurve = rawAnimationCurve else {
-              return
-      }
-
-      let convertedKeyboardEndFrame = view.convert(keybrdEndFrame, from: view.window)
-
-      let rawAnimCurveAdjusted = UInt(rawAnimCurve << 16)
-      let animationCurve = UIView.AnimationOptions(rawValue: rawAnimCurveAdjusted)
-
-      self.keyboardTopAnchorConstraint.constant = hiding ? 0 : convertedKeyboardEndFrame.size.height
-
-      self.view.setNeedsLayout()
-
-      UIView.animate(withDuration: animDuration, delay: 0.0, options: [.beginFromCurrentState, animationCurve], animations: {
-          self.view.layoutIfNeeded()
-      }, completion: { success in
-          //
-      })
-  }
+    
+    fileprivate func updateKeyboardAwareBottomLayoutGuide(with notification: NSNotification, hiding: Bool) {
+        let userInfo = notification.userInfo
+        
+        let animationDuration = (userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        let keyboardEndFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        
+        let rawAnimationCurve = (userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uint32Value
+        
+        guard let animDuration = animationDuration,
+            let keybrdEndFrame = keyboardEndFrame,
+            let rawAnimCurve = rawAnimationCurve else {
+                return
+        }
+        
+        let convertedKeyboardEndFrame = view.convert(keybrdEndFrame, from: view.window)
+        
+        let rawAnimCurveAdjusted = UInt(rawAnimCurve << 16)
+        let animationCurve = UIView.AnimationOptions(rawValue: rawAnimCurveAdjusted)
+        
+        self.keyboardTopAnchorConstraint.constant = hiding ? 0 : convertedKeyboardEndFrame.size.height
+        
+        self.view.setNeedsLayout()
+        
+        UIView.animate(withDuration: animDuration, delay: 0.0, options: [.beginFromCurrentState, animationCurve], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { success in
+            //
+        })
+    }
     
 }
