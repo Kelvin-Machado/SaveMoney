@@ -7,16 +7,47 @@
 //
 
 import UIKit
+import RealmSwift
 
 class OrcamentoController: UIViewController, UITextFieldDelegate {
     
 //    MARK: - Properties
+    let realm = try! Realm()
+    
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
-    var monthLbl = UILabel()
+    var mesOrcamento = Date()
+    
+    
+    lazy var monthTxt: UITextField = {
+        let txt = UITextField()
+        txt.placeholder = "Escolha o mês e ano"
+        txt.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        txt.layer.borderWidth = 1
+        txt.layer.cornerRadius = 5
+        txt.borderStyle = .roundedRect
+        
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 0.7013324058)
+        datePicker.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
+        txt.inputView = datePicker
+        
+        datePicker.addTarget(self, action: #selector(self.selecionaData), for: .valueChanged)
+        return txt
+    }()
+    
+    @objc func selecionaData(sender: UIDatePicker){
+        let dateFormat = DateFormatter()
+        dateFormat.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
+        dateFormat.dateStyle = .long
+        self.mesOrcamento = sender.date
+        self.monthTxt.text = dateFormat.string(from: sender.date)
+    }
     
     let metaLbl = UILabel()
+    let rsLbl = UILabel()
     let valueTxt = UITextField()
     
     let saveBtn = UIButton()
@@ -41,7 +72,6 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
         configureBottomBtn()
         
     }
-    
     
     //    MARK: - Helper Functions
     
@@ -93,32 +123,30 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
     
     
     func configureMonth() {
-        monthLbl.text = getDate()
-        monthLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 26)
-        monthLbl.textColor = #colorLiteral(red: 0, green: 0.4892972708, blue: 0.8952963948, alpha: 1)
-        monthLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
-        
-        containerView.addSubview(monthLbl)
-        
-        monthLbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        monthLbl.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
-        monthLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20).isActive = true
+        monthTxt.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(monthTxt)
+        monthTxt.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
+        monthTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20).isActive = true
     }
     
-    func getDate() -> String {
-        
-        let date = Date()
-        let calendar = Calendar.current
-        let month = calendar.component(.month, from: date)
-        return ("\(Months.init(rawValue: month-1)!)")
-    }
+//    func getDate() -> String {
+//
+//        let date = Date()
+//        let calendar = Calendar.current
+//        let month = calendar.component(.month, from: date)
+//        return ("\(Months.init(rawValue: month-1)!)")
+//    }
     
     func  configureGoal() {
         metaLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
         metaLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         metaLbl.text = "Meta"
         metaLbl.textColor = .black
+        
+        rsLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 18)
+        rsLbl.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        rsLbl.text = "R$"
+        rsLbl.textColor = .black
         
         valueTxt.delegate = self
         valueTxt.keyboardType = .numberPad
@@ -135,16 +163,21 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
         
         containerView.addSubview(metaLbl)
         containerView.addSubview(valueTxt)
+        containerView.addSubview(rsLbl)
         
+        rsLbl.translatesAutoresizingMaskIntoConstraints = false
         metaLbl.translatesAutoresizingMaskIntoConstraints = false
         valueTxt.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            metaLbl.topAnchor.constraint(equalTo: monthLbl.bottomAnchor, constant: 20),
+            metaLbl.topAnchor.constraint(equalTo: monthTxt.bottomAnchor, constant: 20),
             metaLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
             
+            rsLbl.topAnchor.constraint(equalTo: metaLbl.bottomAnchor, constant: 20),
+            rsLbl.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30),
+            
             valueTxt.topAnchor.constraint(equalTo: metaLbl.bottomAnchor, constant: 20),
-            valueTxt.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 30)
+            valueTxt.leftAnchor.constraint(equalTo: rsLbl.leftAnchor, constant: 30)
         ])
     }
     
@@ -159,6 +192,7 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
         
     func configureBottomBtn() {
         saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
+        saveBtn.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
         
         closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
         closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
@@ -181,10 +215,66 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
             closeBtn.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
-    
+    @objc func saveButtonPressed() {
+        let novoOrcamento = Orcamento()
+        novoOrcamento.meta = valueTxt.text!.toDoubleWithAutoLocale()!.roundToDecimal(2)
+        novoOrcamento.data = mesOrcamento
+        novoOrcamento.ativo = true
+        save(orcamento: novoOrcamento)
+    }
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Data Manipulation Methods
+
+    func save(orcamento: Orcamento) {
+        let sucesso = true
+        let despesas = realm.objects(Despesa.self)
+        for despesa in despesas {
+            
+            if despesa.dataVencimento >= mesOrcamento.startOfMonth
+            && despesa.dataVencimento <= mesOrcamento.endOfMonth {
+                do {
+                    try realm.write {
+                        realm.add(orcamento)
+                        despesa.orcamentos.append(orcamento)
+                        
+                        showAlert(sucesso: sucesso)
+                    }
+                } catch {
+                    print("Error saving category \(error)")
+                    showAlert(sucesso: !sucesso)
+                }
+            } else {
+                showAlert(sucesso: !sucesso)
+            }
+        }
+        
+    }
+    
+    func showAlert(sucesso: Bool) {
+        var msg = ""
+        var titulo = ""
+        sucesso ? (msg = "Orçamento salvo") : (msg = "Falha ao salvar orçamento")
+        sucesso ? (titulo = "Sucesso!!!") : (titulo = "Erro")
+        let alert = UIAlertController(title: titulo, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style {
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+            @unknown default:
+                fatalError()
+            }}))
+        self.present(alert, animated: true, completion: nil)
     }
     
   //MARK: - Keyboard Events

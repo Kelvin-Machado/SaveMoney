@@ -33,6 +33,7 @@
 		B667827B238664620024CE85 /* EmitenteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667827A238664620024CE85 /* EmitenteController.swift */; };
 		B668B6002385C0490044AF14 /* CardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B5FF2385C0490044AF14 /* CardController.swift */; };
 		B668B6032385D07D0044AF14 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B6022385D07D0044AF14 /* Lines.swift */; };
+		B67FA49D24FD470500265740 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67FA49C24FD470500265740 /* DateExtension.swift */; };
 		B686148D24EB8E6C0076D68F /* Conta.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148C24EB8E6C0076D68F /* Conta.swift */; };
 		B686148F24EBB7720076D68F /* Movimentacao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148E24EBB7720076D68F /* Movimentacao.swift */; };
 		B686149124EBB7900076D68F /* Receita.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149024EBB7900076D68F /* Receita.swift */; };
@@ -71,6 +72,7 @@
 		B667827A238664620024CE85 /* EmitenteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitenteController.swift; sourceTree = "<group>"; };
 		B668B5FF2385C0490044AF14 /* CardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardController.swift; sourceTree = "<group>"; };
 		B668B6022385D07D0044AF14 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
+		B67FA49C24FD470500265740 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		B686148C24EB8E6C0076D68F /* Conta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conta.swift; sourceTree = "<group>"; };
 		B686148E24EBB7720076D68F /* Movimentacao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movimentacao.swift; sourceTree = "<group>"; };
 		B686149024EBB7900076D68F /* Receita.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receita.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			children = (
 				B668B6022385D07D0044AF14 /* Lines.swift */,
 				B6678278238651480024CE85 /* TextFormatter.swift */,
+				B67FA49C24FD470500265740 /* DateExtension.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				B652459F23874C5D001A5E7F /* ReceitaController.swift in Sources */,
 				B65D1B2D2384BB4600B30015 /* ContainerController.swift in Sources */,
 				B667827B238664620024CE85 /* EmitenteController.swift in Sources */,
+				B67FA49D24FD470500265740 /* DateExtension.swift in Sources */,
 				B686149124EBB7900076D68F /* Receita.swift in Sources */,
 				B65245A123874C6C001A5E7F /* DespesaController.swift in Sources */,
 				B686148D24EB8E6C0076D68F /* Conta.swift in Sources */,
