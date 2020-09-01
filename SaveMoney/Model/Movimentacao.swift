@@ -10,15 +10,16 @@ import UIKit
 import RealmSwift
 
 enum tipoMovimentacao: String {
-    case debito
-    case credito
+    case despesa
+    case receita
 }
 
 class Movimentacao: Object {
     @objc dynamic var dataMovimentacao: Date = Date()
     @objc dynamic var valorMovimento: Double = 0.0
+    @objc dynamic var descricao: String = ""
     
-    @objc dynamic var tipoRaw = tipoMovimentacao.debito.rawValue
+    @objc dynamic var tipoRaw = tipoMovimentacao.despesa.rawValue
     var tipo: tipoMovimentacao {
         get {
             return tipoMovimentacao(rawValue: tipoRaw)!

@@ -29,11 +29,14 @@
 		B65D1B2F2384BB5800B30015 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B2E2384BB5800B30015 /* HomeController.swift */; };
 		B65D1B312384BB6400B30015 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B302384BB6400B30015 /* MenuController.swift */; };
 		B65D1B332384CC2800B30015 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D1B322384CC2800B30015 /* Protocols.swift */; };
+		B65FA61224FE6FF000C46C19 /* MovimentacaoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65FA61024FE6FF000C46C19 /* MovimentacaoTableViewCell.swift */; };
+		B65FA61324FE6FF000C46C19 /* MovimentacaoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65FA61124FE6FF000C46C19 /* MovimentacaoTableViewCell.xib */; };
 		B6678279238651480024CE85 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6678278238651480024CE85 /* TextFormatter.swift */; };
 		B667827B238664620024CE85 /* EmitenteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667827A238664620024CE85 /* EmitenteController.swift */; };
 		B668B6002385C0490044AF14 /* CardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B5FF2385C0490044AF14 /* CardController.swift */; };
 		B668B6032385D07D0044AF14 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668B6022385D07D0044AF14 /* Lines.swift */; };
 		B67FA49D24FD470500265740 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67FA49C24FD470500265740 /* DateExtension.swift */; };
+		B67FA49F24FD992500265740 /* MovimentacaoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67FA49E24FD992500265740 /* MovimentacaoTableViewController.swift */; };
 		B686148D24EB8E6C0076D68F /* Conta.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148C24EB8E6C0076D68F /* Conta.swift */; };
 		B686148F24EBB7720076D68F /* Movimentacao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686148E24EBB7720076D68F /* Movimentacao.swift */; };
 		B686149124EBB7900076D68F /* Receita.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686149024EBB7900076D68F /* Receita.swift */; };
@@ -68,11 +71,14 @@
 		B65D1B2E2384BB5800B30015 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		B65D1B302384BB6400B30015 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B65D1B322384CC2800B30015 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		B65FA61024FE6FF000C46C19 /* MovimentacaoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovimentacaoTableViewCell.swift; sourceTree = "<group>"; };
+		B65FA61124FE6FF000C46C19 /* MovimentacaoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovimentacaoTableViewCell.xib; sourceTree = "<group>"; };
 		B6678278238651480024CE85 /* TextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		B667827A238664620024CE85 /* EmitenteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitenteController.swift; sourceTree = "<group>"; };
 		B668B5FF2385C0490044AF14 /* CardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardController.swift; sourceTree = "<group>"; };
 		B668B6022385D07D0044AF14 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
 		B67FA49C24FD470500265740 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		B67FA49E24FD992500265740 /* MovimentacaoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovimentacaoTableViewController.swift; sourceTree = "<group>"; };
 		B686148C24EB8E6C0076D68F /* Conta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conta.swift; sourceTree = "<group>"; };
 		B686148E24EBB7720076D68F /* Movimentacao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movimentacao.swift; sourceTree = "<group>"; };
 		B686149024EBB7900076D68F /* Receita.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receita.swift; sourceTree = "<group>"; };
@@ -146,7 +152,7 @@
 				B652459E23874C5D001A5E7F /* ReceitaController.swift */,
 				B65245A423874C9B001A5E7F /* OrcamentoController.swift */,
 				B65245A623874D04001A5E7F /* GraficoController.swift */,
-				B65245A823874D10001A5E7F /* MovimentacaoController.swift */,
+				B67FA4A124FD993D00265740 /* Movimentacao */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -155,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				B65AD5482384FBB000A5F221 /* MenuOptionCell.swift */,
+				B65FA61024FE6FF000C46C19 /* MovimentacaoTableViewCell.swift */,
+				B65FA61124FE6FF000C46C19 /* MovimentacaoTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -204,6 +212,15 @@
 				B67FA49C24FD470500265740 /* DateExtension.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		B67FA4A124FD993D00265740 /* Movimentacao */ = {
+			isa = PBXGroup;
+			children = (
+				B65245A823874D10001A5E7F /* MovimentacaoController.swift */,
+				B67FA49E24FD992500265740 /* MovimentacaoTableViewController.swift */,
+			);
+			path = Movimentacao;
 			sourceTree = "<group>";
 		};
 		B686148B24EB8CAB0076D68F /* Menu */ = {
@@ -290,6 +307,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B65FA61324FE6FF000C46C19 /* MovimentacaoTableViewCell.xib in Resources */,
 				B65D1B202384BA0000B30015 /* LaunchScreen.storyboard in Resources */,
 				B65D1B1D2384BA0000B30015 /* Assets.xcassets in Resources */,
 			);
@@ -345,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B65245A723874D04001A5E7F /* GraficoController.swift in Sources */,
+				B65FA61224FE6FF000C46C19 /* MovimentacaoTableViewCell.swift in Sources */,
 				B65245A523874C9B001A5E7F /* OrcamentoController.swift in Sources */,
 				B686148F24EBB7720076D68F /* Movimentacao.swift in Sources */,
 				B65D1B112384B9FD00B30015 /* AppDelegate.swift in Sources */,
@@ -366,6 +385,7 @@
 				B686149524EBBB330076D68F /* Categoria.swift in Sources */,
 				B65245A923874D10001A5E7F /* MovimentacaoController.swift in Sources */,
 				B65AD5492384FBB000A5F221 /* MenuOptionCell.swift in Sources */,
+				B67FA49F24FD992500265740 /* MovimentacaoTableViewController.swift in Sources */,
 				B668B6032385D07D0044AF14 /* Lines.swift in Sources */,
 				B65245A323874C81001A5E7F /* CategoriaController.swift in Sources */,
 				B65D1B312384BB6400B30015 /* MenuController.swift in Sources */,
