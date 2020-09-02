@@ -19,12 +19,15 @@ class MovimentacaoTableViewController: UITableViewController {
     var receitas = [Receita]()
     var despesas = [Despesa]()
     
+    var saldo = 0.0
+    
     //    MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
         carregarDados()
         tableView.delegate = self
+        footer()
     }
     
     // MARK: - Table view data source
@@ -72,6 +75,30 @@ class MovimentacaoTableViewController: UITableViewController {
         return cell
     }
     
+    func footer() {
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        let saldoLbl = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        saldoLbl.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        if saldo < 0 {
+            customView.backgroundColor = UIColor.red
+            saldoLbl.textColor = .white
+            saldoLbl.text = "  Saldo: - R$ \(saldo)"
+        } else if saldo > 0 {
+            customView.backgroundColor = #colorLiteral(red: 0, green: 0.4639702439, blue: 0, alpha: 1)
+            saldoLbl.textColor = .white
+            saldoLbl.text = "  Saldo: + R$ \(saldo)"
+        } else {
+            customView.backgroundColor = .black
+            saldoLbl.textColor = .white
+            saldoLbl.text = " Sem dados aqui 🧐"
+        }
+        
+        customView.addSubview(saldoLbl)
+        
+        tableView.tableFooterView = customView
+    }
+    
+    
     // MARK: - Data Manipulation Methods
     
     func carregarDados() {
@@ -87,6 +114,7 @@ class MovimentacaoTableViewController: UITableViewController {
             mov.tipo = .receita
             mov.valorMovimento = receita.valorReceita
             mov.descricao = receita.descricao
+            saldo += receita.valorReceita
             movimentArray.append(mov)
         }
 
@@ -96,6 +124,7 @@ class MovimentacaoTableViewController: UITableViewController {
             mov.tipo = .despesa
             mov.valorMovimento = despesa.valorDespesa
             mov.descricao = despesa.descricao
+            saldo -= despesa.valorDespesa
             movimentArray.append(mov)
         }
         movimentArray.sort(by: { $0.dataMovimentacao.compare($1.dataMovimentacao) == .orderedAscending })
