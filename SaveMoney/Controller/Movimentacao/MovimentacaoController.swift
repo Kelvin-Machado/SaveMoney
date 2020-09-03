@@ -19,8 +19,6 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
     let saveBtn = UIButton()
     let closeBtn = UIButton()
     
-    var periodo = Date()
-    
     lazy var periodoTxt: UITextField = {
         let txt = UITextField()
         txt.placeholder = "Escolha o período"
@@ -43,7 +41,10 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
         let dateFormat = DateFormatter()
         dateFormat.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
         dateFormat.dateStyle = .long
-        self.periodo = sender.date
+
+        movimentacaoTable.periodo = sender.date
+        movimentacaoTable.carregarDados()
+        
         self.periodoTxt.text = dateFormat.string(from: sender.date)
     }
     

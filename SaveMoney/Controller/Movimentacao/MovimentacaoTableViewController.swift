@@ -12,7 +12,6 @@ import RealmSwift
 class MovimentacaoTableViewController: UITableViewController {
     
     //    MARK: - Properties
-    var numElem: Int = 1
     var movimentArray = [Movimentacao]()
 
     let realm = try! Realm()
@@ -20,6 +19,8 @@ class MovimentacaoTableViewController: UITableViewController {
     var despesas = [Despesa]()
     
     var saldo = 0.0
+    
+    var periodo = Date()
     
     //    MARK: - Init
     
@@ -52,7 +53,7 @@ class MovimentacaoTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numElem
+        return movimentArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,27 +109,30 @@ class MovimentacaoTableViewController: UITableViewController {
         despesas = Array(realm.objects(Despesa.self))
         
         for receita in receitas {
-
-            let mov = Movimentacao()
-            mov.dataMovimentacao = receita.dataLancamento
-            mov.tipo = .receita
-            mov.valorMovimento = receita.valorReceita
-            mov.descricao = receita.descricao
-            saldo += receita.valorReceita
-            movimentArray.append(mov)
+            if periodo.startOfMonth == receita.dataLancamento.startOfMonth {
+                let mov = Movimentacao()
+                mov.dataMovimentacao = receita.dataLancamento
+                mov.tipo = .receita
+                mov.valorMovimento = receita.valorReceita
+                mov.descricao = receita.descricao
+                saldo += receita.valorReceita
+                movimentArray.append(mov)
+            }
         }
-
+        
         for despesa in despesas {
-            let mov = Movimentacao()
-            mov.dataMovimentacao = despesa.dataVencimento
-            mov.tipo = .despesa
-            mov.valorMovimento = despesa.valorDespesa
-            mov.descricao = despesa.descricao
-            saldo -= despesa.valorDespesa
-            movimentArray.append(mov)
+            if periodo.startOfMonth == despesa.dataLancamento.startOfMonth {
+                let mov = Movimentacao()
+                mov.dataMovimentacao = despesa.dataVencimento
+                mov.tipo = .despesa
+                mov.valorMovimento = despesa.valorDespesa
+                mov.descricao = despesa.descricao
+                saldo -= despesa.valorDespesa
+                movimentArray.append(mov)
+            }
         }
         movimentArray.sort(by: { $0.dataMovimentacao.compare($1.dataMovimentacao) == .orderedAscending })
+        tableView.reloadData()
         
-        numElem = receitas.count + despesas.count
     }
 }
