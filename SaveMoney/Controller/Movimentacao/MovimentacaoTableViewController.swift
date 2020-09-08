@@ -77,17 +77,19 @@ class MovimentacaoTableViewController: UITableViewController {
     }
     
     func footer() {
+        
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
         let saldoLbl = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
         saldoLbl.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        
         if saldo < 0 {
             customView.backgroundColor = UIColor.red
             saldoLbl.textColor = .white
-            saldoLbl.text = "  Saldo: - R$ \(saldo)"
+            saldoLbl.text = "  Saldo: - R$ \(saldo.roundToDecimal(2))"
         } else if saldo > 0 {
             customView.backgroundColor = #colorLiteral(red: 0, green: 0.4639702439, blue: 0, alpha: 1)
             saldoLbl.textColor = .white
-            saldoLbl.text = "  Saldo: + R$ \(saldo)"
+            saldoLbl.text = "  Saldo: + R$ \(saldo.roundToDecimal(2))"
         } else {
             customView.backgroundColor = .black
             saldoLbl.textColor = .white
@@ -104,7 +106,7 @@ class MovimentacaoTableViewController: UITableViewController {
     
     func carregarDados() {
         movimentArray.removeAll()
-        
+        saldo = 0.0
         receitas = Array(realm.objects(Receita.self))
         despesas = Array(realm.objects(Despesa.self))
         
@@ -132,6 +134,8 @@ class MovimentacaoTableViewController: UITableViewController {
             }
         }
         movimentArray.sort(by: { $0.dataMovimentacao.compare($1.dataMovimentacao) == .orderedAscending })
+        
+        footer()
         tableView.reloadData()
         
     }
