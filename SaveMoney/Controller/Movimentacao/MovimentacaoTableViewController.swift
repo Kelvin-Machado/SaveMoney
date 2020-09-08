@@ -85,7 +85,8 @@ class MovimentacaoTableViewController: UITableViewController {
         if saldo < 0 {
             customView.backgroundColor = UIColor.red
             saldoLbl.textColor = .white
-            saldoLbl.text = "  Saldo: - R$ \(saldo.roundToDecimal(2))"
+            let saldoNeg = saldo * (-1)
+            saldoLbl.text = "  Saldo: - R$ \(saldoNeg.roundToDecimal(2))"
         } else if saldo > 0 {
             customView.backgroundColor = #colorLiteral(red: 0, green: 0.4639702439, blue: 0, alpha: 1)
             saldoLbl.textColor = .white
@@ -123,7 +124,7 @@ class MovimentacaoTableViewController: UITableViewController {
         }
         
         for despesa in despesas {
-            if periodo.startOfMonth == despesa.dataLancamento.startOfMonth {
+            if periodo.startOfMonth == despesa.dataVencimento.startOfMonth {
                 let mov = Movimentacao()
                 mov.dataMovimentacao = despesa.dataVencimento
                 mov.tipo = .despesa
