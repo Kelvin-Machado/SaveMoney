@@ -7,14 +7,25 @@
 //
 
 import UIKit
+import RealmSwift
 import Charts
 
 class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegate {
     
     //    MARK: - Properties
     
+    let realm = try! Realm()
+    var categorias = [Categoria]()
+    
+    var saldo = 0.0
     
     var periodo = Date()
+    let dateFormat: DateFormatter = {
+        let data = DateFormatter()
+        data.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
+        data.dateStyle = .long
+        return data
+    }()
     
     lazy var periodoTxt: UITextField = {
         let txt = UITextField()
@@ -36,36 +47,15 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
     
     lazy var pieChartView: PieChartView = {
         let pieView = PieChartView()
-        pieView.chartDescription?.enabled = true
+        pieView.drawEntryLabelsEnabled = false
         pieView.drawHoleEnabled = false
-        pieView.rotationEnabled = false
+        pieView.rotationEnabled = true
         pieView.isUserInteractionEnabled = true
-        
-        var entries: [PieChartDataEntry] = Array()
-        entries.append(PieChartDataEntry(value: 50.0, label: "Takeout"))
-        entries.append(PieChartDataEntry(value: 30.0, label: "Food"))
-        entries.append(PieChartDataEntry(value: 40.0, label: "Streaming"))
-        entries.append(PieChartDataEntry(value: 10.0, label: "Fun"))
-        entries.append(PieChartDataEntry(value: 20.0, label: "House"))
-        entries.append(PieChartDataEntry(value: 60.0, label: "Party"))
-        entries.append(PieChartDataEntry(value: 70.0, label: "Games"))
-        
-        let dataSet = PieChartDataSet(entries: entries, label: "")
-        let c1 = NSUIColor(hex: 0x3A015C)
-        let c2 = NSUIColor(hex: 0xeb4034)
-        let c3 = NSUIColor(hex: 0x4ceb34)
-        let c4 = NSUIColor(hex: 0x11cfbc)
-        let c5 = NSUIColor(hex: 0x1985e3)
-        let c6 = NSUIColor(hex: 0xe016ab)
-        let c7 = NSUIColor(hex: 0xdeae10)
-        
-        dataSet.colors = [c1, c2, c3, c4, c5, c6, c7]
-        dataSet.drawValuesEnabled = true
-        
-        pieView.data = PieChartData(dataSet: dataSet)
         
         return pieView
     }()
+    
+    var entries: [PieChartDataEntry] = Array()
     
     var containerView:UIView = {
         let view = UIView()
@@ -81,6 +71,9 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         
         self.hideKeyboardWhenTappedAround()
         
+        self.periodoTxt.text = dateFormat.string(from: periodo)
+        
+        carregarDados()
         configureNavigation()
         configureContainer()
         configurePeriodo()
@@ -116,10 +109,10 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         containerView.addSubview(pieChartView)
         
         NSLayoutConstraint.activate([
-            pieChartView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20),
-            pieChartView.topAnchor.constraint(equalTo: periodoTxt.bottomAnchor, constant: 20),
-            pieChartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
-            pieChartView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20)
+            pieChartView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -40),
+            pieChartView.topAnchor.constraint(equalTo: periodoTxt.bottomAnchor, constant: 40),
+            pieChartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -40),
+            pieChartView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 40)
         ])
     }
     
@@ -164,13 +157,49 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
     
     
     @objc func selecionaData(sender: UIDatePicker){
-        let dateFormat = DateFormatter()
-        dateFormat.locale = NSLocale(localeIdentifier: "pt_BR") as Locale
-        dateFormat.dateStyle = .long
-
         periodo = sender.date
-        
         self.periodoTxt.text = dateFormat.string(from: sender.date)
+        
+        carregarDados()
+    }
+    
+    
+    // MARK: - Data Manipulation Methods
+    
+    func carregarDados() {
+        entries.removeAll()
+        
+        categorias = Array(realm.objects(Categoria.self))
+        
+        for categoria in categorias {
+            if categoria.tipo == .despesa {
+                var valorGastoCategoria = 0.0
+                for despesa in categoria.despesas {
+                    if periodo.startOfMonth == despesa.dataVencimento.startOfMonth {
+                        valorGastoCategoria += despesa.valorDespesa
+                    }
+                }
+                
+                if valorGastoCategoria > 0.0 {
+                    entries.append(PieChartDataEntry(value: valorGastoCategoria, label: categoria.descricao))
+                }
+            }
+        }
+        
+        let dataSet = PieChartDataSet(entries: entries, label: "")
+        
+        let c1 = NSUIColor(hex: 0x3A015C)
+        let c2 = NSUIColor(hex: 0xeb4034)
+        let c3 = NSUIColor(hex: 0x4ceb34)
+        let c4 = NSUIColor(hex: 0x11cfbc)
+        let c5 = NSUIColor(hex: 0x1985e3)
+        let c6 = NSUIColor(hex: 0xe016ab)
+        
+        dataSet.colors = [c1, c2, c3, c4, c5, c6]
+        dataSet.drawValuesEnabled = true
+        //
+        pieChartView.data = PieChartData(dataSet: dataSet)
+        pieChartView.animate(xAxisDuration: 1.5)
     }
     
 }
@@ -199,10 +228,10 @@ extension NSUIColor {
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
         let tapGesture = UITapGestureRecognizer(target: self,
-                         action: #selector(hideKeyboard))
+                                                action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
