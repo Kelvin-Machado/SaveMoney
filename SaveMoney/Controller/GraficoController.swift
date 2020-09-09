@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ChameleonFramework
 import RealmSwift
 import Charts
 
@@ -47,9 +48,10 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
     
     lazy var pieChartView: PieChartView = {
         let pieView = PieChartView()
-        pieView.drawEntryLabelsEnabled = false
+        pieView.drawEntryLabelsEnabled = true
         pieView.drawHoleEnabled = false
         pieView.rotationEnabled = true
+        pieView.usePercentValuesEnabled = true
         pieView.isUserInteractionEnabled = true
         
         return pieView
@@ -65,7 +67,6 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
     
     //    MARK: - Init
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,7 +79,6 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         configureContainer()
         configurePeriodo()
         configurePieChart()
-        
     }
     
     func configureContainer() {
@@ -109,10 +109,10 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         containerView.addSubview(pieChartView)
         
         NSLayoutConstraint.activate([
-            pieChartView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -40),
+            pieChartView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -10),
             pieChartView.topAnchor.constraint(equalTo: periodoTxt.bottomAnchor, constant: 40),
             pieChartView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -40),
-            pieChartView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 40)
+            pieChartView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10)
         ])
     }
     
@@ -154,16 +154,13 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         navigationController?.popViewController(animated: true)
     }
     
-    
-    
     @objc func selecionaData(sender: UIDatePicker){
         periodo = sender.date
         self.periodoTxt.text = dateFormat.string(from: sender.date)
         
         carregarDados()
     }
-    
-    
+
     // MARK: - Data Manipulation Methods
     
     func carregarDados() {
@@ -188,41 +185,32 @@ class GraficoController: UIViewController, UITextFieldDelegate, ChartViewDelegat
         
         let dataSet = PieChartDataSet(entries: entries, label: "")
         
-        let c1 = NSUIColor(hex: 0x3A015C)
-        let c2 = NSUIColor(hex: 0xeb4034)
-        let c3 = NSUIColor(hex: 0x4ceb34)
-        let c4 = NSUIColor(hex: 0x11cfbc)
-        let c5 = NSUIColor(hex: 0x1985e3)
-        let c6 = NSUIColor(hex: 0xe016ab)
-        
-        dataSet.colors = [c1, c2, c3, c4, c5, c6]
+        var colors =  [NSUIColor]()
+        var valueColors =  [NSUIColor]()
+        for n in 0...entries.count {
+            colors.append(NSUIColor(hexString: UIColor.randomFlat().hexValue())!)
+            valueColors.append(ContrastColorOf(colors[n], returnFlat: true))
+        }
+
+        dataSet.colors = colors
+        dataSet.valueColors = valueColors
+        dataSet.entryLabelColor = .black
+        dataSet.xValuePosition = .outsideSlice
         dataSet.drawValuesEnabled = true
-        //
+        dataSet.sliceSpace = 2
+        dataSet.selectionShift = 50
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 2
+        formatter.multiplier = 1.0
+        formatter.percentSymbol = "%"
+        
+
         pieChartView.data = PieChartData(dataSet: dataSet)
+        pieChartView.data?.setValueFormatter(DefaultValueFormatter(formatter: formatter))
         pieChartView.animate(xAxisDuration: 1.5)
     }
-    
-}
-
-
-extension NSUIColor {
-    
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid red component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-    
-    convenience init(hex: Int) {
-        self.init(
-            red: (hex >> 16) & 0xFF,
-            green: (hex >> 8) & 0xFF,
-            blue: hex & 0xFF
-        )
-    }
-    
 }
 
 extension UIViewController {
@@ -231,7 +219,7 @@ extension UIViewController {
                                                 action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
-    
+
     @objc func hideKeyboard() {
         view.endEditing(true)
     }

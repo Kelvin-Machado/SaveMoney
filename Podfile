@@ -7,4 +7,5 @@ target 'SaveMoney' do
   # Pods for SaveMoney
   pod 'DropDown', '2.3.13'
   pod 'Charts'
+  pod 'ChameleonFramework/Swift', :git => 'https://github.com/wowansm/Chameleon.git', :branch => 'swift5'
 end
