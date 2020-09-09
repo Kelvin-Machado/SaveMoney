@@ -232,8 +232,9 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
     func save(orcamento: Orcamento) {
         let sucesso = true
         let despesas = realm.objects(Despesa.self)
+        var i = 0
         for despesa in despesas {
-            
+            i += 1
             if despesa.dataVencimento >= mesOrcamento.startOfMonth
             && despesa.dataVencimento <= mesOrcamento.endOfMonth {
                 do {
@@ -247,7 +248,7 @@ class OrcamentoController: UIViewController, UITextFieldDelegate {
                     print("Error saving category \(error)")
                     showAlert(sucesso: !sucesso)
                 }
-            } else {
+            } else if despesas.count == i {
                 showAlert(sucesso: !sucesso)
             }
         }
