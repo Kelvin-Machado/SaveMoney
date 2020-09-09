@@ -6,5 +6,5 @@ target 'SaveMoney' do
 
   # Pods for SaveMoney
   pod 'DropDown', '2.3.13'
-
+  pod 'Charts'
 end
