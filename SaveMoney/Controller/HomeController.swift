@@ -20,14 +20,12 @@ class HomeController: UIViewController {
     let realm = try! Realm()
     var receitas = [Receita]()
     var despesas = [Despesa]()
+    var categorias = [Categoria]()
+    var meta = [Orcamento]()
     
     let periodo = Date()
     let calendar = Calendar.current
     var mesAtual = 0
-    
-    var orcamento = [Orcamento]()
-    
-    var categorias = [Categoria]()
     
     var visaoGeralLbl = UILabel()
     var saldo = 0.0
@@ -45,8 +43,7 @@ class HomeController: UIViewController {
     var metaValorLb = UILabel()
     var gastoLbl = UILabel()
     var valorGastoLbl = UILabel()
-    var previstoLbl = UILabel()
-    var valorPrevistoLbl = UILabel()
+    var restoValorLbl = UILabel()
     
     var chartLbl = UILabel()
     
@@ -130,7 +127,7 @@ class HomeController: UIViewController {
         visaoGeralLbl.backgroundColor = .clear
         visaoGeralLbl.textColor = .flatNavyBlueDark()
         
-        receitaLbl.text = "Contas"
+        receitaLbl.text = "Receitas"
         receitaLbl.font = UIFont(name:"HelveticaNeue", size: 14)
         receitaLbl.backgroundColor = .clear
 
@@ -184,10 +181,10 @@ class HomeController: UIViewController {
             visaoGeralLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
             
             receitaLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
-            receitaLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 10),
+            receitaLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 20),
             
             receitaValorLbl.rightAnchor.constraint(equalTo: containerGeralView.rightAnchor, constant: -10),
-            receitaValorLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 10),
+            receitaValorLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 20),
             receitaValorLbl.leftAnchor.constraint(equalTo: receitaLbl.rightAnchor, constant: 10),
             
             despesaLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
@@ -220,9 +217,40 @@ class HomeController: UIViewController {
         orcamentoLbl.backgroundColor = .clear
         orcamentoLbl.textColor = .flatNavyBlueDark()
         
+        metaLbl.text = "Meta"
+        metaLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        metaLbl.backgroundColor = .clear
+
+        metaValorLb.font = UIFont(name:"HelveticaNeue", size: 14)
+        metaValorLb.backgroundColor = .clear
+        metaValorLb.textAlignment = .right
+        
+        gastoLbl.text = "Valor gasto"
+        gastoLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        gastoLbl.backgroundColor = .clear
+        
+        valorGastoLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        valorGastoLbl.backgroundColor = .clear
+        valorGastoLbl.textAlignment = .right
+        
+        restoValorLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        restoValorLbl.backgroundColor = .clear
+        restoValorLbl.textAlignment = .center
+        
         containerOrcamentoView.translatesAutoresizingMaskIntoConstraints = false
         orcamentoLbl.translatesAutoresizingMaskIntoConstraints = false
+        metaLbl.translatesAutoresizingMaskIntoConstraints = false
+        metaValorLb.translatesAutoresizingMaskIntoConstraints = false
+        gastoLbl.translatesAutoresizingMaskIntoConstraints = false
+        valorGastoLbl.translatesAutoresizingMaskIntoConstraints = false
+        restoValorLbl.translatesAutoresizingMaskIntoConstraints = false
+        
         containerOrcamentoView.addSubview(orcamentoLbl)
+        containerOrcamentoView.addSubview(metaLbl)
+        containerOrcamentoView.addSubview(metaValorLb)
+        containerOrcamentoView.addSubview(gastoLbl)
+        containerOrcamentoView.addSubview(valorGastoLbl)
+        containerOrcamentoView.addSubview(restoValorLbl)
         view.addSubview(containerOrcamentoView)
         
         NSLayoutConstraint.activate([
@@ -233,7 +261,24 @@ class HomeController: UIViewController {
             
             orcamentoLbl.rightAnchor.constraint(equalTo: containerOrcamentoView.rightAnchor, constant: -10),
             orcamentoLbl.topAnchor.constraint(equalTo: containerOrcamentoView.topAnchor, constant: 10),
-            orcamentoLbl.leftAnchor.constraint(equalTo: containerOrcamentoView.leftAnchor, constant: 10)
+            orcamentoLbl.leftAnchor.constraint(equalTo: containerOrcamentoView.leftAnchor, constant: 10),
+            
+            metaLbl.leftAnchor.constraint(equalTo: containerOrcamentoView.leftAnchor, constant: 10),
+            metaLbl.topAnchor.constraint(equalTo: orcamentoLbl.bottomAnchor, constant: 20),
+            
+            metaValorLb.rightAnchor.constraint(equalTo: containerOrcamentoView.rightAnchor, constant: -10),
+            metaValorLb.topAnchor.constraint(equalTo: orcamentoLbl.bottomAnchor, constant: 20),
+            metaValorLb.leftAnchor.constraint(equalTo: metaLbl.rightAnchor, constant: 10),
+            
+            gastoLbl.leftAnchor.constraint(equalTo: containerOrcamentoView.leftAnchor, constant: 10),
+            gastoLbl.topAnchor.constraint(equalTo: metaLbl.bottomAnchor, constant: 10),
+            
+            valorGastoLbl.rightAnchor.constraint(equalTo: containerOrcamentoView.rightAnchor, constant: -10),
+            valorGastoLbl.topAnchor.constraint(equalTo: metaValorLb.bottomAnchor, constant: 10),
+            valorGastoLbl.leftAnchor.constraint(equalTo: gastoLbl.rightAnchor, constant: 10),
+            
+            restoValorLbl.centerXAnchor.constraint(equalTo: containerOrcamentoView.centerXAnchor),
+            restoValorLbl.topAnchor.constraint(equalTo: valorGastoLbl.bottomAnchor, constant: 20),
         ])
     }
     func carregarDados() {
@@ -249,15 +294,22 @@ class HomeController: UIViewController {
         
         for despesa in despesas {
             if periodo.startOfMonth == despesa.dataVencimento.startOfMonth {
-                despesaMes = despesa.valorDespesa
+                despesaMes += despesa.valorDespesa
                 saldo -= despesa.valorDespesa
+                meta.append(contentsOf: despesa.orcamentos)
             }
         }
         
         receitaValorLbl.text = "R$ \(receitaMes)"
         despesaValorLbl.text = "R$ \(despesaMes)"
+        
+        valorGastoLbl.text = "R$ \(despesaMes)"
+        metaValorLb.text = "R$ \(meta[0].meta)"
+        restoValorLbl.text = "Restam R$ \(meta[0].meta - despesaMes)"
+        
         saldoValorLbl.text = "R$ \(saldo.roundToDecimal(2))"
     }
+    
     func carregarDadosGrafico() {
         
         entries.removeAll()
