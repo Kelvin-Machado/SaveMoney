@@ -304,8 +304,11 @@ class HomeController: UIViewController {
         despesaValorLbl.text = "R$ \(despesaMes)"
         
         valorGastoLbl.text = "R$ \(despesaMes)"
-        metaValorLb.text = "R$ \(meta[0].meta)"
-        restoValorLbl.text = "Restam R$ \(meta[0].meta - despesaMes)"
+        if !meta.isEmpty {
+            metaValorLb.text = "R$ \(meta[0].meta)"
+           restoValorLbl.text = "Restam R$ \(meta[0].meta - despesaMes)"
+        }
+        
         
         saldoValorLbl.text = "R$ \(saldo.roundToDecimal(2))"
     }
