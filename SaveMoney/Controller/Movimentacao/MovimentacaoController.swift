@@ -16,9 +16,6 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
     private let keyboardAwareBottomLayoutGuide: UILayoutGuide = UILayoutGuide()
     private var keyboardTopAnchorConstraint: NSLayoutConstraint!
     
-    let saveBtn = UIButton()
-    let closeBtn = UIButton()
-    
     lazy var periodoTxt: UITextField = {
         let txt = UITextField()
         txt.placeholder = "Escolha o período"
@@ -67,7 +64,6 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
         configureContainer()
         configurePeriodo()
         configureTableContainer()
-        configureBottomBtn()
         
     }
     
@@ -152,31 +148,6 @@ class MovimentacaoController: UIViewController, UITextFieldDelegate {
     
     
     //    MARK: - Configure bottom buttons
-    
-    func configureBottomBtn() {
-        saveBtn.setImage(#imageLiteral(resourceName: "floppy-disk-interface-symbol-for-save-option-button"), for: .normal)
-        
-        closeBtn.setImage(#imageLiteral(resourceName: "icon"), for: .normal)
-        closeBtn.addTarget(self, action: #selector(self.backButtonPressed), for: .touchUpInside)
-        
-        containerView.addSubview(saveBtn)
-        containerView.addSubview(closeBtn)
-        
-        saveBtn.translatesAutoresizingMaskIntoConstraints = false
-        closeBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            saveBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -30),
-            saveBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
-            saveBtn.heightAnchor.constraint(equalToConstant: 40),
-            saveBtn.widthAnchor.constraint(equalToConstant: 40),
-            
-            closeBtn.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 30),
-            closeBtn.bottomAnchor.constraint(equalTo: keyboardAwareBottomLayoutGuide.topAnchor, constant: -20),
-            closeBtn.heightAnchor.constraint(equalToConstant: 40),
-            closeBtn.widthAnchor.constraint(equalToConstant: 40)
-        ])
-    }
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
