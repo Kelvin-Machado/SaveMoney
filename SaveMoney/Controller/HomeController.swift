@@ -21,13 +21,20 @@ class HomeController: UIViewController {
     var receitas = [Receita]()
     var despesas = [Despesa]()
     
+    let periodo = Date()
+    let calendar = Calendar.current
+    var mesAtual = 0
+    
     var orcamento = [Orcamento]()
     
     var categorias = [Categoria]()
     
     var visaoGeralLbl = UILabel()
-    var contasLbl = UILabel()
-    var contaValorLbl = UILabel()
+    var saldo = 0.0
+    var despesaMes = 0.0
+    var receitaMes = 0.0
+    var saldoLbl = UILabel()
+    var saldoValorLbl = UILabel()
     var receitaLbl = UILabel()
     var receitaValorLbl = UILabel()
     var despesaLbl = UILabel()
@@ -78,10 +85,15 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
+        
+        mesAtual = calendar.component(.month, from: periodo)
+        
+        carregarDados()
+        carregarDadosGrafico()
+        
         configureNavigationBar()
         configureVisaoGeral()
         configureOrcamento()
-        carregarDados()
         configureChart()
     }
     
@@ -103,40 +115,152 @@ class HomeController: UIViewController {
             NSAttributedString.Key.strokeWidth : -2.0
         ]
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_menu_white_3x").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
-        
     }
     
     func configureVisaoGeral() {
+        
+        containerGeralView.layer.shadowColor = UIColor.flatNavyBlue().cgColor
+        containerGeralView.layer.shadowOpacity = 0.5
+        containerGeralView.layer.shadowOffset = .zero
+        containerGeralView.layer.shadowRadius = 2
+        containerGeralView.backgroundColor =  #colorLiteral(red: 0.8801595569, green: 0.9066320062, blue: 1, alpha: 1)
+        
+        visaoGeralLbl.text = "Visão Geral - \(Months.init(rawValue: mesAtual-1)!)"
+        visaoGeralLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        visaoGeralLbl.backgroundColor = .clear
+        visaoGeralLbl.textColor = .flatNavyBlueDark()
+        
+        receitaLbl.text = "Contas"
+        receitaLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        receitaLbl.backgroundColor = .clear
+
+        receitaValorLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        receitaValorLbl.backgroundColor = .clear
+        receitaValorLbl.textAlignment = .right
+        
+        despesaLbl.text = "Despesas"
+        despesaLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        despesaLbl.backgroundColor = .clear
+        
+        despesaValorLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        despesaValorLbl.backgroundColor = .clear
+        despesaValorLbl.textAlignment = .right
+        
+        saldoLbl.text = "Saldo"
+        saldoLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        saldoLbl.backgroundColor = .clear
+        
+        saldoValorLbl.font = UIFont(name:"HelveticaNeue", size: 14)
+        saldoValorLbl.backgroundColor = .clear
+        saldoValorLbl.textAlignment = .right
+        
         containerGeralView.translatesAutoresizingMaskIntoConstraints = false
+        visaoGeralLbl.translatesAutoresizingMaskIntoConstraints = false
+        receitaLbl.translatesAutoresizingMaskIntoConstraints = false
+        receitaValorLbl.translatesAutoresizingMaskIntoConstraints = false
+        despesaLbl.translatesAutoresizingMaskIntoConstraints = false
+        despesaValorLbl.translatesAutoresizingMaskIntoConstraints = false
+        saldoLbl.translatesAutoresizingMaskIntoConstraints = false
+        saldoValorLbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerGeralView.addSubview(visaoGeralLbl)
+        containerGeralView.addSubview(receitaLbl)
+        containerGeralView.addSubview(receitaValorLbl)
+        containerGeralView.addSubview(despesaLbl)
+        containerGeralView.addSubview(despesaValorLbl)
+        containerGeralView.addSubview(saldoLbl)
+        containerGeralView.addSubview(saldoValorLbl)
         view.addSubview(containerGeralView)
         
-        containerGeralView.backgroundColor = .black
-        
         NSLayoutConstraint.activate([
+            
             containerGeralView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             containerGeralView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             containerGeralView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            containerGeralView.heightAnchor.constraint(equalToConstant: (view.frame.height - 150) * 0.3)
+            containerGeralView.heightAnchor.constraint(equalToConstant: (view.frame.height - 150) * 0.3),
+            
+            visaoGeralLbl.rightAnchor.constraint(equalTo: containerGeralView.rightAnchor, constant: -10),
+            visaoGeralLbl.topAnchor.constraint(equalTo: containerGeralView.topAnchor, constant: 10),
+            visaoGeralLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
+            
+            receitaLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
+            receitaLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 10),
+            
+            receitaValorLbl.rightAnchor.constraint(equalTo: containerGeralView.rightAnchor, constant: -10),
+            receitaValorLbl.topAnchor.constraint(equalTo: visaoGeralLbl.bottomAnchor, constant: 10),
+            receitaValorLbl.leftAnchor.constraint(equalTo: receitaLbl.rightAnchor, constant: 10),
+            
+            despesaLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
+            despesaLbl.topAnchor.constraint(equalTo: receitaLbl.bottomAnchor, constant: 10),
+            
+            despesaValorLbl.rightAnchor.constraint(equalTo: containerGeralView.rightAnchor, constant: -10),
+            despesaValorLbl.topAnchor.constraint(equalTo: receitaValorLbl.bottomAnchor, constant: 10),
+            despesaValorLbl.leftAnchor.constraint(equalTo: despesaLbl.rightAnchor, constant: 10),
+            
+            saldoLbl.leftAnchor.constraint(equalTo: containerGeralView.leftAnchor, constant: 10),
+            saldoLbl.topAnchor.constraint(equalTo: despesaLbl.bottomAnchor, constant: 10),
+            
+            saldoValorLbl.rightAnchor.constraint(equalTo: containerGeralView.rightAnchor, constant: -10),
+            saldoValorLbl.topAnchor.constraint(equalTo: despesaValorLbl.bottomAnchor, constant: 10),
+            saldoValorLbl.leftAnchor.constraint(equalTo: saldoLbl.rightAnchor, constant: 10),
+            
         ])
     }
     
     func configureOrcamento() {
-        containerOrcamentoView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerOrcamentoView)
         
-        containerOrcamentoView.backgroundColor = .black
+        containerOrcamentoView.layer.shadowColor = UIColor.flatNavyBlue().cgColor
+        containerOrcamentoView.layer.shadowOpacity = 0.5
+        containerOrcamentoView.layer.shadowOffset = .zero
+        containerOrcamentoView.layer.shadowRadius = 2
+        containerOrcamentoView.backgroundColor =  #colorLiteral(red: 0.8801595569, green: 0.9066320062, blue: 1, alpha: 1)
+        
+        orcamentoLbl.text = "Orçamento - \(Months.init(rawValue: mesAtual-1)!)"
+        orcamentoLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        orcamentoLbl.backgroundColor = .clear
+        orcamentoLbl.textColor = .flatNavyBlueDark()
+        
+        containerOrcamentoView.translatesAutoresizingMaskIntoConstraints = false
+        orcamentoLbl.translatesAutoresizingMaskIntoConstraints = false
+        containerOrcamentoView.addSubview(orcamentoLbl)
+        view.addSubview(containerOrcamentoView)
         
         NSLayoutConstraint.activate([
             containerOrcamentoView.topAnchor.constraint(equalTo: containerGeralView.bottomAnchor, constant: 20),
             containerOrcamentoView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             containerOrcamentoView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            containerOrcamentoView.heightAnchor.constraint(equalToConstant: (view.frame.height - 150) * 0.3)
+            containerOrcamentoView.heightAnchor.constraint(equalToConstant: (view.frame.height - 150) * 0.3),
+            
+            orcamentoLbl.rightAnchor.constraint(equalTo: containerOrcamentoView.rightAnchor, constant: -10),
+            orcamentoLbl.topAnchor.constraint(equalTo: containerOrcamentoView.topAnchor, constant: 10),
+            orcamentoLbl.leftAnchor.constraint(equalTo: containerOrcamentoView.leftAnchor, constant: 10)
         ])
     }
-    
     func carregarDados() {
+        receitas = Array(realm.objects(Receita.self))
+        despesas = Array(realm.objects(Despesa.self))
+        
+        for receita in receitas {
+            if periodo.startOfMonth == receita.dataLancamento.startOfMonth {
+                receitaMes += receita.valorReceita
+                saldo += receita.valorReceita
+            }
+        }
+        
+        for despesa in despesas {
+            if periodo.startOfMonth == despesa.dataVencimento.startOfMonth {
+                despesaMes = despesa.valorDespesa
+                saldo -= despesa.valorDespesa
+            }
+        }
+        
+        receitaValorLbl.text = "R$ \(receitaMes)"
+        despesaValorLbl.text = "R$ \(despesaMes)"
+        saldoValorLbl.text = "R$ \(saldo.roundToDecimal(2))"
+    }
+    func carregarDadosGrafico() {
+        
         entries.removeAll()
-        let periodo = Date()
         categorias = Array(realm.objects(Categoria.self))
         
         for categoria in categorias {
@@ -162,7 +286,7 @@ class HomeController: UIViewController {
             colors.append(NSUIColor(hexString: UIColor.randomFlat().hexValue())!)
             valueColors.append(ContrastColorOf(colors[n], returnFlat: true))
         }
-
+        
         dataSet.colors = colors
         dataSet.valueColors = valueColors
         dataSet.entryLabelColor = .black
@@ -176,19 +300,31 @@ class HomeController: UIViewController {
         formatter.multiplier = 1.0
         formatter.percentSymbol = "%"
         
-
+        
         pieChartView.data = PieChartData(dataSet: dataSet)
         pieChartView.data?.setValueFormatter(DefaultValueFormatter(formatter: formatter))
         pieChartView.animate(xAxisDuration: 1.5)
     }
     
     func configureChart() {
+        
+        containerChartView.layer.shadowColor = UIColor.flatNavyBlue().cgColor
+        containerChartView.layer.shadowOpacity = 0.5
+        containerChartView.layer.shadowOffset = .zero
+        containerChartView.layer.shadowRadius = 2
+        containerChartView.backgroundColor =  #colorLiteral(red: 0.8801595569, green: 0.9066320062, blue: 1, alpha: 1)
+        
+        chartLbl.text = "Despesas por categoria - \(Months.init(rawValue: mesAtual-1)!)"
+        chartLbl.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+        chartLbl.backgroundColor = .clear
+        chartLbl.textColor = .flatNavyBlueDark()
+        
         containerChartView.translatesAutoresizingMaskIntoConstraints = false
+        chartLbl.translatesAutoresizingMaskIntoConstraints = false
         pieChartView.translatesAutoresizingMaskIntoConstraints = false
+        containerChartView.addSubview(chartLbl)
         containerChartView.addSubview(pieChartView)
         view.addSubview(containerChartView)
-        
-        containerChartView.backgroundColor =  #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
         
         NSLayoutConstraint.activate([
             containerChartView.topAnchor.constraint(equalTo: containerOrcamentoView.bottomAnchor, constant: 20),
@@ -196,8 +332,12 @@ class HomeController: UIViewController {
             containerChartView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             containerChartView.heightAnchor.constraint(equalToConstant: (view.frame.height - 150) * 0.4),
             
+            chartLbl.rightAnchor.constraint(equalTo: containerChartView.rightAnchor, constant: -10),
+            chartLbl.topAnchor.constraint(equalTo: containerChartView.topAnchor, constant: 10),
+            chartLbl.leftAnchor.constraint(equalTo: containerChartView.leftAnchor, constant: 10),
+            
             pieChartView.rightAnchor.constraint(equalTo: containerChartView.rightAnchor, constant: -10),
-            pieChartView.topAnchor.constraint(equalTo: containerChartView.topAnchor, constant: 10),
+            pieChartView.topAnchor.constraint(equalTo: chartLbl.bottomAnchor, constant: 10),
             pieChartView.bottomAnchor.constraint(equalTo: containerChartView.bottomAnchor, constant: -10),
             pieChartView.leftAnchor.constraint(equalTo: containerChartView.leftAnchor, constant: 10)
         ])
