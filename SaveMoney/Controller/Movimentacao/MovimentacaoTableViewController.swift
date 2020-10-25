@@ -28,7 +28,6 @@ class MovimentacaoTableViewController: UITableViewController {
         super.viewDidLoad()
         carregarDados()
         tableView.delegate = self
-        footer()
     }
     
     // MARK: - Table view data source
@@ -136,8 +135,9 @@ class MovimentacaoTableViewController: UITableViewController {
         }
         movimentArray.sort(by: { $0.dataMovimentacao.compare($1.dataMovimentacao) == .orderedAscending })
         
-        footer()
+        DispatchQueue.main.async { [self] in
+            footer()
+        }
         tableView.reloadData()
-        
     }
 }
