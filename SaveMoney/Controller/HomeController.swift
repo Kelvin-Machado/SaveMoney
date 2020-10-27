@@ -80,14 +80,20 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = #colorLiteral(red: 0.8384380937, green: 0.9086549282, blue: 1, alpha: 1)
-        
         mesAtual = calendar.component(.month, from: periodo)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        saldo = 0.0
+        despesaMes = 0.0
+        receitaMes = 0.0
         
         carregarDados()
         carregarDadosGrafico()
-        
+
         configureNavigationBar()
         configureVisaoGeral()
         configureOrcamento()
